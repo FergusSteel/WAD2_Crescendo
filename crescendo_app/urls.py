@@ -14,9 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from crescendo_app import views
 
 app_name = 'crescendo'
 
 urlpatterns = [
-    # Add URL Paths
+    # Add URL Paths, Uncomment as Views and Templates are implemented. (Make sure name parameter matches view's name)
+
+    # Home Page
+    path('', views.index, name='index'),
+    #path('register/', views.register, name='register'),
+    #path('login/', views.login, name='login'),
+    #path('about/', views.about, name='about'),
+    #path('contactUs/', views.contactUs, name='contactUs')
+
 ]
