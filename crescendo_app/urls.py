@@ -1,4 +1,4 @@
-"""crescendo URL Configuration
+"""tango_with_django_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -13,12 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
-from django.urls import include
 from crescendo_app import views
 
+app_name = 'crescendo'
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('crescendo/', include(crescendo_app.urls))
+    # Add URL Paths, Uncomment as Views and Templates are implemented. (Make sure name parameter matches view's name)
+
+    # Home Page
+    path('', views.index, name='index'),
+    #path('register/', views.register, name='register'),
+    #path('login/', views.login, name='login'),
+    #path('about/', views.about, name='about'),
+    #path('contactUs/', views.contactUs, name='contactUs')
+
 ]
