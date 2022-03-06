@@ -13,11 +13,21 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+<<<<<<< HEAD
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 
+=======
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates') 
+STATIC_DIR = os.path.join(BASE_DIR, 'static') 
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+  
+   
+STATICFILES_DIRS = [STATIC_DIR, ]
+>>>>>>> 33f26afbba56db42ea3eb08f8cbdf548d0a3d71a
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -139,6 +149,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
@@ -146,3 +157,14 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+=======
+STATIC_URL = '/static/' 
+ 
+STATICFILES_DIRS = [STATIC_DIR, ]
+ 
+
+# media files 
+
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/' 
+>>>>>>> 33f26afbba56db42ea3eb08f8cbdf548d0a3d71a
