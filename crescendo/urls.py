@@ -20,5 +20,6 @@ from crescendo_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('crescendo/', include('crescendo_app.urls'))
+    path('crescendo/', include('crescendo_app.urls')),
+    path('accounts/', include('registration.backends.simple.urls'))
 ]

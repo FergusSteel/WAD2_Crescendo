@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from crescendo_app import views
 
@@ -23,9 +25,9 @@ urlpatterns = [
 
     # Home Page
     path('', views.index, name='index'),
-    #path('register/', views.register, name='register'),
-    #path('login/', views.login, name='login'),
     #path('about/', views.about, name='about'),
     #path('contactUs/', views.contactUs, name='contactUs')
+    path('playlist/', views.playlist, name = 'playlist'),
+    path('song/', views.song, name = 'song')
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
