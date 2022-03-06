@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Crescendo</title>
-    </head>
-    <body>
+{% extends 'crescendo/base.html' %}
+
+{% load static %}
+{% block title %}
+    Crescendo
+{% endblock %}
+    {% block body_block %}
         <h1>Welcome to Crescendo</h1>
         <div>
-            hey there! <br />
+            hey there! <br/>
             <strong>{{ boldmessage }}</strong><br />
         </div>
-        <div>
-            <a href="/crescendo/register">Register</a><br />
-            <a href="/crescendo/login">Login</a><br />
-            <a href="/crescendo/about">About</a><br />
-            <a href="/crescendo/contact_us">Contact Us</a><br />
-            <a href="/crescendo/song_catalogue">Song Catalogue</a><br />
-            <a href="/crescendo/playlist_catalogue">Playlist Catalogue</a><br />
-        </div>
-    </body>
-</html>
+
+    {% endblock %}
