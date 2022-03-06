@@ -1,7 +1,8 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,78 +11,78 @@
     <!-- Bootstrap -->
     <link href="{% static 'bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-  <style>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <style>
+        .navbar {
+            background-color: #d6e9c6;
+        }
+    </style>
 
-      .navbar{
-          background-color: #d6e9c6;
-      }
-  </style>
-
-    <![endif]-->
     {% block css %}{% endblock %}
-  </head>
-  <body>
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
 
-      <a class="navbar-brand" href="{% url 'crescendo:index' %}">Crescendo</a>
-    </div>
-      <ul class="nav navbar-nav">
-        <li class="nav-item"><a href="{% url 'crescendo:index' %}">Home</a></li>
-        <li class="nav-item"><a href="{% url 'crescendo:playlist' %}">PlayList</a></li>
-        <li class="nav-item"><a href="{% url 'crescendo:song' %}">Song</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'crescendo:index' %}">Crescendo</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a href="{% url 'crescendo:index' %}">Home</a></li>
+                <li class="nav-item"><a href="{% url 'crescendo:playlist' %}">PlayList</a></li>
+                <li class="nav-item"><a href="{% url 'crescendo:song' %}">Song</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
                 <li class="dropdown">
                     <a href="{% url 'crescendo:userprofile' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                <li><a href="{% url 'crescendo:userprofile' %}">User profile</a></li>
-                <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
-                <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
+                        <li><a href="{% url 'crescendo:userprofile' %}">User profile</a></li>
+                        <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
+                        <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
                     </ul>
                 </li>
                 <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
-              {% else %}
-                  <li><a href="{% url 'auth_login' %}">Log In</a></li>
-                  <li><a href="{% url 'registration_register' %}">Register</a></li>
-              {% endif %}
-      </ul>
-      <form class="navbar-form navbar-collapse">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+                {% else %}
+                <li><a href="{% url 'auth_login' %}">Log In</a></li>
+                <li><a href="{% url 'registration_register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+            <form class="navbar-form navbar-collapse">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <footer class="footer navbar-fixed-bottom">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a href="{% url 'crescendo:index' %}">FAQ</a></li>
+                    <li class="nav-item"><a href="{% url 'crescendo:playlist' %}">About Us</a></li>
+                    <li class="nav-item"><a href="{% url 'crescendo:song' %}">Contact Us</a></li>
+                </ul>
+            </footer>
+
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-    <footer class="footer navbar-fixed-bottom">
-          <ul class="nav navbar-nav">
-        <li class="nav-item"><a href="{% url 'crescendo:index' %}">FAQ</a></li>
-        <li class="nav-item"><a href="{% url 'crescendo:playlist' %}">About Us</a></li>
-        <li class="nav-item"><a href="{% url 'crescendo:song' %}">Contact Us</a></li>
-      </ul>
-    </footer>
+        <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
 
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-
-</nav>
-{% block body_block %}
-
-{% endblock %}
+    </nav>
+    {% block body_block %} {% endblock %}
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static 'JS/jquery-3.2.1/jquery-3.2.1.js' %}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static 'bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
-  </body>
+</body>
+
 </html>
