@@ -194,18 +194,18 @@ def populate():
     for playlist in playlists:    
         comments = playlist['comments']   
         genre = [genresForLaterUsage[genre] for genre in playlist['genres']] 
-        playlistObject = add_playlist(playlist['name'] , genre,usersForLaterUsage[playlist['author']][0], playlist['views'],playlist['numberOfComments'],playlist['description'],playlist['image'])  
+        playlistObject = add_playlist(playlist['name'] , genre,usersForLaterUsage[playlist['author']][1], playlist['views'],playlist['numberOfComments'],playlist['description'],playlist['image'])  
         playlistsForLaterUsage[playlist['name']] = playlistObject 
         for comment in comments: 
-            commentObject = add_playlist_comment(playlistObject,usersForLaterUsage[comment['author']][0],comment["comment"],comment["rating"])
+            commentObject = add_playlist_comment(playlistObject,usersForLaterUsage[comment['author']][1],comment["comment"],comment["rating"])
           
     for song in songs: 
         comments = song['comments']  
         genre = [genresForLaterUsage[genre] for genre in song['genres']] 
         playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
-        songObject = add_song(song["name"], genre , usersForLaterUsage[song['author']][0],song['artist'],song['numberOfComments'],song["actualSong"] , playlist)  
+        songObject = add_song(song["name"], genre , usersForLaterUsage[song['author']][1],song['artist'],song['numberOfComments'],song["actualSong"] , playlist)  
         for comment in comments: 
-            commentObject = add_song_comment(songObject,usersForLaterUsage[comment['author']][0],comment["comment"],comment["rating"])
+            commentObject = add_song_comment(songObject,usersForLaterUsage[comment['author']][1],comment["comment"],comment["rating"])
     
 
 def add_user(name , image):  
