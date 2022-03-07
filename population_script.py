@@ -1,4 +1,3 @@
- 
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE','crescendo.settings') 
  
@@ -7,20 +6,25 @@ django.setup()
 
 from crescendo_app.models import User,UserProfile,Genre,Song,SongComment,Playlist,PlaylistComment 
 from django.db import models
-# actual function to populate 
+ 
    
 def populate():   
-     
-    if not os.path.exists('static'):
-        os.makedirs('static')
-        os.makedirs('static/playlist_images') 
-        os.makedirs('static/profile_images') 
-        os.makedires('static/song_images')
+       
+    # ensuring all necessary folders are within project directory
+    necessary_folders = ['media','media/playlist_images','media/profile_images','media/song_images'] 
+
+    for folder in necessary_folders:
+        if not os.path.exists(folder): 
+            os.makedirs(folder)
+    
      
     users = [ 
-        {"name" : "James"},
-        {"name" : "Michal"},
-        {"name" : "Henry"}
+        {"name" : "Greg", 
+        "image" : "population_script_images/greg.png"},
+        {"name" : "Sarah", 
+        "image" : "population_script_images/sarah.png"},
+        {"name" : "Craig", 
+        "image" : "population_script_images/craig.png"}
     ]  
      
     genres = [ 
@@ -31,11 +35,12 @@ def populate():
         "Indie", 
         "Alternative Rock", 
         "Pop", 
-        "Rap",
+        "Rap", 
+        "Emo",
     ] 
      
     playlists = [
-        {"author":"James", 
+        {"author":"Greg", 
         "name" : "Playlist 1", 
         "views" : 20, 
         "numberOfComments" : 3, 
@@ -44,17 +49,17 @@ def populate():
         "image":None, 
         "comments" : [{"comment" : "Great collection of songs", 
                 "rating" : 4, 
-                "author" : "Henry"} , 
+                "author" : "Sarah"} , 
                 {"comment" : "Could be better", 
                 "rating":3, 
-                "author":"James" 
+                "author":"Greg" 
                 }, 
                 {"comment":"Very upbeat and nice to listen to", 
                 "rating":4, 
-                "author":"Michal"} 
+                "author":"Craig"} 
                 ]
         },  
-        {"author":"James", 
+        {"author":"Greg", 
         "name" : "Playlist 2", 
         "views" : 120, 
         "numberOfComments" : 3,  
@@ -64,17 +69,17 @@ def populate():
         "comments":[
                 {"comment" : "Plain collection of songs", 
                 "rating" : 2, 
-                "author" : "Henry"} , 
+                "author" : "Sarah"} , 
                 {"comment" : "Could be better, better luck next time", 
                 "rating":3, 
-                "author" : "James" 
+                "author" : "Greg" 
                 }, 
                 {"comment":".....", 
                 "rating":4, 
-                "author" : "Michal"}
+                "author" : "Craig"}
                 ] 
         }, 
-        {"author":"Henry", 
+        {"author":"Sarah", 
         "name" : "Playlist 3", 
         "views" : 1, 
         "numberOfComments" : 1, 
@@ -84,10 +89,10 @@ def populate():
         "comments": [
                 {"comment" : "Great collection of songs", 
                 "rating" : 4, 
-                "author" : "Henry"} , 
+                "author" : "Sarah"} , 
                 ] 
         },  
-        {"author":"Michal", 
+        {"author":"Craig", 
         "name" : "Playlist 1", 
         "views" : 500, 
         "numberOfComments" : 2, 
@@ -97,13 +102,13 @@ def populate():
         "comments": [
                 {"comment" : "All time favourite", 
                 "rating" : 4, 
-                "author" : "Henry"} ,  
+                "author" : "Sarah"} ,  
                 {"comment":"Very upbeat and nice to listen to", 
                 "rating":4, 
-                "author" : "James"}
+                "author" : "Greg"}
                 ] 
         }, 
-        {"author":"Henry", 
+        {"author":"Sarah", 
         "name" : "Playlist 5", 
         "views" : 1000, 
         "numberOfComments" : 2, 
@@ -113,10 +118,10 @@ def populate():
         "comments" : [
                 {"comment" : "Great collection of songs", 
                 "rating" : 4, 
-                "author" : "Henry"} , 
+                "author" : "Sarah"} , 
                 {"comment" : "Could be better", 
                 "rating":3, 
-                "author" : "James", 
+                "author" : "Greg", 
                 }
                 ]
         } 
@@ -125,47 +130,50 @@ def populate():
      
     songs = [ 
         {
-            "author":"Henry", 
+            "author":"Sarah", 
             "genres":["Indie"], 
             "name" : "Fields of Gold", 
             "artist" : "String", 
             "numberOfComments" : 1, 
             "image" : None, 
-            "lyrics" : None, 
+            "lyrics" : None,  
+            "playlists":["Playlist 1","Playlist 2"],
             "actualSong" : "population_script_music/sound1.mp3", 
-            "comments" : [{"author" : "James", 
+            "comments" : [{"author" : "Greg", 
                             "rating":5, 
                             "comment" : "Great" } ]
         }, 
         {
-            "author":"James", 
+            "author":"Greg", 
             "genres":["Indie","Rap","Mellow"], 
             "name" : "Gold", 
             "artist" : "Anonymous Artist", 
             "numberOfComments" : 1, 
-            "image" : None, 
+            "image" : None,  
+            "playlists" : ["Playlist 1" , "Playlist 3"],
             "lyrics" : None, 
             "actualSong" : "population_script_music/sound2.mp3" ,
-            "comments" : [{"author" : "Henry", 
+            "comments" : [{"author" : "Sarah", 
                             "rating":2, 
                             "comment" : "mid"}]
         }, 
         {
-            "author":"Michal", 
+            "author":"Craig", 
             "genres":["Upbeat","Rock"], 
             "name" : "SIU", 
             "artist" : "Anonymous Artist", 
             "numberOfComments" : 3, 
             "image" : None, 
-            "lyrics" : None, 
+            "lyrics" : None,  
+            "playlists" : [],
             "actualSong" : "population_script_music/sound3.mp3" ,
-            "comments" : [{"author" : "Henry", 
+            "comments" : [{"author" : "Sarah", 
                             "rating":2, 
                             "comment" : "mid",},
-                            {"author" : "James", 
+                            {"author" : "Greg", 
                             "rating":5, 
                             "comment" : "Great" },  
-                            {"author" : "Michal", 
+                            {"author" : "Craig", 
                             "rating":5, 
                             "comment" : "My favourite"}]
         }
@@ -174,38 +182,39 @@ def populate():
       
     usersForLaterUsage = {}
     for userDict in users:   
-        userProfileObject, userObject = add_user(userDict['name']) 
-        usersForLaterUsage[userDict['name']] =  userObject  
+        userObject,userProfileObject = add_user(userDict['name'] , userDict['image']) 
+        usersForLaterUsage[userDict['name']] =  (userObject,userProfileObject)  
          
     genresForLaterUsage = {}  
     for genre in genres: 
         genreObject = add_genre(genre) 
         genresForLaterUsage[genre] = genreObject 
-         
-    for playlist in playlists:   
-        comments = playlist['comments']
-        genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
-        playlistObject = add_playlist(playlist['name'] , genre,usersForLaterUsage[playlist['author']], playlist['views'],playlist['numberOfComments'],playlist['description'],playlist['image'])  
+          
+    playlistsForLaterUsage = {}
+    for playlist in playlists:    
+        comments = playlist['comments']   
+        genre = [genresForLaterUsage[genre] for genre in playlist['genres']] 
+        playlistObject = add_playlist(playlist['name'] , genre,usersForLaterUsage[playlist['author']][0], playlist['views'],playlist['numberOfComments'],playlist['description'],playlist['image'])  
+        playlistsForLaterUsage[playlist['name']] = playlistObject 
         for comment in comments: 
-            commentObject = add_playlist_comment(playlistObject,usersForLaterUsage[comment['author']],comment["comment"],comment["rating"])
-         
+            commentObject = add_playlist_comment(playlistObject,usersForLaterUsage[comment['author']][0],comment["comment"],comment["rating"])
+          
     for song in songs: 
         comments = song['comments']  
-        genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
-        songObject = add_song(song["name"], genre , usersForLaterUsage[song['author']],song['artist'],song['numberOfComments'],song["actualSong"])  
+        genre = [genresForLaterUsage[genre] for genre in song['genres']] 
+        playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
+        songObject = add_song(song["name"], genre , usersForLaterUsage[song['author']][0],song['artist'],song['numberOfComments'],song["actualSong"] , playlist)  
         for comment in comments: 
-            commentObject = add_song_comment(songObject,usersForLaterUsage[comment['author']],comment["comment"],comment["rating"])
-
- 
+            commentObject = add_song_comment(songObject,usersForLaterUsage[comment['author']][0],comment["comment"],comment["rating"])
     
-  
-   
 
-def add_user(name):  
-    userObject , _ = User.objects.get_or_create(username = name) 
+def add_user(name , image):  
+    userObject , _ = User.objects.get_or_create(username = name)   
+    userObject.save()
+    userObject,_ = UserProfile.objects.get_or_create(user = userObject , image = image)
     userObject.save()  
-     
-    return UserProfile.objects.get_or_create(user = userObject)[0] , User.objects.get(username = name)
+
+    return User.objects.get(username = name) , userObject
    
 def add_genre(name): 
     genreObject , _ = Genre.objects.get_or_create(name = name) 
@@ -231,9 +240,10 @@ def add_song_comment(song,author,comment,rating):
     commentObject.save()
     return commentObject 
      
-def add_song(name , genreList , author , artist , numberOfComments, song, lyrics = None,image = None ):  
+def add_song(name , genreList , author , artist , numberOfComments, song, playlists, lyrics = None,image = None ):  
     songObject,_ = Song.objects.get_or_create(name = name, author = author ,artist = artist, numberOfComments = numberOfComments,actualSong = song) 
-    songObject.genre.add(*genreList)
+    songObject.genre.add(*genreList) 
+    songObject.playlist.add(*playlists)
     songObject.save() 
      
     return songObject 
