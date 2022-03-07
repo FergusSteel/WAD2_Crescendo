@@ -25,8 +25,9 @@ urlpatterns = [
 
     # Home Page
     path('', views.index, name='index'),
-    #path('about/', views.about, name='about'),
-    #path('contactUs/', views.contactUs, name='contactUs')
+    path('about/', views.about, name='about'),
+    path('contactUs/', views.contactUs, name='contactUs'),
+    path('faq', views.faq, name = 'faq'),
     path('userprofile', views.userProfile, name = 'userprofile'),
     path('playlist/', views.playlist, name = 'playlist'),
     path('song/', views.song, name = 'song')
