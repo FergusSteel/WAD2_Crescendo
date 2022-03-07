@@ -216,7 +216,7 @@ def add_user(name , image):
 
     return User.objects.get(username = name) , userObject
    
-def add_genre(name): 
+def add_genre(name):  
     genreObject , _ = Genre.objects.get_or_create(name = name) 
     genreObject.save() 
      

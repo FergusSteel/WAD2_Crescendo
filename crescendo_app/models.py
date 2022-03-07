@@ -1,9 +1,9 @@
+# IMPORTS 
 from django.db import models
-from django.contrib.auth.models import User
-
-# Create your models here.
-from crescendo.settings import STATIC_DIR
-
+from django.contrib.auth.models import User 
+from django.template.defaultfilters import slugify  
+ 
+# MODEL TESTS 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -13,15 +13,26 @@ class UserProfile(models.Model):
     image = models.ImageField(upload_to="profile_images", default = 'profile_images/default.jpg')
 
     def __str__(self):
-        return self.user.username
+        return self.user.username 
+         
+    def save(self, *args, **kwargs):    
+        if (self.numberOfComments < 0 or self.numberOfProfileViews < 0):
+            self.numberOfComments = 0 
+            self.numberOfProfileViews = 0
+        super(UserProfile, self).save(*args, **kwargs)
 
 
 class Genre(models.Model):
-    name = models.CharField(unique=True, max_length=30)
+    name = models.CharField(unique=True, max_length=30) 
+    nameAsSlug = models.SlugField(unique = True)
 
     def __str__(self):
-        return self.name
-
+        return self.name  
+         
+    def save(self, *args , **kwargs): 
+        self.nameAsSlug = slugify(self.name) 
+        super(Genre , self).save(*args , **kwargs)
+    
 
 class Playlist(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -56,7 +67,8 @@ class Song(models.Model):
     def __str__(self):
         return self.name
 
-
+ 
+# Both song and playlist comment classes inherit from the comment class, due to shared attributes
 class SongComment(Comment):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
