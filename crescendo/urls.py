@@ -19,6 +19,7 @@ from django.urls import include
 from crescendo_app import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('crescendo/', include('crescendo_app.urls')),
     path('accounts/', include('registration.backends.simple.urls'))

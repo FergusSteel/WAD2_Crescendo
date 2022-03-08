@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -7,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from crescendo_app import models
+from crescendo_app.models import Playlist, Song
 
 
 def index(request):
@@ -17,9 +20,11 @@ def about(request):
     context_dict = {}
     return render(request, 'crescendo/about.html', context=context_dict)
 
+
 def faq(request):
     context_dict = {}
     return render(request, 'crescendo/faq.html', context=context_dict)
+
 
 def contactUs(request):
     context_dict = {}
@@ -36,3 +41,19 @@ def song(request):
 
 def userProfile(request):
     pass
+
+
+def search(request):
+    results_playlist = []
+    results_song = []
+    q = request.GET.get('q')
+    error_msg = ''
+
+    if not q:
+        error_msg = "Please entry the other key words!"
+        return render(request, 'crescendo/result.html', {'error_msg': error_msg})
+
+    results_playlist = results_playlist + list(Playlist.objects.filter(title__icontains=q))
+    results_song = results_song + list(Playlist.objects.filter(title__icontains=q))
+    results = chain(results_playlist, results_song)
+    return render(request, 'crescendo/result.html', {'error_msg': error_msg, 'results': results})

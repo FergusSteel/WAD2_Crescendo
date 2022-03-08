@@ -21,15 +21,16 @@ from crescendo_app import views
 app_name = 'crescendo'
 
 urlpatterns = [
-    # Add URL Paths, Uncomment as Views and Templates are implemented. (Make sure name parameter matches view's name)
+                  # Add URL Paths, Uncomment as Views and Templates are implemented. (Make sure name parameter
+                  # matches view's name)
 
-    # Home Page
-    path('', views.index, name='index'),
-    path('about/', views.about, name='about'),
-    path('contactUs/', views.contactUs, name='contactUs'),
-    path('faq', views.faq, name = 'faq'),
-    path('userprofile', views.userProfile, name = 'userprofile'),
-    path('playlist/', views.playlist, name = 'playlist'),
-    path('song/', views.song, name = 'song')
-
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  # Home Page
+                  path('', views.index, name='index'),
+                  path('about/', views.about, name='about'),
+                  path('contactUs/', views.contactUs, name='contactUs'),
+                  path('faq', views.faq, name='faq'),
+                  path('userprofile', views.userProfile, name='userprofile'),
+                  path('playlist/', views.playlist, name='playlist'),
+                  path('song/', views.song, name='song'),
+                  path('search/', views.search, name='search'),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
