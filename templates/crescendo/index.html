@@ -4,11 +4,48 @@
 {% block title %}
     Crescendo
 {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
+    <script src="{% static '/JS/sidescroller.js' %}"></script>
+{% endblock %}
+    
+
+
     {% block body_block %}
         <h1>Welcome to Crescendo</h1>
         <div>
             hey there! <br/>
             <strong>{{ boldmessage }}</strong><br />
         </div>
+
+        <div class="menu-wrapper">
+            <ul class="menu">
+              <li class="item">1</li>
+              <li class="item">2</li>
+              <li class="item">3</li>
+              <li class="item">4</li>
+              <li class="item">5</li>
+              <li class="item">6</li>
+              <li class="item">7</li>
+              <li class="item">8</li>
+              <li class="item">9</li>
+              <li class="item">10</li>
+              <li class="item">11</li>
+              <li class="item">12</li>
+              <li class="item">13</li>
+            </ul>
+          
+            <div class="paddles">
+              <button class="left-paddle paddle hidden"/>
+                
+                  <button class="right-paddle paddle">
+
+                  </button>
+            </div>
+          
+          </div>
+          
+          
 
     {% endblock %}
