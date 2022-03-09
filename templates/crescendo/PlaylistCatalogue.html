@@ -1,0 +1,18 @@
+{% extends 'crescendo/base.html' %}
+
+{% load static %}
+{% block title %}
+    Crescendo
+{% endblock %}
+    {% block body_block %}
+    <ul>
+      {% if playlists %}
+        {% for playlist in playlists %}
+          <li>{{ playlist.name }}</li>
+        {% endfor %}
+
+      {% else %}
+        <li><strong>No playlists found.</strong></li>
+      {% endif %}
+    </ul>
+    {% endblock %}

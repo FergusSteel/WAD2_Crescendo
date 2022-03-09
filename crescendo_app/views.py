@@ -60,3 +60,10 @@ def search(request):
     results_song = results_song + list(Playlist.objects.filter(title__icontains=q))
     results = chain(results_playlist, results_song)
     return render(request, 'crescendo/result.html', {'error_msg': error_msg, 'results': results})
+
+# Playlists and Songs
+def PlaylistCatalogue(request):
+    context_dict = {}
+    context_dict['playlists'] = Playlist.objects.order_by()
+    context_dict['songs'] = Song.objects.order_by()
+    return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
