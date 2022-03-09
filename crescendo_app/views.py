@@ -13,7 +13,9 @@ from crescendo_app.models import Playlist, Song
 
 
 def index(request):
-    context_dict = {"boldmessage":"Test Message"}
+    context_dict = {}
+    context_dict['playlists'] = Playlist.objects
+    context_dict['songs'] = Song.objects
     return render(request, 'crescendo/index.html', context=context_dict)
 
 
