@@ -1,16 +1,7 @@
-body {
-    margin: 3em;
-}
-
-* {
-    padding: 0;
-    margin: 0;
-}
-
 .menu-wrapper {
     position: relative;
     max-width: 90%;
-    height: 100px;
+    height: 200px;
     width : 90%;
     margin: 1em auto;
     border: none;
@@ -19,12 +10,12 @@ body {
 }
 
 .menu   {
-    height: 120px;
+    height: 150px;
     background: #f3f3f300;
     box-sizing: border-box;
     
     white-space: nowrap;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
     }
     
@@ -32,19 +23,27 @@ body {
         display: inline-block;
         width: 100px;
         height: 100%;
-        outline: 1px dotted gray;
         padding: 1em;
-        box-sizing: border-box;
+        box-sizing: content-box;
     }
 
-
-.paddles {
+        .playlistImages {
+            object-fit: contain;
+            max-width: 100%;
+            max-height: 100%
+        }
+.playlistName {
+    margin: auto;
+    width: 50%;
 }
+
+
 .paddle {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 3em;
+    background-color: #d6e9c6;
 }
 .left-paddle {
     left: 0;

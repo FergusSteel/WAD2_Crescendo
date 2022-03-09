@@ -25,23 +25,11 @@
                 {% for playlist in playlists %}
                     <li class="item">
                         <a href="{{ playlist.nameAsSlug }} link">
-                            <img src="{{ playlist.image.url }}">
-                        </a>
+                            <img class="playlistImages" src="{{ playlist.image.url }}">
+                        </a> <br />
+                        <p class="playlistName">{{ playlist.name }}</p>
                     </li>
                 {% endfor %}
-              <li class="item">1</li>
-              <li class="item">2</li>
-              <li class="item">3</li>
-              <li class="item">4</li>
-              <li class="item">5</li>
-              <li class="item">6</li>
-              <li class="item">7</li>
-              <li class="item">8</li>
-              <li class="item">9</li>
-              <li class="item">10</li>
-              <li class="item">11</li>
-              <li class="item">12</li>
-              <li class="item">13</li>
             </ul>
           
             <div class="paddles">
