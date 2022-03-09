@@ -13,7 +13,8 @@ from crescendo_app.models import Playlist, Song
 
 
 def index(request):
-    return render(request, 'crescendo/index.html')
+    context_dict = {"boldmessage":"Test Message"}
+    return render(request, 'crescendo/index.html', context=context_dict)
 
 
 def about(request):
