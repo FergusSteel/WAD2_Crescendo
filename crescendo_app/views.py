@@ -43,13 +43,23 @@ def show_playlist(request, playlist_slug):
         context_dict['playlist'] = playlist
 
     except Playlist.DoesNotExist:
-        context_dict['playlists'] = None
+        context_dict['playlist'] = None
 
     return render(request, 'crescendo/playlist.html', context=context_dict)
 
 
-def song(request):
-    pass
+def show_song(request, song_slug):
+    context_dict = {}
+
+    try:
+        song = Song.objects.get(nameAsSlug=song_slug)
+
+        context_dict['song'] = song
+
+    except Song.DoesNotExist:
+        context_dict['song'] = None
+
+    return render(request, 'crescendo/song.html', context=context_dict)
 
 
 def userProfile(request):
