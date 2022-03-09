@@ -47,7 +47,10 @@ $(document).ready(function() {
 
     // show & hide the paddles 
     // depending on scroll position
-    if (menuPosition <= paddleMargin) {
+    if (menuInvisibleSize <= 0) {
+        $(leftPaddle).removeClass('hidden');
+        $(rightPaddle).removeClass('hidden');
+    }else if (menuPosition <= paddleMargin) {
         $(leftPaddle).addClass('hidden');
         $(rightPaddle).removeClass('hidden');
     } else if (menuPosition < menuEndOffset) {
@@ -59,18 +62,12 @@ $(document).ready(function() {
         $(rightPaddle).addClass('hidden');
     }
 
-    // print important values
-    $('#print-wrapper-size span').text(menuWrapperSize);
-    $('#print-menu-size span').text(menuSize);
-    $('#print-menu-invisible-size span').text(menuInvisibleSize);
-    $('#print-menu-position span').text(menuPosition);
-
     });
 
     // scroll to left
     $(rightPaddle).on('click', function() {
     $('.menu').animate({
-        scrollLeft: getMenuPosition() + 100
+        scrollLeft: getMenuPosition() + 400
     }, scrollDuration);
     });
 
@@ -78,7 +75,7 @@ $(document).ready(function() {
     $(leftPaddle).on('click', function() {
 
     $('.menu').animate({
-        scrollLeft: getMenuPosition() - 100
+        scrollLeft: getMenuPosition() - 400
     }, scrollDuration);
     });
 });
