@@ -1,0 +1,13 @@
+{% extends 'crescendo/base.html' %}
+
+{% load static %}
+{% block title %}
+    {% if playlist %}
+      {{ playlist.name }}
+    {% else %}
+        Playlist Does Not Exist
+    {% endif %}
+{% endblock %}
+    {% block body_block %}
+    This is {{ playlist.name }}
+    {% endblock %}
