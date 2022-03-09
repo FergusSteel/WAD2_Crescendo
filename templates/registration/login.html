@@ -1,9 +1,16 @@
 {% extends 'crescendo/base.html' %}
 {% load static %}
+  
 
+ 
 
-{% block title_block %}
-	Login
+{% block title %}
+	Crescendo - Login
+{% endblock %} 
+  
+{% block css %}
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/login.css' %}" /> 
 {% endblock %}
 
 
@@ -19,7 +26,7 @@
               <h2 class="text-center">Log In Here</h2>
               <div class="form-group">
                   {{ form.username.label_tag }}
-                  {{ form.username}}
+                  {{ form.username }}
               </div>
               <div class="form-group">
                   {{ form.password.label_tag}}:
