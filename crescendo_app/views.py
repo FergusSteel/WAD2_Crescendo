@@ -14,8 +14,8 @@ from crescendo_app.models import Playlist, Song
 
 def index(request):
     context_dict = {}
-    context_dict['playlists'] = Playlist.objects
-    context_dict['songs'] = Song.objects
+    context_dict['playlists'] = Playlist.objects.all()
+    context_dict['songs'] = Song.objects.all()
     return render(request, 'crescendo/index.html', context=context_dict)
 
 

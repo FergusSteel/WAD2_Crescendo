@@ -18,9 +18,17 @@
             hey there! <br/>
             <strong>{{ boldmessage }}</strong><br />
         </div>
-
+        <h2 id="playlist title">Popular Playlists</h2>
         <div class="menu-wrapper">
             <ul class="menu">
+
+                {% for playlist in playlists %}
+                    <li class="item">
+                        <a href="{{ playlist.nameAsSlug }} link">
+                            <img src="{{ playlist.image.url }}">
+                        </a>
+                    </li>
+                {% endfor %}
               <li class="item">1</li>
               <li class="item">2</li>
               <li class="item">3</li>
