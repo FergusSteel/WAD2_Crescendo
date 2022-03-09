@@ -65,5 +65,9 @@ def search(request):
 def PlaylistCatalogue(request):
     context_dict = {}
     context_dict['playlists'] = Playlist.objects.order_by()
-    context_dict['songs'] = Song.objects.order_by()
     return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
+
+def SongCatalogue(request):
+    context_dict = {}
+    context_dict['songs'] = Song.objects.order_by()
+    return render(request, 'crescendo/SongCatalogue.html', context=context_dict)

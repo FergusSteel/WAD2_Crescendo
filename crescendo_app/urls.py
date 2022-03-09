@@ -32,6 +32,7 @@ urlpatterns = [
                   path('userprofile', views.userProfile, name='userprofile'),
                   path('playlist', views.playlist, name='playlist'),
                   path('PlaylistCatalogue/', views.PlaylistCatalogue, name='PlaylistCatalogue'),
+                  path('SongCatalogue/', views.SongCatalogue, name='SongCatalogue'),
                   path('song/', views.song, name='song'),
                   path('search/', views.search, name='search'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
