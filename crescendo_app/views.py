@@ -34,8 +34,18 @@ def contactUs(request):
     return render(request, 'crescendo/contactUs.html', context=context_dict)
 
 
-def playlist(request):
-    pass
+def show_playlist(request, playlist_slug):
+    context_dict = {}
+
+    try:
+        playlist = Playlist.objects.get(nameAsSlug=playlist_slug)
+
+        context_dict['playlist'] = playlist
+
+    except Playlist.DoesNotExist:
+        context_dict['playlists'] = None
+
+    return render(request, 'crescendo/playlist.html', context=context_dict)
 
 
 def song(request):
