@@ -12,8 +12,13 @@
     <link href="{% static 'bootstrap-3.4.1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script> 
-      
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'JS/jquery-3.2.1/jquery-3.2.1.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="{% static '/styles/base.css' %}" />
 
@@ -73,11 +78,6 @@
     </nav>
     {% block body_block %} {% endblock %}
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{% static 'JS/jquery-3.2.1/jquery-3.2.1.js' %}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>
