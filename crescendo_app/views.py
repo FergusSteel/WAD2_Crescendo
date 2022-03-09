@@ -34,11 +34,11 @@ def contactUs(request):
     return render(request, 'crescendo/contactUs.html', context=context_dict)
 
 
-def show_playlist(request, playlist_slug):
+def show_playlist(request, playlist_slug, playlist_id):
     context_dict = {}
 
     try:
-        playlist = Playlist.objects.get(nameAsSlug=playlist_slug)
+        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
 
         context_dict['playlist'] = playlist
 
@@ -48,11 +48,11 @@ def show_playlist(request, playlist_slug):
     return render(request, 'crescendo/playlist.html', context=context_dict)
 
 
-def show_song(request, song_slug):
+def show_song(request, song_slug, song_id):
     context_dict = {}
 
     try:
-        song = Song.objects.get(nameAsSlug=song_slug)
+        song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
 
         context_dict['song'] = song
 
