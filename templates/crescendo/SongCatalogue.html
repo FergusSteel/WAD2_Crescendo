@@ -4,15 +4,25 @@
 {% block title %}
     Crescendo
 {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
+{% endblock %}
+
     {% block body_block %}
-    <ul>
+    <h1><strong>Songs</strong></h1>
+    <div class="grid">
       {% if songs %}
         {% for song in songs %}
-          <li><strong><a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">{{ song.name }}</strong></li>
+          <div class="block">
+            <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
+              <img src="{{ song.image.url }}"><br>
+              <strong>{{ song.name }}</strong>
+            </a>
+          </div>
         {% endfor %}
 
       {% else %}
         <li><strong>No songs found.</strong></li>
       {% endif %}
-    </ul>
     {% endblock %}

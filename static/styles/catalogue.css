@@ -5,9 +5,7 @@
 }
 
 .block {
-  padding-left: 5%;
-  padding-right: 5%;
-  padding-bottom: 25px;
+  padding: 25px;
   font-size: 30px;
   text-align: center;
 }
@@ -18,4 +16,6 @@ h1 {
 
 .block img {
   padding-bottom: 25px;
+  height: 400px;
+  width: 400px;
 }

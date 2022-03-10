@@ -15,7 +15,7 @@
         {% for playlist in playlists %}
         <div class="block">
             <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
-              <img class="playlistImages" src="{{ playlist.image.url }}"><br>
+              <img src="{{ playlist.image.url }}"><br>
               <strong>{{ playlist.name }}</strong>
             </a>
         </div>
