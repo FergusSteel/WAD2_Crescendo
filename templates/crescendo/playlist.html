@@ -9,5 +9,27 @@
     {% endif %}
 {% endblock %}
     {% block body_block %}
-    This is {{ playlist.name }}
+    {% if playlist %}
+      <div class="playlistSummary">
+        <h1>{{ playlist.name }}</h1><br>
+        <img src="{{ playlist.image.url }}"><br>
+        <p>{{ playlist.description }}</p><br>
+        Views: {{ playlist.views }}
+      </div>
+      <div class="playlistSongs">
+        {% if songs %}
+          {% for song in songs %}
+            <div class="songBlock">
+              <img src="{{ song.image.url }}">
+              <strong>{{ song.name }}</strong>
+            </div>
+            <br>
+          {% endfor %}
+        {% else %}
+          {{ playlist.name }} has no songs yet.
+        {% endif %}
+      </div>
+    {% else %}
+        Playlist Does Not Exist
+    {% endif %}
     {% endblock %}
