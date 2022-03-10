@@ -1,0 +1,22 @@
+/* CSS FOR SONG PAGE */
+.leftBar {
+  padding: 20px;
+}
+.songPlayer {
+  padding: 20px;
+  position: relative;
+}
+
+.songPlayer img {
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+}
+
+#topimage {
+  position: absolute;
+  z-index: 2;
+  opacity: 0.3;
+}

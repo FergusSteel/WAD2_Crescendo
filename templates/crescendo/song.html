@@ -8,6 +8,24 @@
         Song Does Not Exist
     {% endif %}
 {% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/styles/song.css' %}" />
+  <script src="{% static '/JS/player.js' %}"></script>
+{% endblock %}
+
     {% block body_block %}
-    This is {{ song.name }}
+      {% if song %}
+        <div class="leftBar">
+        <h1>{{ song.name }}</h1>
+        <div class="songPlayer">
+          <img src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
+          <img id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
+          <audio id="audiofile" src="{{ song.actualSong.url }}">
+          </audio>
+        </div>
+      </div>
+      {% else %}
+        This song does not exist.
+      {% endif %}]
     {% endblock %}
