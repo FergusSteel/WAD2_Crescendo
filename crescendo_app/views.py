@@ -61,6 +61,14 @@ def show_song(request, song_slug, song_id):
 
     try:
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
+        try:
+            comments = []
+            for comment in SongComment.objects.all():
+                if comment.song == song:
+                    comments.append(comment)
+            context_dict['comments'] = comments
+        except:
+            context_dict['comments'] = None
 
         context_dict['song'] = song
 

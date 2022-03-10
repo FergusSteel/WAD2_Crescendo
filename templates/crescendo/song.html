@@ -3,7 +3,7 @@
 {% load static %}
 {% block title %}
     {% if song %}
-      {{ song.name }}
+      Crescendo - {{ song.name }}
     {% else %}
         Song Does Not Exist
     {% endif %}
@@ -16,16 +16,35 @@
 
     {% block body_block %}
       {% if song %}
-        <div class="leftBar">
-        <h1>{{ song.name }}</h1>
-        <div class="songPlayer">
-          <img src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
-          <img id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
-          <audio id="audiofile" src="{{ song.actualSong.url }}">
-          </audio>
+          <div class="leftBar">
+            <h1>{{ song.name }} - {{ song.artist }}</h1>
+            <div class="songPlayer">
+              <img src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
+              <img id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
+              <audio id="audiofile" src="{{ song.actualSong.url }}"></audio>
+            </div>
+          </div>
+
+        <div class="rightBar">
+          <h2>Lyrics</h2>
+          <p>
+            {{ song.lyrics }}
+          </p>
         </div>
+
+      <div class="comments">
+        {% if comments %}
+          <h2>Comments</h2><br>
+          {% for userComment in comments %}
+            <div class="comment">
+            {{ userComment.author }} - <br>
+            {{ userComment.comment }} <br>
+            {{ userComment.rating }}
+          </div>
+          {% endfor %}
+        {% endif %}
       </div>
       {% else %}
         This song does not exist.
-      {% endif %}]
+      {% endif %}
     {% endblock %}

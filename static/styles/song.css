@@ -1,7 +1,21 @@
 /* CSS FOR SONG PAGE */
+
 .leftBar {
+  float: left;
   padding: 20px;
+  display: grid;
 }
+
+.rightBar{
+  float: right;
+  padding: 20px;
+  display: inline-grid;
+}
+
+.comments {
+  clear: both;
+}
+
 .songPlayer {
   padding: 20px;
   position: relative;
