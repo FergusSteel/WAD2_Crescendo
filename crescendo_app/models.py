@@ -43,7 +43,7 @@ class Playlist(models.Model):
     views = models.IntegerField(default=0)
     numberOfComments = models.IntegerField(default=0)
     description = models.CharField(max_length=300)
-    image = models.ImageField(upload_to="playlist_images", default='playlist_images/default.jpg')
+    image = models.ImageField(upload_to="playlist_images", default='playlist_images/default.png')
 
     def __str__(self):
         return self.name
