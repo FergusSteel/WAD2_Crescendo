@@ -8,6 +8,10 @@
         Playlist Does Not Exist
     {% endif %}
 {% endblock %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/playlist.css' %}" />
+{% endblock %}
+
     {% block body_block %}
     {% if playlist %}
       <div class="playlistSummary">
@@ -17,11 +21,17 @@
         Views: {{ playlist.views }}
       </div>
       <div class="playlistSongs">
+        <h1>Song List</h1>
         {% if songs %}
           {% for song in songs %}
             <div class="songBlock">
-              <img src="{{ song.image.url }}">
-              <strong>{{ song.name }}</strong>
+              <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
+                <img src="{{ song.image.url }}">
+                <p>
+                  <strong>{{ song.name }}</strong><br>
+                  aaaa
+                </p>
+              </a>
             </div>
             <br>
           {% endfor %}

@@ -40,7 +40,10 @@ def show_playlist(request, playlist_slug, playlist_id):
     try:
         playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
         try:
-            songs = Song.objects.get(playlist=playlist)
+            songs = []
+            for song in Song.objects.all():
+                if playlist in song.playlist.all():
+                    songs.append(song)
             context_dict['songs'] = songs
         except Song.DoesNotExist:
             context_dict['songs'] = None
