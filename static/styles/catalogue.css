@@ -1,0 +1,21 @@
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  row-gap: 25px;
+}
+
+.block {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 25px;
+  font-size: 30px;
+  text-align: center;
+}
+
+h1 {
+  padding: 20px;
+}
+
+.block img {
+  padding-bottom: 25px;
+}

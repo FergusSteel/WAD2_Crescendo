@@ -4,15 +4,24 @@
 {% block title %}
     Crescendo
 {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
+{% endblock %}
     {% block body_block %}
-    <ul>
+    <h1><strong>Playlists</strong></h1><br>
+    <div class="grid">
       {% if playlists %}
         {% for playlist in playlists %}
-          <li><strong><a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">{{ playlist.name }}</strong></li>
+        <div class="block">
+            <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
+              <img class="playlistImages" src="{{ playlist.image.url }}"><br>
+              <strong>{{ playlist.name }}</strong>
+            </a>
+        </div>
         {% endfor %}
 
       {% else %}
         <li><strong>No playlists found.</strong></li>
       {% endif %}
-    </ul>
     {% endblock %}
