@@ -33,8 +33,8 @@
         </div>
 
       <div class="comments">
+        <h2>Comments</h2><br>
         {% if comments %}
-          <h2>Comments</h2><br>
           {% for userComment in comments %}
             <div class="comment">
             {{ userComment.author }} - <br>
@@ -42,9 +42,14 @@
             {{ userComment.rating }}
           </div>
           {% endfor %}
+        {% else %}
+          No comments here! (Add one then link here)
         {% endif %}
       </div>
       {% else %}
         This song does not exist.
       {% endif %}
+      <!-- Listen don't worry about how unbelievable scuffed this implementation is, it works. --!>
+      <textarea id="var1" style="visibility:hidden; height:0; width:0;" >{% static '/pauseicon.png' %}</textarea>
+      <textarea id="var2" style="visibility:hidden; height:0; width:0;" >{% static '/playicon.png' %}</textarea>
     {% endblock %}
