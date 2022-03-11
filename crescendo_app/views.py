@@ -10,7 +10,8 @@ from django.urls import reverse
 
 from crescendo_app import models
 from crescendo_app.models import Playlist, Song
-
+from crescendo_app.form import PlaylistForm
+from django.shortcuts import redirect
 
 def index(request):
     context_dict = {}
@@ -107,3 +108,22 @@ def SongCatalogue(request):
     context_dict = {}
     context_dict['songs'] = Song.objects.order_by()
     return render(request, 'crescendo/SongCatalogue.html', context=context_dict)
+
+#Add playlist
+
+def add_playlist(request):
+    form=PlaylistForm()
+
+    if request.method=='POST':
+        form = PlaylistForm(request.POST)
+
+        if form.is_valid():
+        
+            form.save(commit=True)
+        
+            return redirect('/crescendo/')
+        else:
+        
+            print(form.errors)
+    
+    return render(request, 'crescendo/add_playlist.html', {'form': form})
