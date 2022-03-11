@@ -7,6 +7,7 @@
 
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
     <script src="{% static '/JS/sidescroller.js' %}"></script>
 {% endblock %}
     
@@ -42,6 +43,21 @@
           
           </div>
           
+    <h1>Popular Songs</h1><br>
+    <div class="grid">
+      {% if songs %}
+        {% for song in songs %}
+        <div class="block">
+            <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
+              <img src="{{ song.image.url }}"><br>
+              <strong>{{ song.name }}</strong>
+            </a>
+        </div>
+        {% endfor %}
+
+      {% else %}
+        <li><strong>No songs found.</strong></li>
+      {% endif %}
           
 
     {% endblock %}
