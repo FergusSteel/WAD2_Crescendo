@@ -6,7 +6,7 @@ import django
 
 django.setup()
 
-from crescendo_app.models import User, UserProfile, Genre, Song, SongComment, Playlist, PlaylistComment
+from crescendo_app.models import User, UserProfile, Genre, Song, SongComment, Playlist, PlaylistComment, Question
 from django.db import models
 
 
@@ -17,7 +17,15 @@ def populate():
     for folder in necessary_folders:
         if not os.path.exists(folder):
             os.makedirs(folder)
-
+ 
+    questions = [ 
+        {"question" : "What is this website for ?", 
+        "answer" : "Crescendo is a website used for music and playlist sharing, aimed mainly at independent artists looking to put their music out there"}, 
+        {"question" : "How to make an account?", 
+        "answer" : "Simply head over to crescedo/register to access our registration page , where you can make an account by providing a bunch of information"}, 
+        {"question" : "Can i publish music that I have not made?", 
+        "answer" : "Only if you have the legal ownership of the product"}
+    ]
     users = [
         {"name": "Greg",
          "image": "population_script_images/greg.png"},
@@ -210,7 +218,10 @@ def populate():
         for comment in comments:
             commentObject = add_song_comment(songObject, usersForLaterUsage[comment['author']][1], comment["comment"],
                                              comment["rating"])
-
+ 
+  
+    for question in questions: 
+        questionObject = add_question(question['question'],question['answer'])
 
 def add_user(name, image):
     userObject, _ = User.objects.get_or_create(username=name)
@@ -258,7 +269,11 @@ def add_song(name, genreList, author, artist, numberOfComments, song, playlists,
     songObject.save()
 
     return songObject
-
+ 
+def add_question(question , answer): 
+    questionObject , _ = Question.objects.get_or_create(question = question , answer = answer) 
+    questionObject.save() 
+    return questionObject
 
 if __name__ == "__main__":
     populate()
