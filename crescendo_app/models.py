@@ -98,3 +98,11 @@ class PlaylistComment(Comment):
 
     def __str__(self):
         return "Comment about a playlist with rating" + str(self.rating)
+ 
+  
+class Question(models.Model): 
+    question = models.CharField(max_length = 300)  
+    answer = models.CharField(max_length = 300) 
+     
+    def __str__(self): 
+        return "Question " + self.question

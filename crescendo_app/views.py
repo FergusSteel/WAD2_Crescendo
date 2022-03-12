@@ -1,4 +1,5 @@
 from itertools import chain
+from multiprocessing import context
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from crescendo_app import models
-from crescendo_app.models import Playlist, Song
+from crescendo_app.models import Playlist, Song, Question
 from crescendo_app.form import PlaylistForm
 from django.shortcuts import redirect
 
@@ -25,8 +26,9 @@ def about(request):
     return render(request, 'crescendo/about.html', context=context_dict)
 
 
-def faq(request):
+def faq(request):  
     context_dict = {}
+    context_dict['questions'] = Question.objects.all()
     return render(request, 'crescendo/faq.html', context=context_dict)
 
 
