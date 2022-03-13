@@ -48,7 +48,7 @@ class PlaylistMethodTests(TestCase):
         user.save()
         user_profile = UserProfile(user = user, numberOfProfileViews=-100)
         user_profile.save() 
-        playlist = Playlist(author = user_profile , name = "The best playlist" , views = -100 ) 
+        playlist = Playlist(author = user_profile , name = "The best crescendo_app" , views = -100 )
         playlist.save() 
 
         self.assertTrue((playlist.views >= 0), True) 
@@ -58,7 +58,7 @@ class PlaylistMethodTests(TestCase):
         user.save()
         user_profile = UserProfile(user = user, numberOfProfileViews=-100)
         user_profile.save()  
-        playlist = Playlist(author = user_profile,name  = "The second best playlist I guess" , numberOfComments = -100) 
+        playlist = Playlist(author = user_profile,name  = "The second best crescendo_app I guess" , numberOfComments = -100)
         playlist.save() 
 
         self.assertTrue((playlist.numberOfComments >= 0), True)  
@@ -68,17 +68,17 @@ class PlaylistMethodTests(TestCase):
         user.save()
         user_profile = UserProfile(user = user, numberOfProfileViews=-100)
         user_profile.save() 
-        playlist = Playlist(author = user_profile , name = "The best playlist" ) 
+        playlist = Playlist(author = user_profile , name = "The best crescendo_app" )
         playlist.save() 
 
-        self.assertEquals(playlist.nameAsSlug , 'the-best-playlist')  
+        self.assertEquals(playlist.nameAsSlug , 'the-best-crescendo_app')
          
     def test_ensure_there_is_a_default_image_for_playlist(self):  
         user = User(username = "Playlist Owner") 
         user.save()
         user_profile = UserProfile(user = user, numberOfProfileViews=-100)
         user_profile.save() 
-        playlist = Playlist(author = user_profile , name = "The best playlist") 
+        playlist = Playlist(author = user_profile , name = "The best crescendo_app")
         playlist.save()  
          
         self.assertTrue(playlist.image != None)
@@ -112,11 +112,11 @@ class SongMethodTests(TestCase):
     #     names = ["Playlist 1" , "Playlist 2 " , "Playlist 3" , "Playlist 4"]  
     #     playlists = {}
     #     for name in names: 
-    #         playlist = Playlist(author = user , name = name) 
-    #         playlist.save()  
+    #         crescendo_app = Playlist(author = user , name = name)
+    #         crescendo_app.save()
 
     #     song = Song(author = user,name  = "The second best song I guess")  
-        #song.playlist.add(*playlists.values) 
+        #song.crescendo_app.add(*playlists.values)
         #song.save()
 
-        #self.assertTrue(all([True if names.contains(playlist.name) else False for playlist in song.playlist]))
+        #self.assertTrue(all([True if names.contains(crescendo_app.name) else False for crescendo_app in song.crescendo_app]))

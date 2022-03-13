@@ -44,7 +44,7 @@ def populate():
          "name": "Playlist 1",
          "views": 20,
          "numberOfComments": 3,
-         "description": "Just an upbeat playlist",
+         "description": "Just an upbeat crescendo_app",
          "genres": ["Upbeat", "Mellow"],
          "image": None,
          "comments": [{"comment": "Great collection of songs",
@@ -63,7 +63,7 @@ def populate():
          "name": "Playlist 2",
          "views": 120,
          "numberOfComments": 3,
-         "description": "Just a mellow playlist",
+         "description": "Just a mellow crescendo_app",
          "genres": ["Upbeat"],
          "image": None,
          "comments": [
@@ -83,7 +83,7 @@ def populate():
          "name": "Playlist 3",
          "views": 1,
          "numberOfComments": 1,
-         "description": "Just a random playlist",
+         "description": "Just a random crescendo_app",
          "genres": ["Upbeat", "Mellow", "Rock"],
          "image": None,
          "comments": [
@@ -112,7 +112,7 @@ def populate():
          "name": "Playlist 5",
          "views": 1000,
          "numberOfComments": 2,
-         "description": "Just a playlist",
+         "description": "Just a crescendo_app",
          "genres": ["Rap"],
          "image": None,
          "comments": [

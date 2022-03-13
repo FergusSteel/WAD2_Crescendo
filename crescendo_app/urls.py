@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 from crescendo_app import views
 
 app_name = 'crescendo'
@@ -30,10 +30,9 @@ urlpatterns = [
                   path('contactUs/', views.contactUs, name='contactUs'),
                   path('faq', views.faq, name='faq'),
                   path('userprofile', views.userProfile, name='userprofile'),
-                  path('playlist/<slug:playlist_slug>-<slug:playlist_id>/', views.show_playlist, name='show_playlist'),
+                  path('crescendo_app/<slug:playlist_slug>-<slug:playlist_id>/', views.show_playlist, name='show_playlist'),
                   path('PlaylistCatalogue/', views.PlaylistCatalogue, name='PlaylistCatalogue'),
                   path('SongCatalogue/', views.SongCatalogue, name='SongCatalogue'),
                   path('song/<slug:song_slug>-<slug:song_id>/', views.show_song, name='show_song'),
-                  path('search/', views.search, name='search'),
                   path('add_playlist',views.add_playlist,name='add_playlist'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,9 +9,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from crescendo_app import models
-from crescendo_app.models import Playlist, Song
+from crescendo_app.models import Playlist, Song, SongComment
 from crescendo_app.form import PlaylistForm
 from django.shortcuts import redirect
+
 
 def index(request):
     context_dict = {}
@@ -49,10 +50,10 @@ def show_playlist(request, playlist_slug, playlist_id):
         except Song.DoesNotExist:
             context_dict['songs'] = None
 
-        context_dict['playlist'] = playlist
+        context_dict['crescendo_app'] = playlist
 
     except Playlist.DoesNotExist:
-        context_dict['playlist'] = None
+        context_dict['crescendo_app'] = None
 
     return render(request, 'crescendo/playlist.html', context=context_dict)
 
@@ -83,20 +84,22 @@ def userProfile(request):
     pass
 
 
-def search(request):
-    results_playlist = []
-    results_song = []
+def search(request,  *args, **kwargs):
+    print(args, kwargs)
+    """
+       :param kwargs :  {'playlist_name': '0'', 'song_name': '0'}
+    """
     q = request.GET.get('q')
-    error_msg = ''
+    search = {}
+    for k, v in kwargs.item():
+        temp = int(v)
+        kwargs[k] = temp
+        if temp:
+            search[k] = temp
+    playlist_list = Playlist.objects.filter(name__icontains=q)
+    song_list = Song.objects.filter(name__icontains=q)
+    return render(request, 'crescendo/search.html', {'kwargs':kwargs,'playlist_list':playlist_list, 'song_list':song_list})
 
-    if not q:
-        error_msg = "Please entry the other key words!"
-        return render(request, 'crescendo/result.html', {'error_msg': error_msg})
-
-    results_playlist = results_playlist + list(Playlist.objects.filter(title__icontains=q))
-    results_song = results_song + list(Playlist.objects.filter(title__icontains=q))
-    results = chain(results_playlist, results_song)
-    return render(request, 'crescendo/result.html', {'error_msg': error_msg, 'results': results})
 
 # Playlists and Songs
 def PlaylistCatalogue(request):
@@ -104,26 +107,28 @@ def PlaylistCatalogue(request):
     context_dict['playlists'] = Playlist.objects.order_by()
     return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
 
+
 def SongCatalogue(request):
     context_dict = {}
     context_dict['songs'] = Song.objects.order_by()
     return render(request, 'crescendo/SongCatalogue.html', context=context_dict)
 
-#Add playlist
+
+# Add crescendo_app
 
 def add_playlist(request):
-    form=PlaylistForm()
+    form = PlaylistForm()
 
-    if request.method=='POST':
+    if request.method == 'POST':
         form = PlaylistForm(request.POST)
 
         if form.is_valid():
-        
+
             form.save(commit=True)
-        
+
             return redirect('/crescendo/')
         else:
-        
+
             print(form.errors)
-    
+
     return render(request, 'crescendo/add_playlist.html', {'form': form})

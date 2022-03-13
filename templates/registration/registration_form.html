@@ -2,41 +2,40 @@
 {% load static %}
 
 {% block title %}
-    Crescendo - Registration
-{% endblock %} 
- 
-{% block css %} 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static '/styles/login.css' %}" />  
+   Register
 {% endblock %}
- 
-{% block body_block %}
-<div class="container"> 
-    <h2 class="text-center">Register Here</h2>
-    <div class="col-md-4 col-md-offset-4">
-    <div class="row">
-    <div class="form-group" > 
-    <form role="form" method="post" action=".">
-        {% csrf_token %} 
-        <div class="form-group">
-        <p class="required"><label class="required" for="id_username">Username:</label>
-            <input class="form-control" id="id_username" maxlength="30" name="username" type="text" />
-            <span class="helptext">Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
-        </p>
 
-        <p class="required"><label class="required" for="id_password1">Password:</label>
-            <input class="form-control" id="id_password1" name="password1" type="password" />
-        </p>
-        <p class="required">
-            <label class="required" for="id_password2">Password confirmation:</label>
-            <input class="form-control" id="id_password2" name="password2" type="password" />
-            <span class="helptext">Enter the same password as before, for verification.</span>
-        </p>
-        <p class="required"><label class="required" for="id_email">E-mail:</label>
-        <input class="form-control" id="id_email" name="email" type="email" />
-        </p> 
-    </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+{% block css %}
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/login.css' %}" />
+{% endblock %}
+
+{% block body_block %}
+<div class="container">
+    <div class="col-md-5 col-md-offset-4">
+    <h3 class="text-center">Register Here</h3>
+    <div class="row">
+    <div class="form-group" >
+    <form role="form" method="post" action=".">
+        {% csrf_token %}
+              <div class="form-group">
+                  {{ form.username.label_tag }}
+                  {{ form.username}}
+              </div>
+              <div class="form-group">
+                  {{ form.password1.label_tag }}
+                  {{ form.password1 }}
+              </div>
+              <div class="form-group">
+                  {{ form.password2.label_tag }}
+                  {{ form.password2 }}
+              </div>
+              <div class="form-group">
+                  {{ form.email.label_tag }}
+                  {{ form.email }}
+              </div>
+
+        <button type="submit" class="btn btn-primary" value="Register">Submit</button>
         <button type="reset" class="btn btn-default pull-right">Reset</button>
     </form>
     </div>

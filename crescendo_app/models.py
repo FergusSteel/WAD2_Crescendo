@@ -85,7 +85,7 @@ class Song(models.Model):
         super(Song, self).save(*args, **kwargs)
 
 
-# Both song and playlist comment classes inherit from the comment class, due to shared attributes
+# Both song and crescendo_app comment classes inherit from the comment class, due to shared attributes
 class SongComment(Comment):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
 
@@ -97,4 +97,4 @@ class PlaylistComment(Comment):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Comment about a playlist with rating" + str(self.rating)
+        return "Comment about a crescendo_app with rating" + str(self.rating)
