@@ -2,7 +2,7 @@
 
 .leftBar {
   width: 550px;
-  height: 500px;
+  height: 600px;
   padding-bottom: 580px;
   float: left;
   display: grid;
@@ -13,8 +13,18 @@
 }
 
 .rightBar{
+  margin: auto;
   float: left;
   padding: 20px;
+  height: 600px;
+  width: 750px;
+  margin-left: 2.5%;
+  text-indent: 10px;
+  line-height: 3;
+  text-align: center;
+  border-style: solid;
+  border-width: medium;
+  overflow-y: auto;
 }
 
 .comments {

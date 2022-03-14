@@ -1,11 +1,28 @@
-{% extends 'crescendo/base.html' %}
+{% extends 'crescendo/base.html' %} 
+{% load staticfiles %}
 
 {% block title %}
-    FAQ
+    Crescendo - FAQ
 {% endblock %}
+  
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/faq.css' %}" /> 
+    <script src="{% static '/JS/faq.js' %}"></script>
+{% endblock %} 
 
-{% block body_block %}
-	<p>There currently are no faq</p>
+{% block body_block %} 
+    <h2> FAQ </h2> 
+    {% if questions %}  
+    <div class = "questions">
+        {% for question in questions %}  
+        <div class="dropdown">
+            <button class="dropdown-btn">{{ question.question }}</button>
+            <p>{{question.answer}}</p>
+          </div> 
+            
+        {% endfor %}
+    </div> 
+    {% endif %}
 
-<p>if you have any questions please towards this webpage <a href="{% url 'crescendo:contactUs' %}">Contact Us</a> </p>
+<p class = "center">if you have any questions please towards this webpage <a href="{% url 'crescendo:contactUs' %}">Contact Us</a> </p>
 {% endblock %}
