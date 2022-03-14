@@ -84,22 +84,6 @@ def userProfile(request):
     pass
 
 
-def search(request,  *args, **kwargs):
-    print(args, kwargs)
-    """
-       :param kwargs :  {'playlist_name': '0'', 'song_name': '0'}
-    """
-    q = request.GET.get('q')
-    search = {}
-    for k, v in kwargs.item():
-        temp = int(v)
-        kwargs[k] = temp
-        if temp:
-            search[k] = temp
-    playlist_list = Playlist.objects.filter(name__icontains=q)
-    song_list = Song.objects.filter(name__icontains=q)
-    return render(request, 'crescendo/search.html', {'kwargs':kwargs,'playlist_list':playlist_list, 'song_list':song_list})
-
 
 # Playlists and Songs
 def PlaylistCatalogue(request):

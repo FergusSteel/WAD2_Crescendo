@@ -1,3 +1,4 @@
 {{object.name}}
 {{object.author}}
+{{object.image}}
 {{objects.numberOfComment}}

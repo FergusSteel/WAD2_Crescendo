@@ -6,29 +6,22 @@
 {% endblock %}
 
 {% block body_block %}
-   {% if query %}
-       <p>You keywords is {{ query }}</p>
-        {% for result in page.object_list %}
-            {{ result.object.name }}
-            {{ result.object.author }}
-        {% empty %}
-            <div class="no-post">Not Found!!</div>
-        {% endfor %}
-        {% if page.has_previous or page.has_next %}
-            <div>
-                {% if page.has_previous %}
-                    <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous
-                {% if page.has_previous %}</a>{% endif %}
-                |
-                {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next
-                &raquo;{% if page.has_next %}</a>{% endif %}
-            </div>
-        {% endif %}
-    {% else %}
-        Please enter the keywords!
-    {% endif %}
-
-
+<h1>搜索&nbsp;<b>{{query}}</b>&nbsp;结果如下：</h1>
+<ul>
+{%for item in page%}
+    <li>{{item.object.name}}--{{item.object.author}}</li>
+{%empty%}
+    <li>啥也没找到</li>
+{%endfor%}
+</ul>
+<hr>
+{%for pindex in page.paginator.page_range%}
+    {%if pindex == page.number%}
+        {{pindex}}&nbsp;&nbsp;
+    {%else%}
+        <a href="?q={{query}}&amp;page={{pindex}}">{{pindex}}</a>&nbsp;&nbsp;
+    {%endif%}
+{%endfor%}
 
 
 {% endblock %}

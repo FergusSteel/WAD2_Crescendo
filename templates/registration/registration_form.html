@@ -1,45 +1,21 @@
 {% extends 'crescendo/base.html' %}
-{% load static %}
+{% load staticfiles %}
+
 
 {% block title %}
    Register
 {% endblock %}
 
-{% block css %}
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static '/styles/login.css' %}" />
-{% endblock %}
+
+
 
 {% block body_block %}
-<div class="container">
-    <div class="col-md-5 col-md-offset-4">
-    <h3 class="text-center">Register Here</h3>
-    <div class="row">
-    <div class="form-group" >
-    <form role="form" method="post" action=".">
+    <h1>Register for Rango</h1>
+    <p>
+        <form method="POST" action=".">
         {% csrf_token %}
-              <div class="form-group">
-                  {{ form.username.label_tag }}
-                  {{ form.username}}
-              </div>
-              <div class="form-group">
-                  {{ form.password1.label_tag }}
-                  {{ form.password1 }}
-              </div>
-              <div class="form-group">
-                  {{ form.password2.label_tag }}
-                  {{ form.password2 }}
-              </div>
-              <div class="form-group">
-                  {{ form.email.label_tag }}
-                  {{ form.email }}
-              </div>
-
-        <button type="submit" class="btn btn-primary" value="Register">Submit</button>
-        <button type="reset" class="btn btn-default pull-right">Reset</button>
-    </form>
-    </div>
-</div>
-</div>
-</div>
+            {{ form.as_p }}
+            <input type="submit" value="Register" />
+        </form>
+    </p>
 {% endblock %}
