@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block body_block %}
-<h1>搜索&nbsp;<b>{{query}}</b>&nbsp;结果如下：</h1>
+<h1>Search&nbsp;<b>{{query}}</b>&nbsp;Result：</h1>
 <ul>
 {%for item in page%}
     <li>{{item.object.name}}--{{item.object.author}}</li>
 {%empty%}
-    <li>啥也没找到</li>
+    <li>Nothing found</li>
 {%endfor%}
 </ul>
 <hr>

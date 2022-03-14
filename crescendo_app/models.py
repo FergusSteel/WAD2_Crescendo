@@ -97,10 +97,8 @@ class PlaylistComment(Comment):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
 
     def __str__(self):
-<<<<<<< HEAD
+
         return "Comment about a crescendo_app with rating" + str(self.rating)
-=======
-        return "Comment about a playlist with rating" + str(self.rating)
  
   
 class Question(models.Model): 
@@ -109,4 +107,4 @@ class Question(models.Model):
      
     def __str__(self): 
         return "Question " + self.question
->>>>>>> de7f8d8db2e24051fe21d20d72f21d212e52062c
+
