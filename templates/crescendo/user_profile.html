@@ -1,0 +1,27 @@
+{% extends 'crescendo/base.html' %} {% block title %} Crescendo - {{ user.username }} {% endblock %} {% block body_block %}
+<div class="leftBar">
+    <div class="user-info">
+        <h1>{{ user.username }} profile:</h1>
+        <ul>
+            <li>Profile Views : {{ user.numberOfProfileViews }}</li>
+            <li>Number Of Comments : {{ user.numberOfComments }}</li>
+        </ul>
+    </div>
+    <div class="user-image">
+    </div>
+
+    <div class='playlists'>
+        {% for playlist in playlists %} {% endfor %}
+    </div>
+</div>
+
+<div class="rightBar">
+    <div class='songs'>
+        {% for song in songs %} {% endfor %}
+    </div>
+    <div class="links">
+    </div>
+</div>
+
+
+{% endblock %}

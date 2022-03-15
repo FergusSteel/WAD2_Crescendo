@@ -38,5 +38,6 @@ urlpatterns = [
                   path('add_playlist/', views.add_playlist, name='add_playlist'),
                   path('search/', views.search, name='search'),
                   path('add_playlist/<slug:playlist_slug>-<slug:playlist_id>/',views.add_playlist,name='add_playlist'), 
-                  path('playlist/edit_playlist/<int:pk>/', views.edit_playlist, name='edit_playlist')
+                  path('playlist/edit_playlist/<int:pk>/', views.edit_playlist, name='edit_playlist') ,
+                  path('myaccount/' , views.userProfile , name ='userprofile'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

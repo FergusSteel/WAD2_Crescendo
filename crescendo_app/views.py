@@ -171,3 +171,14 @@ def edit_playlist(request , pk):
         return render(request,'crescendo/edit_playlist.html',context = {'form': form, 'playlist' : playlist})
 
 
+def userProfile(request): 
+    username = None  
+    songs = [] 
+    playlists = []
+    if request.user.is_authenticated:
+        username = request.user.username 
+        songs = request.user.song_set.all()  
+        playlists = request.user.playlist_set.all()
+        #playlists = Playlist.objects.get(author = request.user.id)  
+     
+    return render(request,'crescendo/user_profile.html' , context = {'songs':songs , 'playlists':playlists})
