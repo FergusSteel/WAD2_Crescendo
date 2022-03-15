@@ -1,0 +1,56 @@
+.user-info {
+    width: 550px;
+    height: 600px;
+    padding-bottom: 580px;
+    float: left;
+    display: grid;
+}
+
+.block {
+    display: block;
+}
+
+
+/* .user-info h1 {
+    padding-left: 20px;
+} */
+
+.rightBar {
+    margin: auto;
+    float: left;
+    padding: 20px;
+    height: 600px;
+    width: 750px;
+    margin-left: 2.5%;
+    text-indent: 10px;
+    line-height: 3;
+    text-align: center;
+    border-style: solid;
+    border-width: medium;
+    overflow-y: auto;
+}
+
+.comments {
+    display: block;
+    clear: both;
+    padding: 20px;
+}
+
+.songPlayer {
+    padding: 20px;
+    position: relative;
+}
+
+.songPlayer img {
+    top: 0;
+    left: 0;
+    width: 500px;
+    height: 500px;
+    position: relative;
+}
+
+#topimage {
+    position: absolute;
+    z-index: 2;
+    opacity: 0.3;
+}

@@ -37,7 +37,7 @@ class Genre(models.Model):
 
 
 class Playlist(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name= "playlists")
     genre = models.ManyToManyField(Genre)
     name = models.CharField(max_length=30)
     nameAsSlug = models.SlugField()
@@ -58,13 +58,13 @@ class Playlist(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name="comments")
     comment = models.CharField(max_length=300)
     rating = models.IntegerField()
 
 
 class Song(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name = "songs")
     genre = models.ManyToManyField(Genre)
     playlist = models.ManyToManyField(Playlist)
     name = models.CharField(max_length=30)

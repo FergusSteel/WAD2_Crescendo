@@ -9,8 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 
-from crescendo_app.models import Playlist, Song, SongComment
-from crescendo_app.models import Playlist, Song, Question
+from crescendo_app.models import Playlist, Song, SongComment , Question , UserProfile
 from crescendo_app.form import PlaylistForm, PlaylistEditForm
 from django.shortcuts import redirect
 
@@ -176,9 +175,11 @@ def userProfile(request):
     songs = [] 
     playlists = []
     if request.user.is_authenticated:
-        username = request.user.username 
-        songs = request.user.song_set.all()  
-        playlists = request.user.playlist_set.all()
-        #playlists = Playlist.objects.get(author = request.user.id)  
+        username = request.user.username  
+        user = UserProfile.objects.get(user = request.user)
+        songs = user.songs.all() 
+        playlists = user.playlists.all() 
+        comments = user.comments.all()
+         
      
-    return render(request,'crescendo/user_profile.html' , context = {'songs':songs , 'playlists':playlists})
+    return render(request,'crescendo/user_profile.html' , context = {'songs':songs , 'playlists':playlists , 'comments':comments})
