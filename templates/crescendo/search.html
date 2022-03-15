@@ -1,0 +1,82 @@
+{% extends 'crescendo/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+Search
+{% endblock %}
+
+{% block body_block %}
+    <div class="container-fluid">
+    <p class="text-left">
+        <h2>The results of {{ search_words }}</h2>
+    </p>
+    <p class="text-center">
+        {% if search_words == '' %}
+            <h2>You didn't entry anything</h2><br/>
+            <p>Please try entry something here, like:playlist, gold...</p>
+            {% else %}
+             {% if page_of_playlist%}
+            <h4>You search {{ search_words }}, and {{ playlist_count }} results found! </h4>
+                <div class="table-responsive">
+                    {%for playlist in page_of_playlist %}
+                        <table class="table">
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Author</th>
+                             </tr>
+                             <tr>
+                                <td class="col-xs-12 col-md-3"><img src="{{ playlist.image.url }}" class="img-rounded" width="20%" height="auto"></td>
+                                <td class="col-xs-6 col-md-3"><a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}" >{{ playlist.name }}</a></td>
+                                <td class="col-xs-6 col-md-3"><a href="{% url 'crescendo:userprofile'%}">{{ playlist.author }}</a> </td>
+                             </tr>
+                        </table>
+                    {% endfor %}
+                    <div class="row">
+                    <ul class="paginator">
+                        <div class="text-center text-primary">{{ page_of_playlist.number }}/{{ page_of_playlist.paginator.num_pages }} pages</div>
+                    <div class="row row-no-gutters">
+                         {% if page_of_playlist.has_previous %}
+                             <div class="col-md-offset-9"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.previous_page_number }}" aria-label="Previous">Previous</a></div>
+                         {% endif %}
+                        {% if page_of_playlist.has_next %}
+                            <div class="col-md-offset-10"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.next_page_number }}" aria-label="Next">Next</a></div>
+                        {% endif %}
+                    </div>
+                    </ul>
+                    </div>
+                </div>
+                {% else %}
+                    {% if page_of_song %}
+                        <h4>You search {{ search_words }}, and {{ song_count }} results found! </h4>
+                        <div class="table-responsive">
+                            {%for song in page_of_song %}
+                                <table class="table">
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Artist</th>
+                                        <th>Playlist</th>
+                                        <th>Author</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-xs-12 col-md-3"><img src="{{ song.image.url }}" class="img-rounded" width="15%" height="auto"></td>
+                                        <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}" >{{ song.name }}</a></td>
+                                        <td class="col-xs-6 col-md-3">{{ song.artist }}</td>
+                                        {%for playlist in page_of_playlist %}
+                                            <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}" >{{ song.playlist }}</a></td>
+                                        {% endfor %}
+                                        <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:userprofile'%}">{{ playlist.author }}</a> </td>
+                                    </tr>
+                                </table>
+                            {% endfor %}
+                 </div>
+                    {% else %}
+                        <p class="text-center">Noting found, please try again and change other keyword.</p>
+                    {% endif %}
+             {% endif %}
+        {% endif %}
+    </p>
+    </div>
+    </div>
+{% endblock %}

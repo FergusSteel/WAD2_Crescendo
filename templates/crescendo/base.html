@@ -59,7 +59,8 @@
                 <li><a href="{% url 'registration_register' %}">Register</a></li>
                 {% endif %}
             </ul>
-           <form class="navbar-form navbar-left" action="/search/" role="search" method="get">
+           <form class="navbar-form navbar-left" action="{% url 'crescendo:search' %}" role="search" method="get">
+               {% csrf_token %}
                 <div class="form-group">
                     <input type="search" class="form-control" placeholder="Search" name="q" required>
                 </div>

@@ -30,9 +30,11 @@ urlpatterns = [
                   path('contactUs/', views.contactUs, name='contactUs'),
                   path('faq', views.faq, name='faq'),
                   path('userprofile', views.userProfile, name='userprofile'),
-                  path('crescendo_app/<slug:playlist_slug>-<slug:playlist_id>/', views.show_playlist, name='show_playlist'),
+                  path('crescendo_app/<slug:playlist_slug>-<slug:playlist_id>/', views.show_playlist,
+                       name='show_playlist'),
                   path('PlaylistCatalogue/', views.PlaylistCatalogue, name='PlaylistCatalogue'),
                   path('SongCatalogue/', views.SongCatalogue, name='SongCatalogue'),
                   path('song/<slug:song_slug>-<slug:song_id>/', views.show_song, name='show_song'),
-                  path('add_playlist',views.add_playlist,name='add_playlist'),
+                  path('add_playlist/', views.add_playlist, name='add_playlist'),
+                  path('search/', views.search, name='search')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

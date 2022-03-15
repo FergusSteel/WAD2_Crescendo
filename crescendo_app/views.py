@@ -1,15 +1,13 @@
-from itertools import chain
-from multiprocessing import context
 
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse
 
-from crescendo_app import models
 
 from crescendo_app.models import Playlist, Song, SongComment
 from crescendo_app.models import Playlist, Song, Question
@@ -29,7 +27,7 @@ def about(request):
     return render(request, 'crescendo/about.html', context=context_dict)
 
 
-def faq(request):  
+def faq(request):
     context_dict = {}
     context_dict['questions'] = Question.objects.all()
     return render(request, 'crescendo/faq.html', context=context_dict)
@@ -87,6 +85,34 @@ def show_song(request, song_slug, song_id):
 def userProfile(request):
     pass
 
+
+def search(request):
+    search_word = request.GET.get('q', '').strip()
+    condition = None
+    for word in search_word.split(' '):
+        if condition is None:
+            condition = Q(name__icontains=word)
+        else:
+            condition = condition | Q(name__icontains=word)
+    search_playlist = []
+    search_song = []
+    if condition is not None:
+        search_playlist = Playlist.objects.filter(condition)
+        search_song = Song.objects.filter(condition)
+
+    paginator_playlist = Paginator(search_playlist, 3)
+    paginator_song = Paginator(search_song, 5)
+    page_num = request.GET.get('page', 1)
+    page_of_playlist = paginator_playlist.get_page(page_num)
+    page_of_song = paginator_song.get_page(page_num)
+
+    context = {}
+    context['search_words'] = search_word
+    context['playlist_count'] = search_playlist.count()
+    context['song_count'] = search_song.count()
+    context['page_of_playlist'] = page_of_playlist
+    context['page_of_song'] = page_of_song
+    return render(request, 'crescendo/search.html', context=context)
 
 
 # Playlists and Songs
