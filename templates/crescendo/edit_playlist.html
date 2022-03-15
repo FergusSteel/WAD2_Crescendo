@@ -1,0 +1,9 @@
+{% extends 'crescendo/base.html' %} {% block title %} Editing Playlist - {{playlist.name}} {% endblock %} {% block body_block %} {% if user.is_authenticated %}
+<h2> Editing {{ playlist.name }} </h2>
+<div>
+    <form id="edit_playlist_form" method="post" action="/crescendo_app/edit_category/">
+        {% csrf_token %} {{ form.as_p }}
+        <input type="submit" name="submit" value="Edit a Playlist" />
+    </form>
+</div>
+{% endif %} {% endblock %}

@@ -11,7 +11,7 @@ from django.urls import reverse
 
 from crescendo_app.models import Playlist, Song, SongComment
 from crescendo_app.models import Playlist, Song, Question
-from crescendo_app.form import PlaylistForm
+from crescendo_app.form import PlaylistForm, PlaylistEditForm
 from django.shortcuts import redirect
 
 
@@ -146,3 +146,28 @@ def add_playlist(request):
             print(form.errors)
 
     return render(request, 'crescendo/add_playlist.html', {'form': form})
+ 
+  
+
+def edit_playlist(request , pk):  
+    print(pk) 
+    try:
+        playlist = Playlist.objects.get(id = pk)
+    except Playlist.DoesNotExist:
+        playlist = None 
+
+    instance = Playlist.objects.get(id=pk)
+    form = PlaylistEditForm(request.POST or None, instance=instance)  
+
+    if request.method == 'POST':   
+        form = PlaylistEditForm(request.POST)
+         
+        if form.is_valid(): 
+            form.save(commit=True) 
+            return redirect('/crescendo/') 
+    else:
+        form = PlaylistEditForm() 
+             
+        return render(request,'crescendo/edit_playlist.html',context = {'form': form, 'playlist' : playlist})
+
+

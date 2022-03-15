@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from crescendo_app.models import UserProfile, Song, Playlist
+from crescendo_app.models import UserProfile, Song, Playlist, Genre
 
 
 class PlaylistForm(forms.ModelForm):
@@ -13,3 +13,14 @@ class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
         fields = ('name',)
+ 
+  
+class PlaylistEditForm(forms.ModelForm): 
+    name = forms.CharField(max_length = 128) 
+    image = forms.ImageField()  
+    description = forms.CharField(max_length = 300) 
+    # genre = forms.ChoiceField(*Genre.objects) 
+
+    class Meta: 
+        model = Playlist  
+        fields = ('name','image','description',)
