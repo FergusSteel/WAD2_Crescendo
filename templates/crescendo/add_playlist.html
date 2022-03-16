@@ -1,6 +1,8 @@
 {% extends "crescendo/base.html" %}
 {% block title %}Add Playlist{% endblock %}
+
 {% block body_block %}
+{%if user.is_authenticated%}
 <div class="jumbotron p-4">
     <div class="container">
     <h1 class="jumbotron-heading">Add a playlist {{playlist.name}}</h1>
@@ -28,4 +30,5 @@
         </form>
     </div>
 </div>
+{%endif%}
 {% endblock %}
