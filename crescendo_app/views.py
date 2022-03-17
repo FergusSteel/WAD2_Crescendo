@@ -1,16 +1,15 @@
-
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse
 
-
-from crescendo_app.models import Playlist, Song, SongComment , Question , UserProfile
-from crescendo_app.form import PlaylistForm, PlaylistEditForm
+from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment
+from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
 
@@ -42,6 +41,10 @@ def show_playlist(request, playlist_slug, playlist_id):
 
     try:
         playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
+        playlist_content_type = ContentType.objects.get_for_model(playlist)
+        comments = Comment.objects.filter(content_type=playlist_content_type, object_id=playlist_id)
+        context_dict['comments'] = comments
+        context_dict['comment_form'] = CommentForm(initial={'content_type': playlist_content_type.model, 'object_id': playlist_id})
         try:
             songs = []
             for song in Song.objects.all():
@@ -62,16 +65,13 @@ def show_playlist(request, playlist_slug, playlist_id):
 def show_song(request, song_slug, song_id):
     context_dict = {}
 
+
     try:
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
-        try:
-            comments = []
-            for comment in SongComment.objects.all():
-                if comment.song == song:
-                    comments.append(comment)
-            context_dict['comments'] = comments
-        except:
-            context_dict['comments'] = None
+        song_content_type = ContentType.objects.get_for_model(song)
+        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id)
+        context_dict['comments'] = comments
+        context_dict['comment_form'] = CommentForm(initial={'content_type': song_content_type.model, 'object_id': song_id})
 
         context_dict['song'] = song
 
@@ -136,10 +136,10 @@ def add_playlist(request):
         form = PlaylistForm(request.POST)
 
         if form.is_valid():
-            PlaylistF=form.save(commit=False)
-            form.author=UserProfile.objects.get(user=request.user)
-            
-            PlaylistF.author_id=request.user.id
+            PlaylistF = form.save(commit=False)
+            form.author = UserProfile.objects.get(user=request.user)
+
+            PlaylistF.author_id = request.user.id
             PlaylistF.save()
 
             return redirect('/crescendo/')
@@ -148,41 +148,68 @@ def add_playlist(request):
             print(form.errors)
 
     return render(request, 'crescendo/add_playlist.html', {'form': form})
- 
-  
 
-def edit_playlist(request , pk):  
-    print(pk) 
+
+def edit_playlist(request, pk):
+    print(pk)
     try:
-        playlist = Playlist.objects.get(id = pk)
+        playlist = Playlist.objects.get(id=pk)
     except Playlist.DoesNotExist:
-        playlist = None 
+        playlist = None
 
     instance = Playlist.objects.get(id=pk)
-    form = PlaylistEditForm(request.POST or None, instance=instance)  
+    form = PlaylistEditForm(request.POST or None, instance=instance)
 
-    if request.method == 'POST':   
+    if request.method == 'POST':
         form = PlaylistEditForm(request.POST)
-         
-        if form.is_valid(): 
-            form.save(commit=True) 
-            return redirect('/crescendo/') 
+
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('/crescendo/')
     else:
-        form = PlaylistEditForm() 
-             
-        return render(request,'crescendo/edit_playlist.html',context = {'form': form, 'playlist' : playlist})
+        form = PlaylistEditForm()
+
+        return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
 
-def userProfile(request): 
-    username = None  
-    songs = [] 
+def userProfile(request,  user_id):
+    username = None
+    context = {}
+    songs = []
     playlists = []
     if request.user.is_authenticated:
-        username = request.user.username  
-        user = UserProfile.objects.get(user = request.user)
-        songs = user.songs.all() 
-        playlists = user.playlists.all() 
-        comments = user.comments.all()
-         
-     
-    return render(request,'crescendo/user_profile.html' , context = {'songs':songs , 'playlists':playlists , 'comments':comments})
+        username = request.user.username
+        user = UserProfile.objects.get(user=request.user, id=user_id)
+        songs = user.songs.all()
+        playlists = user.playlists.all()
+
+        user_content_type = ContentType.objects.get_for_model(user)
+        comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id)
+        context['comments'] = comments
+        context['comment_form'] = CommentForm(
+            initial={'content_type': user_content_type.model, 'object_id': user_id})
+
+    return render(request, 'crescendo/user_profile.html',
+                  context={'songs': songs, 'playlists': playlists, 'comments': comments})
+
+
+def add_comment(request):
+    comment_form = CommentForm(request.POST, user=request.user)
+    context_dict = {}
+
+    if comment_form.is_valid():
+        comment = Comment()
+        comment.author = comment_form.cleaned_data['user']
+        comment.text = comment_form.cleaned_data['text']
+        comment.content_object = comment_form.cleaned_data['content_object']
+        comment.save()
+
+        # return data
+        context_dict['status'] = 'SUCCESS'
+        context_dict['username'] = comment.author.username
+        context_dict['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
+        context_dict['text'] = comment.text
+    else:
+        context_dict['status'] = 'ERROR'
+        context_dict['message'] = list(comment_form.errors.values())[0][0]
+    return JsonResponse(context_dict)

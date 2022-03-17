@@ -52,3 +52,15 @@
   z-index: 2;
   opacity: 0.3;
 }
+
+div.comment-area {
+    margin-top: 2em;
+}
+h4.comment-area-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.4em;
+}
+
+div.django-ckeditor-widget {
+    width: 100%;
+}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from crescendo_app.models import UserProfile, Genre, Song, SongComment, Playlist, PlaylistComment , Question
+from crescendo_app.models import UserProfile, Genre, Song, Playlist, Question, Comment
 
 
 # Register your models here.
@@ -17,13 +17,12 @@ class GenreAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('author', 'rating',)
+    list_display = ('content_object', 'text', 'comment_time', 'author')
  
 
 admin.site.register(UserProfile)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Song, SongAdmin)
-admin.site.register(SongComment, CommentAdmin)
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(Playlist, PlaylistAdmin)
-admin.site.register(PlaylistComment, CommentAdmin)
 admin.site.register(Question)

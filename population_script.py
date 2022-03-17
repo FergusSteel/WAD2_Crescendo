@@ -6,7 +6,7 @@ import django
 
 django.setup()
 
-from crescendo_app.models import User, UserProfile, Genre, Song, SongComment, Playlist, PlaylistComment, Question
+from crescendo_app.models import User, UserProfile, Genre, Song,  Playlist,  Question
 from django.db import models
 
 
@@ -55,17 +55,7 @@ def populate():
          "description": "Just an upbeat crescendo_app",
          "genres": ["Upbeat", "Mellow"],
          "image": None,
-         "comments": [{"comment": "Great collection of songs",
-                       "rating": 4,
-                       "author": "Sarah"},
-                      {"comment": "Could be better",
-                       "rating": 3,
-                       "author": "Greg"
-                       },
-                      {"comment": "Very upbeat and nice to listen to",
-                       "rating": 4,
-                       "author": "Craig"}
-                      ]
+         "comments": []
          },
         {"author": "Greg",
          "name": "Playlist 2",
@@ -74,18 +64,7 @@ def populate():
          "description": "Just a mellow crescendo_app",
          "genres": ["Upbeat"],
          "image": None,
-         "comments": [
-             {"comment": "Plain collection of songs",
-              "rating": 2,
-              "author": "Sarah"},
-             {"comment": "Could be better, better luck next time",
-              "rating": 3,
-              "author": "Greg"
-              },
-             {"comment": ".....",
-              "rating": 4,
-              "author": "Craig"}
-         ]
+         "comments": []
          },
         {"author": "Sarah",
          "name": "Playlist 3",
@@ -94,11 +73,7 @@ def populate():
          "description": "Just a random crescendo_app",
          "genres": ["Upbeat", "Mellow", "Rock"],
          "image": None,
-         "comments": [
-             {"comment": "Great collection of songs",
-              "rating": 4,
-              "author": "Sarah"},
-         ]
+         "comments": []
          },
         {"author": "Craig",
          "name": "Playlist 1",
@@ -107,14 +82,7 @@ def populate():
          "description": "The best",
          "image": "default.png",
          "genres": ["Mellow", "Pop"],
-         "comments": [
-             {"comment": "All time favourite",
-              "rating": 4,
-              "author": "Sarah"},
-             {"comment": "Very upbeat and nice to listen to",
-              "rating": 4,
-              "author": "Greg"}
-         ]
+         "comments": []
          },
         {"author": "Sarah",
          "name": "Playlist 5",
@@ -123,15 +91,7 @@ def populate():
          "description": "Just a crescendo_app",
          "genres": ["Rap"],
          "image": None,
-         "comments": [
-             {"comment": "Great collection of songs",
-              "rating": 4,
-              "author": "Sarah"},
-             {"comment": "Could be better",
-              "rating": 3,
-              "author": "Greg",
-              }
-         ]
+         "comments": []
          }
 
     ]
@@ -147,9 +107,7 @@ def populate():
             "lyrics": None,
             "playlists": ["Playlist 1", "Playlist 2"],
             "actualSong": "population_script_music/sound1.mp3",
-            "comments": [{"author": "Greg",
-                          "rating": 5,
-                          "comment": "Great"}]
+            "comments": []
         },
         {
             "author": "Greg",
@@ -161,9 +119,7 @@ def populate():
             "playlists": ["Playlist 1", "Playlist 3"],
             "lyrics": None,
             "actualSong": "population_script_music/sound2.mp3",
-            "comments": [{"author": "Sarah",
-                          "rating": 2,
-                          "comment": "mid"}]
+            "comments": []
         },
         {
             "author": "Craig",
@@ -175,15 +131,7 @@ def populate():
             "lyrics": None,
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
-            "comments": [{"author": "Sarah",
-                          "rating": 2,
-                          "comment": "mid", },
-                         {"author": "Greg",
-                          "rating": 5,
-                          "comment": "Great"},
-                         {"author": "Craig",
-                          "rating": 5,
-                          "comment": "My favourite"}]
+            "comments": []
         }
     ]
 
@@ -199,15 +147,11 @@ def populate():
 
     playlistsForLaterUsage = {}
     for playlist in playlists:
-        comments = playlist['comments']
         genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
         playlistObject = add_playlist(playlist['name'], genre, usersForLaterUsage[playlist['author']][1],
                                       playlist['views'], playlist['numberOfComments'], playlist['description'],
                                       playlist['image'])
         playlistsForLaterUsage[playlist['name']] = playlistObject
-        for comment in comments:
-            commentObject = add_playlist_comment(playlistObject, usersForLaterUsage[comment['author']][1],
-                                                 comment["comment"], comment["rating"])
 
     for song in songs:
         comments = song['comments']
@@ -215,10 +159,7 @@ def populate():
         playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
         songObject = add_song(song["name"], genre, usersForLaterUsage[song['author']][1], song['artist'],
                               song['numberOfComments'], song["actualSong"], playlist)
-        for comment in comments:
-            commentObject = add_song_comment(songObject, usersForLaterUsage[comment['author']][1], comment["comment"],
-                                             comment["rating"])
- 
+
   
     for question in questions: 
         questionObject = add_question(question['question'],question['answer'])
@@ -247,18 +188,6 @@ def add_playlist(name, genreList, author, views, numberOfComments, description, 
 
     return playlistObject
 
-
-def add_playlist_comment(playlist, author, comment, rating):
-    commentObject, _ = PlaylistComment.objects.get_or_create(playlist=playlist, author=author, comment=comment,
-                                                             rating=rating)
-    commentObject.save()
-    return commentObject
-
-
-def add_song_comment(song, author, comment, rating):
-    commentObject, _ = SongComment.objects.get_or_create(song=song, author=author, comment=comment, rating=rating)
-    commentObject.save()
-    return commentObject
 
 
 def add_song(name, genreList, author, artist, numberOfComments, song, playlists, lyrics=None, image=None):

@@ -1,5 +1,6 @@
 # IMPORTS
-
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -37,7 +38,7 @@ class Genre(models.Model):
 
 
 class Playlist(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name= "playlists")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="playlists")
     genre = models.ManyToManyField(Genre)
     name = models.CharField(max_length=30)
     nameAsSlug = models.SlugField()
@@ -58,13 +59,19 @@ class Playlist(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name="comments")
-    comment = models.CharField(max_length=300)
-    rating = models.IntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, null=True)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments", null=True)
+    text = models.CharField(max_length=300)
+    comment_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-comment_time']
 
 
 class Song(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name = "songs")
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="songs")
     genre = models.ManyToManyField(Genre)
     playlist = models.ManyToManyField(Playlist)
     name = models.CharField(max_length=30)
@@ -85,26 +92,9 @@ class Song(models.Model):
         super(Song, self).save(*args, **kwargs)
 
 
-# Both song and crescendo_app comment classes inherit from the comment class, due to shared attributes
-class SongComment(Comment):
-    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+class Question(models.Model):
+    question = models.CharField(max_length=300)
+    answer = models.CharField(max_length=300)
 
     def __str__(self):
-        return "Comment about a song with rating " + str(self.rating)
-
-
-class PlaylistComment(Comment):
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
-
-    def __str__(self):
-
-        return "Comment about a crescendo_app with rating" + str(self.rating)
- 
-  
-class Question(models.Model): 
-    question = models.CharField(max_length = 300)  
-    answer = models.CharField(max_length = 300) 
-     
-    def __str__(self): 
         return "Question " + self.question
-
