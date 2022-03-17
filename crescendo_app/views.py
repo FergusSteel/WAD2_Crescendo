@@ -136,8 +136,11 @@ def add_playlist(request):
         form = PlaylistForm(request.POST)
 
         if form.is_valid():
-
-            form.save(commit=True)
+            PlaylistF=form.save(commit=False)
+            form.author=UserProfile.objects.get(user=request.user)
+            
+            PlaylistF.author_id=request.user.id
+            PlaylistF.save()
 
             return redirect('/crescendo/')
         else:
