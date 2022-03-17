@@ -167,7 +167,6 @@ def edit_playlist(request, pk):
 
         return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
-
 def userProfile(request,  user_id):
     username = None
     context = {}
@@ -209,3 +208,18 @@ def add_comment(request):
         context_dict['status'] = 'ERROR'
         context_dict['message'] = list(comment_form.errors.values())[0][0]
     return JsonResponse(context_dict)
+
+def userProfile(request): 
+    username = None  
+    songs = [] 
+    playlists = [] 
+    user = None
+    if request.user.is_authenticated:
+        username = request.user.username  
+        user = UserProfile.objects.get(user = request.user)
+        songs = user.songs.all() 
+        playlists = user.playlists.all() 
+        comments = user.comments.all()
+         
+     
+    return render(request,'crescendo/user_profile.html' , context = {'userprofile':user,'songs':songs , 'playlists':playlists , 'comments':comments})
