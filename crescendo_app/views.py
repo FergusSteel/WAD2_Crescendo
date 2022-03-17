@@ -81,10 +81,6 @@ def show_song(request, song_slug, song_id):
     return render(request, 'crescendo/song.html', context=context_dict)
 
 
-def userProfile(request):
-    pass
-
-
 def search(request):
     search_word = request.GET.get('q', '').strip()
     condition = None
