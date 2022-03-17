@@ -173,7 +173,8 @@ def edit_playlist(request , pk):
 def userProfile(request): 
     username = None  
     songs = [] 
-    playlists = []
+    playlists = [] 
+    user = None
     if request.user.is_authenticated:
         username = request.user.username  
         user = UserProfile.objects.get(user = request.user)
@@ -182,4 +183,4 @@ def userProfile(request):
         comments = user.comments.all()
          
      
-    return render(request,'crescendo/user_profile.html' , context = {'songs':songs , 'playlists':playlists , 'comments':comments})
+    return render(request,'crescendo/user_profile.html' , context = {'userprofile':user,'songs':songs , 'playlists':playlists , 'comments':comments})

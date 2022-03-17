@@ -1,33 +1,30 @@
 {% extends 'crescendo/base.html' %} {% load static %} {% block title %} Crescendo - {{ user.username }} {% endblock %} {% block css%}
 <link rel="stylesheet" type="text/css" href="{% static '/styles/edit_profile.css' %}" /> {% endblock %} {% block body_block %}
 <div class="main">
-    <div class="left">
-        <div class="user-info">
-            <div class="block">
-            </div>
-            <h1 class="block">{{ user.username }} profile:</h1>
-            <ul class="block">
-                <li>Profile Views : {{ user.numberOfProfileViews }}</li>
-                <li>Number Of Comments : {{ user.numberOfComments }}</li>
+    <div class = "grid">
+        <div class="user-info item large">
+            <h1 class = "block">{{ user.username }}'s profile:</h1> 
+            <img src="{{ userprofile.image.url }}" alt = "profile-image">
+            <ul class = "block">
+                <li>Profile Views : {{ userprofile.numberOfProfileViews }}</li>
+                <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
             </ul>
         </div>
-        <div class='playlists'>
+        <div class='playlists item wide'>
             {% for playlist in playlists %}
             <p> {{ playlist.name }} </p> {% endfor %}
         </div>
-    </div>
-    <div class="right">
-        <div class="comments">
+    <div class='songs item wide'>
+        {% for song in songs %}
+        <p> {{ song.name }}{% endfor %}
+    </div>  
+    <div class="comments item ">
             {% for comment in comments %}
             <div class="comment">
                 {{ comment.comment }} {{ comment.rating }}
             </div>
             {% endfor %}
-        </div>
-    </div>
-    <div class=' songs'>
-        {% for song in songs %}
-        <p> {{ song.name }}{% endfor %}
+    </div> 
     </div>
 </div>
 
