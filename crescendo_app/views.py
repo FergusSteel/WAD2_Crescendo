@@ -72,7 +72,7 @@ def show_song(request, song_slug, song_id):
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
         # comment and reply for song
         song_content_type = ContentType.objects.get_for_model(song)
-        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None, rate=song_id)
+        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None)
         context_dict['comments'] = comments.order_by('-comment_time')
         context_dict['comment_form'] = CommentForm(
             initial={'content_type': song_content_type.model, 'object_id': song_id, 'reply_comment_id': 0})
@@ -211,25 +211,22 @@ def add_comment(request):
         comment.author = comment_form.cleaned_data['user']
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
-        comment.rate = Comment.objects.filter(rate=0).order_by().first
 
         # for reply
         parent = comment_form.cleaned_data['parent']
         if parent is not None:
             comment.root = parent.root if parent.root is not None else parent
-
             comment.parent = parent
             comment.reply_to = parent.author
         comment.save()
 
         # return data
-        # JQurey
+        # ajax
         context_dict['status'] = 'SUCCESS'
         # comment
         context_dict['username'] = comment.author.username
         context_dict['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
         context_dict['text'] = comment.text
-        context_dict['rate'] = comment.rate
 
         # reply
         if parent is not None:
@@ -239,7 +236,7 @@ def add_comment(request):
 
         context_dict['id'] = comment.id
         context_dict['root_id'] = comment.root.id if comment.root is not None else ''
-    # JQuery error message
+    # ajax error message
     else:
         context_dict['status'] = 'ERROR'
         context_dict['message'] = list(comment_form.errors.values())[0][0]
