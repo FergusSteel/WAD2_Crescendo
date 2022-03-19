@@ -174,14 +174,15 @@ def edit_playlist(request, pk):
         return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
 
-def userProfile(request, user_id):
+def userProfile(request):
     username = None
     context = {}
     songs = []
     playlists = []
     if request.user.is_authenticated:
         username = request.user.username
-        user = UserProfile.objects.get(user=request.user, id=user_id)
+        user , _ = UserProfile.objects.get_or_create(user=request.user) 
+        user_id = request.user.id
         songs = user.songs.all()
         playlists = user.playlists.all()
 
@@ -192,8 +193,9 @@ def userProfile(request, user_id):
             initial={'content_type': user_content_type.model, 'object_id': user_id})
         context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
                                                           object_id=user_id).count()
-        context['song'] = songs
-        context[playlists] = playlists
+        context['songs'] = songs
+        context['playlists'] = playlists 
+        context['userprofile'] = user
 
     return render(request, 'crescendo/user_profile.html',
                   context=context)
