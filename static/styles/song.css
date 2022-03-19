@@ -1,11 +1,14 @@
 /* CSS FOR SONG PAGE */
-
+* {
+  box-sizing: border-box;
+}
 .leftBar {
-  width: 550px;
-  height: 600px;
-  padding-bottom: 580px;
-  float: left;
-  display: grid;
+    position: absolute;
+    width: 50%;
+    height: 600px;
+    padding-bottom: 580px;
+    float: left;
+    display: grid;
 }
 
 .leftBar h1 {
@@ -14,23 +17,16 @@
 
 .rightBar{
   margin: auto;
-  float: left;
+  float: right;
   padding: 20px;
   height: 600px;
-  width: 750px;
-  margin-left: 2.5%;
+  width: 50%;
   text-indent: 10px;
   line-height: 3;
   text-align: center;
-  border-style: solid;
-  border-width: medium;
+  border-style: solid ;
+  border-width: 1px;
   overflow-y: auto;
-}
-
-.comments {
-  display: block;
-  clear: both;
-  padding: 20px;
 }
 
 
