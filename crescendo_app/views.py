@@ -43,7 +43,7 @@ def show_playlist(request, playlist_slug, playlist_id):
         playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
         playlist_content_type = ContentType.objects.get_for_model(playlist)
         comments = Comment.objects.filter(content_type=playlist_content_type, object_id=playlist_id, parent=None)
-        context_dict['comments'] = comments('-comment_time')
+        context_dict['comments'] = comments.order_by('-comment_time')
         context_dict['comment_form'] = CommentForm(
             initial={'content_type': playlist_content_type.model, 'object_id': playlist_id})
         context_dict['comment_count'] = Comment.objects.filter(content_type=playlist_content_type,
