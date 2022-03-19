@@ -14,7 +14,6 @@
   <script src="{% static '/JS/player.js' %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 
 {% endblock %}
 
@@ -50,19 +49,7 @@
                             {% for field in comment_form %}
                                 {{ field }}
                             {% endfor %}
-                            <div class="row">
-                                <div class = 'col text-center'>
-                                    <form class="rate-form" action="" method="POST" id="{{ comment_id }}">
-                                        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-                                        <button class="fa fa-star btn-default" id="star1"></button>
-                                        <button class="fa fa-star btn-default" id="star2"></button>
-                                        <button class="fa fa-star btn-default" id="star3"></button>
-                                        <button class="fa fa-star btn-default" id="star4"></button>
-                                        <button class="fa fa-star btn-default" id="star5"></button>
-                                    </form>
-                                 </div>
-                            </div>
-                            <span id="comment_error" class="text-danger pull-left text-left"></span>
+                            <span id="comment_error" class="text-danger text left"></span>
                             <input type="submit" value="comment" class="btn btn-primary col-xs-6 col-sm-4 pull-right">
                         </form>
                     {% else %}
@@ -82,7 +69,7 @@
                                      {{ comment.text|safe }}
                                 </div>
                                 <a href="javascript:reply({{ comment.id }});">Reply</a>
-
+                            </div>
                                 {% for reply in comment.root_comment.all %}
                                     <div class="reply">
                                         <span>{{ reply.user.username }}</span>

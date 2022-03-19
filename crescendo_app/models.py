@@ -69,11 +69,6 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments", null=True)
     text = models.CharField(max_length=300)
     comment_time = models.DateTimeField(auto_now_add=True)
-    rate = models.IntegerField(default=0,
-                               validators=[
-                                   MaxValueValidator(5),
-                                   MinValueValidator(0),
-                               ])
 
     # for reply
     root = models.ForeignKey('self', related_name='root_comment', null=True, on_delete=models.DO_NOTHING)
