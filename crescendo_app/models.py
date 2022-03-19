@@ -1,8 +1,11 @@
 # IMPORTS
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.defaultfilters import slugify
 
 
@@ -62,12 +65,23 @@ class Comment(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, null=True)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments", null=True)
     text = models.CharField(max_length=300)
     comment_time = models.DateTimeField(auto_now_add=True)
+    rate = models.IntegerField(default=0,
+                               validators=[
+                                   MaxValueValidator(5),
+                                   MinValueValidator(0),
+                               ])
+
+    # for reply
+    root = models.ForeignKey('self', related_name='root_comment', null=True, on_delete=models.DO_NOTHING)
+    parent = models.ForeignKey('self', related_name='parent_comment', null=True, on_delete=models.DO_NOTHING)
+    reply_to = models.ForeignKey(User, related_name='reply', null=True, on_delete=models.DO_NOTHING)
 
     class Meta:
-        ordering = ['-comment_time']
+        ordering = ['comment_time']
 
 
 class Song(models.Model):

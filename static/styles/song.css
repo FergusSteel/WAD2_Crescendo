@@ -64,3 +64,20 @@ h4.comment-area-title {
 div.django-ckeditor-widget {
     width: 100%;
 }
+
+div.comment {
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 0.5em;
+
+}
+div.reply {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5em;
+    margin-left: 1em;
+
+}
+
+.checked {
+  color: orange;
+}
+

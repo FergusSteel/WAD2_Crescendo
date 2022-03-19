@@ -9,3 +9,4 @@ pycparser==2.21
 pytz==2021.3
 six==1.16.0
 sqlparse==0.4.2
+django-ckeditor==6.2.0

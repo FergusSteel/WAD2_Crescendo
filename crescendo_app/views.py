@@ -42,9 +42,12 @@ def show_playlist(request, playlist_slug, playlist_id):
     try:
         playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
         playlist_content_type = ContentType.objects.get_for_model(playlist)
-        comments = Comment.objects.filter(content_type=playlist_content_type, object_id=playlist_id)
-        context_dict['comments'] = comments
-        context_dict['comment_form'] = CommentForm(initial={'content_type': playlist_content_type.model, 'object_id': playlist_id})
+        comments = Comment.objects.filter(content_type=playlist_content_type, object_id=playlist_id, parent=None)
+        context_dict['comments'] = comments('-comment_time')
+        context_dict['comment_form'] = CommentForm(
+            initial={'content_type': playlist_content_type.model, 'object_id': playlist_id})
+        context_dict['comment_count'] = Comment.objects.filter(content_type=playlist_content_type,
+                                                               object_id=playlist_id).count()
         try:
             songs = []
             for song in Song.objects.all():
@@ -65,13 +68,16 @@ def show_playlist(request, playlist_slug, playlist_id):
 def show_song(request, song_slug, song_id):
     context_dict = {}
 
-
     try:
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
+        # comment and reply for song
         song_content_type = ContentType.objects.get_for_model(song)
-        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id)
-        context_dict['comments'] = comments
-        context_dict['comment_form'] = CommentForm(initial={'content_type': song_content_type.model, 'object_id': song_id})
+        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None, rate=song_id)
+        context_dict['comments'] = comments.order_by('-comment_time')
+        context_dict['comment_form'] = CommentForm(
+            initial={'content_type': song_content_type.model, 'object_id': song_id, 'reply_comment_id': 0})
+        context_dict['comment_count'] = Comment.objects.filter(content_type=song_content_type,
+                                                               object_id=song_id).count()
 
         context_dict['song'] = song
 
@@ -167,7 +173,8 @@ def edit_playlist(request, pk):
 
         return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
-def userProfile(request,  user_id):
+
+def userProfile(request, user_id):
     username = None
     context = {}
     songs = []
@@ -179,13 +186,17 @@ def userProfile(request,  user_id):
         playlists = user.playlists.all()
 
         user_content_type = ContentType.objects.get_for_model(user)
-        comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id)
+        comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
         context['comments'] = comments
         context['comment_form'] = CommentForm(
             initial={'content_type': user_content_type.model, 'object_id': user_id})
+        context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
+                                                          object_id=user_id).count()
+        context['song'] = songs
+        context[playlists] = playlists
 
     return render(request, 'crescendo/user_profile.html',
-                  context={'songs': songs, 'playlists': playlists, 'comments': comments})
+                  context=context)
 
 
 def add_comment(request):
@@ -193,33 +204,41 @@ def add_comment(request):
     context_dict = {}
 
     if comment_form.is_valid():
+        # for comment
         comment = Comment()
         comment.author = comment_form.cleaned_data['user']
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
+        comment.rate = Comment.objects.filter(rate=0).order_by().first
+
+        # for reply
+        parent = comment_form.cleaned_data['parent']
+        if parent is not None:
+            comment.root = parent.root if parent.root is not None else parent
+
+            comment.parent = parent
+            comment.reply_to = parent.author
         comment.save()
 
         # return data
+        # JQurey
         context_dict['status'] = 'SUCCESS'
+        # comment
         context_dict['username'] = comment.author.username
         context_dict['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
         context_dict['text'] = comment.text
+        context_dict['rate'] = comment.rate
+
+        # reply
+        if parent is not None:
+            context_dict['reply_to'] = comment.reply_to.username
+        else:
+            context_dict['reply_to'] = ''
+
+        context_dict['id'] = comment.id
+        context_dict['root_id'] = comment.root.id if comment.root is not None else ''
+    # JQuery error message
     else:
         context_dict['status'] = 'ERROR'
         context_dict['message'] = list(comment_form.errors.values())[0][0]
     return JsonResponse(context_dict)
-
-def userProfile(request): 
-    username = None  
-    songs = [] 
-    playlists = [] 
-    user = None
-    if request.user.is_authenticated:
-        username = request.user.username  
-        user = UserProfile.objects.get(user = request.user)
-        songs = user.songs.all() 
-        playlists = user.playlists.all() 
-        comments = user.comments.all()
-         
-     
-    return render(request,'crescendo/user_profile.html' , context = {'userprofile':user,'songs':songs , 'playlists':playlists , 'comments':comments})

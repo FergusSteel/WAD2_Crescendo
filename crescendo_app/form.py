@@ -4,11 +4,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from ckeditor.widgets import CKEditorWidget
 
-from crescendo_app.models import UserProfile, Song, Playlist, Genre
+from crescendo_app.models import UserProfile, Song, Playlist, Genre, Comment
 
 
 class PlaylistForm(forms.ModelForm):
-    
     name = forms.CharField(max_length=128, help_text="Please enter the playlist name.")
     likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -16,17 +15,18 @@ class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
         fields = ('name',)
- 
-  
-class PlaylistEditForm(forms.ModelForm): 
-    name = forms.CharField(max_length = 128) 
-    image = forms.ImageField()  
-    description = forms.CharField(max_length = 300) 
+
+
+class PlaylistEditForm(forms.ModelForm):
+    name = forms.CharField(max_length=128)
+    image = forms.ImageField()
+    description = forms.CharField(max_length=300)
+
     # genre = forms.ChoiceField(*Genre.objects) 
 
-    class Meta: 
-        model = Playlist  
-        fields = ('name','image','description',)
+    class Meta:
+        model = Playlist
+        fields = ('name', 'image', 'description',)
 
 
 class CommentForm(forms.Form):
@@ -34,6 +34,8 @@ class CommentForm(forms.Form):
     object_id = forms.IntegerField(widget=forms.HiddenInput)
     text = forms.CharField(widget=CKEditorWidget(config_name='comment_ckeditor'),
                            error_messages={'required': 'Comment can not be empty!!'})
+    reply_comment_id = forms.IntegerField(widget=forms.HiddenInput(attrs={'id': 'reply_comment_id'}))
+    rate = forms.IntegerField(widget=forms.HiddenInput)
 
     def __init__(self, *args, **kwargs):
         if 'user' in kwargs:
@@ -48,7 +50,7 @@ class CommentForm(forms.Form):
             raise forms.ValidationError('Your are not log in')
 
         content_type = self.cleaned_data['content_type']
-        object_id  =  self.cleaned_data['object_id']
+        object_id = self.cleaned_data['object_id']
         try:
             model_class = ContentType.objects.get(model=content_type).model_class()
             model_obj = model_class.objects.get(id=object_id)
@@ -57,3 +59,15 @@ class CommentForm(forms.Form):
             raise forms.ValidationError('Comment object does not exist!')
 
         return self.cleaned_data
+
+    def clean_reply_comment_id(self):
+        reply_comment_id = self.cleaned_data['reply_comment_id']
+        if reply_comment_id < 0:
+            raise forms.ValidationError("Reply Error!")
+        elif reply_comment_id == 0:
+            self.cleaned_data['parent'] = None
+        elif Comment.objects.filter(id=reply_comment_id).exists():
+            self.cleaned_data['parent'] = Comment.objects.get(id=reply_comment_id)
+        else:
+            raise forms.ValidationError("Reply Error!")
+        return reply_comment_id
