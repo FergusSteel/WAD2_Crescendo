@@ -207,4 +207,3 @@ def add_question(question , answer):
 if __name__ == "__main__":
     populate()
  
-().id

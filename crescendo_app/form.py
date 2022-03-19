@@ -70,3 +70,4 @@ class CommentForm(forms.Form):
         else:
             raise forms.ValidationError("Reply Error!")
         return reply_comment_id
+

@@ -46,7 +46,7 @@
                 <li class="dropdown">
                     <a href="{% url 'crescendo:userprofile' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{% url 'crescendo:userprofile' %}">User profile</a></li>
+                        <li><a href="{% url 'crescendo:userprofile' %}">User profile</a></li> 
                         <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
                         <li><a href="{% url 'auth_logout' %}">Log Out</a></li>
                     </ul>
