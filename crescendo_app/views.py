@@ -59,7 +59,8 @@ def show_playlist(request, playlist_slug, playlist_id):
         except Song.DoesNotExist:
             context_dict['songs'] = None
 
-        context_dict['crescendo_app'] = playlist
+        context_dict['crescendo_app'] = playlist 
+        context_dict['playlist'] = playlist
 
     except Playlist.DoesNotExist:
         context_dict['crescendo_app'] = None
@@ -148,7 +149,7 @@ def add_playlist(request):
 
         if form.is_valid():
             PlaylistF = form.save(commit=False)
-            form.author = UserProfile.objects.get(user=request.user)
+            form.author = UserProfile.objects.get_or_create(user=request.user)
 
             PlaylistF.author_id = request.user.id
             PlaylistF.save()
