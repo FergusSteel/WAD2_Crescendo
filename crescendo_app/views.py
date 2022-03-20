@@ -247,32 +247,12 @@ def add_comment(request):
     # ajax error message
     else:
         context_dict['status'] = 'ERROR'
-        context_dict['message'] = list(comment_form.errors.values())[0][0]
+        context_dict['message'] = list(comment_form.errors.values())[0][0] 
     return JsonResponse(context_dict)
  
   
 def add_to_playlist(request,song,playlist):    
-
-    # data = {'success': False}  
-    # print("Here")
-    # if request.method=='POST':
-    #   playlist = request.POST.get('playlist')  
-    #   song = request.POST.get('song')    
-    #   playlistObject= Playlist.objects.get(id = playlist)  
-    #   print(playlistObject.name)
-    #   songObject = Song.objects.get(id = song) 
-    #   print(songObject)
-    #   songObject.playlist.add(playlistObject)  
-    #   data['success'] = True 
-    #   print(data) 
-    # return JsonResponse(data) 
-
-
-    print(playlist) 
-    print(song)
     playlistObject= Playlist.objects.get(id = playlist) 
     songObject = Song.objects.get(id = song)
-    songObject.playlist.add(playlist)
+    songObject.playlist.add(playlistObject)
     return index(request , True)
- 
-    #href="{% url 'crescendo:add_to_playlist' song.id playlist.id %}"
