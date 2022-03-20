@@ -1,21 +1,23 @@
 .grid {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  row-gap: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 5%;
 }
 
 .block {
-  padding: 25px;
-  font-size: 30px;
-  text-align: center;
+    padding: 25px;
+    font-size: 30px;
+    text-align: center;
 }
 
 h1 {
-  padding: 20px;
+    padding: 20px;
 }
 
 .block img {
-  padding-bottom: 25px;
-  height: 400px;
-  width: 400px;
+    padding-bottom: 25px;
+    height: 400px;
+    width: 400px;
 }

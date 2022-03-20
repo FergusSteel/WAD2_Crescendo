@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse
 
+
 from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment
 from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
@@ -17,7 +18,7 @@ def index(request , added = False):
     context_dict = {} 
     context_dict['added'] = added
     context_dict['playlists'] = Playlist.objects.all()
-    context_dict['songs'] = Song.objects.all() 
+    context_dict['songs'] = Song.objects.all()[:5]
     return render(request, 'crescendo/index.html', context=context_dict)
 
 
@@ -255,4 +256,11 @@ def add_to_playlist(request,song,playlist):
     playlistObject= Playlist.objects.get(id = playlist) 
     songObject = Song.objects.get(id = song)
     songObject.playlist.add(playlistObject)
-    return index(request , True)
+    return index(request , True) 
+     
+ 
+def add_more_songs(request):  
+    print(request)
+    print("In add more songs") 
+    data = {}
+    return JsonResponse(data)

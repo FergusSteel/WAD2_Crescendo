@@ -1,67 +1,51 @@
-{% extends 'crescendo/base.html' %}
+{% extends 'crescendo/base.html' %} {% load staticfiles %} {% block title %} Crescendo {% endblock %} {% block css %}
+<link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
+<script src="{% static '/JS/sidescroller.js' %}"></script>
+<script src="{% static '/AJAX/index.js' %}"></script>
+{% endblock %} {% block body_block %} {% if added %}
+<h1> Successfully added </h1>
+{% else %}
+<h1>Welcome to Crescendo</h1>
+{% endif %}
+<div>
+    hey there! <br/>
+    <strong>{{ boldmessage }}</strong><br />
+</div>
+<h2 id="playlist title">Popular Playlists</h2>
+<div class="menu-wrapper">
+    <ul class="menu">
 
-{% load staticfiles %}
-{% block title %}
-    Crescendo
-{% endblock %}
+        {% for playlist in playlists %}
+        <li class="item">
+            <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
+                <img class="playlistImages" src="{{ playlist.image.url }}">
+            </a> <br />
+            <p class="playlistName">{{ playlist.name }}</p>
+        </li>
+        {% endfor %}
+    </ul>
 
-{% block css %}
-    <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
-    <script src="{% static '/JS/sidescroller.js' %}"></script>
-{% endblock %}
-    
+    <div class="paddles">
+        <button class="left-paddle paddle hidden" />
 
-
-    {% block body_block %} 
-        {% if added %}
-          <h1> Successfully added </h1>  
-        {% else %} 
-          <h1>Welcome to Crescendo</h1>
-        {% endif %}
-        <div>
-            hey there! <br/>
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <h2 id="playlist title">Popular Playlists</h2>
-        <div class="menu-wrapper">
-            <ul class="menu">
-
-                {% for playlist in playlists %}
-                    <li class="item">
-                        <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
-                            <img class="playlistImages" src="{{ playlist.image.url }}">
-                        </a> <br />
-                        <p class="playlistName">{{ playlist.name }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-          
-            <div class="paddles">
-              <button class="left-paddle paddle hidden"/>
-                
-                  <button class="right-paddle paddle">
+        <button class="right-paddle paddle">
 
                   </button>
-            </div>
-          
-          </div>
-          
-    <h1>Popular Songs</h1><br>
-    <div class="grid">
-      {% if songs %}
-        {% for song in songs %}
-        <div class="block">
-            <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
-              <img src="{{ song.image.url }}"><br>
-              <strong>{{ song.name }}</strong>
-            </a>
-        </div>
-        {% endfor %}
+    </div>
 
-      {% else %}
-        <li><strong>No songs found.</strong></li>
-      {% endif %}
-          
+</div>
 
-    {% endblock %}
+<h1>Popular Songs</h1><br>
+<div class="grid">
+    {% if songs %} {% for song in songs %}
+    <div class="block">
+        <a class='song' href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
+            <img src="{{ song.image.url }}"><br>
+            <strong>{{ song.name }}</strong>
+        </a>
+    </div>
+    {% endfor %} {% else %}
+    <li><strong>No songs found.</strong></li>
+    {% endif %} {% endblock %}
+</div>
