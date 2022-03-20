@@ -6,6 +6,10 @@
     padding: 0 5%;
 }
 
+.index {
+    text-align: center;
+}
+
 .block {
     padding: 25px;
     font-size: 30px;
