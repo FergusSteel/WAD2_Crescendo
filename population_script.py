@@ -32,7 +32,13 @@ def populate():
         {"name": "Sarah",
          "image": "population_script_images/sarah.png"},
         {"name": "Craig",
-         "image": "population_script_images/craig.png"}
+         "image": "population_script_images/craig.png"}, 
+        {"name" : "Michal", 
+        "image" : None}, 
+        {"name" : "Angelo", 
+        "image" : None}, 
+        {"name" : "Fergus", 
+        "image" : None},
     ]
 
     genres = [
@@ -44,7 +50,14 @@ def populate():
         "Alternative Rock",
         "Pop",
         "Rap",
-        "Emo",
+        "Emo", 
+        "Hip-Hop", 
+        "Trap", 
+        "Punk Rock", 
+        "Dance", 
+        "Dub-Step", 
+        "Electronic", 
+        "K-Pop"
     ]
 
     playlists = [
@@ -55,7 +68,17 @@ def populate():
          "description": "Just an upbeat crescendo_app",
          "genres": ["Upbeat", "Mellow"],
          "image": None,
-         "comments": []
+         "comments": [{"comment": "Great collection of songs",
+                       "rating": 4,
+                       "author": "Sarah"},
+                      {"comment": "Could be better",
+                       "rating": 3,
+                       "author": "Greg"
+                       },
+                      {"comment": "Very upbeat and nice to listen to",
+                       "rating": 4,
+                       "author": "Craig"}
+                      ]
          },
         {"author": "Greg",
          "name": "Playlist 2",
@@ -64,7 +87,18 @@ def populate():
          "description": "Just a mellow crescendo_app",
          "genres": ["Upbeat"],
          "image": None,
-         "comments": []
+         "comments": [
+             {"comment": "Plain collection of songs",
+              "rating": 2,
+              "author": "Sarah"},
+             {"comment": "Could be better, better luck next time",
+              "rating": 3,
+              "author": "Greg"
+              },
+             {"comment": ".....",
+              "rating": 4,
+              "author": "Craig"}
+         ]
          },
         {"author": "Sarah",
          "name": "Playlist 3",
@@ -73,7 +107,11 @@ def populate():
          "description": "Just a random crescendo_app",
          "genres": ["Upbeat", "Mellow", "Rock"],
          "image": None,
-         "comments": []
+         "comments": [
+             {"comment": "Great collection of songs",
+              "rating": 4,
+              "author": "Sarah"},
+         ]
          },
         {"author": "Craig",
          "name": "Playlist 4",
@@ -82,7 +120,14 @@ def populate():
          "description": "The best",
          "image": "default.png",
          "genres": ["Mellow", "Pop"],
-         "comments": []
+         "comments":[
+             {"comment": "All time favourite",
+              "rating": 4,
+              "author": "Sarah"},
+             {"comment": "Very upbeat and nice to listen to",
+              "rating": 4,
+              "author": "Greg"}
+         ]
          },
         {"author": "Sarah",
          "name": "Playlist 5",
@@ -91,8 +136,68 @@ def populate():
          "description": "Just a crescendo_app",
          "genres": ["Rap"],
          "image": None,
-         "comments": []
+         "comments": [
+             {"comment": "Great collection of songs",
+              "rating": 4,
+              "author": "Sarah"},
+             {"comment": "Could be better",
+              "rating": 3,
+              "author": "Greg",
+              }
+         ]
+         },  
+        {"author": "Angelo",
+         "name": "Best of 2020",
+         "views": 0,
+         "numberOfComments": 0,
+         "description": "Biggest Hits from 2020 - the quarantine year",
+         "genres": ["Rap", "Pop", "Electronic" , "Dance" , "Punk Rock"],
+         "image": None,
+         "comments":[
+         ]
+        },
+        {"author": "Michal",
+         "name": "Movie Soundtracks",
+         "views": 500,
+         "numberOfComments": 1,
+         "description": "Some of the best music pieces",
+         "image": None,
+         "genres": ["Mellow"],
+         "comments": [
+             {"comment": "Heat",
+              "rating": 4,
+              "author": "Angelo"},
+         ]
+         }, 
+         {"author": "Fergus",
+         "name": "Personal Favourites",
+         "views": 10,
+         "numberOfComments": 1,
+         "description": "Some of my favourite music pieces, all genres included",
+         "image": None,
+         "genres": ["Upbeat",
+        "Mellow",
+        "Rock",
+        "Punk",
+        "Indie",
+        "Alternative Rock",
+        "Pop",
+        "Rap",
+        "Emo", 
+        "Hip-Hop", 
+        "Trap", 
+        "Punk Rock", 
+        "Dance", 
+        "Dub-Step", 
+        "Electronic", 
+        "K-Pop"],
+         "comments": [
+             {"comment": "Some of my favourites are here",
+              "rating": 4,
+              "author": "Angelo"},
+         ]
          }
+
 
     ]
 
