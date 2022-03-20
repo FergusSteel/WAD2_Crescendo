@@ -13,8 +13,12 @@
     
 
 
-    {% block body_block %}
-        <h1>Welcome to Crescendo</h1>
+    {% block body_block %} 
+        {% if added %}
+          <h1> Successfully added </h1>  
+        {% else %} 
+          <h1>Welcome to Crescendo</h1>
+        {% endif %}
         <div>
             hey there! <br/>
             <strong>{{ boldmessage }}</strong><br />

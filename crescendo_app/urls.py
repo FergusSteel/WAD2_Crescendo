@@ -41,5 +41,6 @@ urlpatterns = [
                        name='add_playlist'),
                   path('playlist/edit_playlist/<int:pk>/', views.edit_playlist, name='edit_playlist'),
                   path('myaccount/', views.userProfile, name='userprofile'),
-                  path('add_comment/', views.add_comment, name='add_comment'),
+                  path('add_comment/', views.add_comment, name='add_comment'), 
+                  path('add_to_playlist/<int:song>-<int:playlist>', views.add_to_playlist, name='add_to_playlist'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

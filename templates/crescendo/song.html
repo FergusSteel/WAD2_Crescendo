@@ -11,7 +11,7 @@
 
 {% block css %}
   <link rel="stylesheet" type="text/css" href="{% static '/styles/song.css' %}" />
-  <script src="{% static '/JS/player.js' %}"></script>
+  <script src="{% static '/JS/player.js' %}"></script> 
   <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 
@@ -24,8 +24,22 @@
             <div class="songPlayer">
               <img src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
               <img id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
-                <audio id="audiofile" src="{{ song.actualSong.url }}"></audio>
-            </div>
+                <audio id="audiofile" src="{{ song.actualSong.url }}"></audio> 
+            </div> 
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add to Your Playlist
+                <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="about-us"> 
+                    {% for playlist in playlists %}  
+                    <li class = "playlists">
+                        <a href = "{% url 'crescendo:add_to_playlist' song.id playlist.id %}" class = "add_to_playlist" > {{ playlist.name }}</a>  
+                    </li>
+                    
+                    {% endfor %}
+                </ul>
+                </div>
           </div>
 
         <div class="rightBar">

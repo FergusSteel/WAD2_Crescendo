@@ -13,10 +13,11 @@ from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
 
-def index(request):
-    context_dict = {}
+def index(request , added = False):
+    context_dict = {} 
+    context_dict['added'] = added
     context_dict['playlists'] = Playlist.objects.all()
-    context_dict['songs'] = Song.objects.all()
+    context_dict['songs'] = Song.objects.all() 
     return render(request, 'crescendo/index.html', context=context_dict)
 
 
@@ -66,12 +67,19 @@ def show_playlist(request, playlist_slug, playlist_id):
 
 
 def show_song(request, song_slug, song_id):
-    context_dict = {}
+    context_dict = {} 
+    playlists = None
 
     try:
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
         # comment and reply for song
-        song_content_type = ContentType.objects.get_for_model(song)
+        song_content_type = ContentType.objects.get_for_model(song)  
+        if request.user.is_authenticated:  
+            user , _ = UserProfile.objects.get_or_create(user = request.user)
+            playlists = user.playlists.all() 
+          
+        print(playlists)
+        context_dict['playlists'] = playlists
         comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None)
         context_dict['comments'] = comments.order_by('-comment_time')
         context_dict['comment_form'] = CommentForm(
@@ -241,3 +249,30 @@ def add_comment(request):
         context_dict['status'] = 'ERROR'
         context_dict['message'] = list(comment_form.errors.values())[0][0]
     return JsonResponse(context_dict)
+ 
+  
+def add_to_playlist(request,song,playlist):    
+
+    # data = {'success': False}  
+    # print("Here")
+    # if request.method=='POST':
+    #   playlist = request.POST.get('playlist')  
+    #   song = request.POST.get('song')    
+    #   playlistObject= Playlist.objects.get(id = playlist)  
+    #   print(playlistObject.name)
+    #   songObject = Song.objects.get(id = song) 
+    #   print(songObject)
+    #   songObject.playlist.add(playlistObject)  
+    #   data['success'] = True 
+    #   print(data) 
+    # return JsonResponse(data) 
+
+
+    print(playlist) 
+    print(song)
+    playlistObject= Playlist.objects.get(id = playlist) 
+    songObject = Song.objects.get(id = song)
+    songObject.playlist.add(playlist)
+    return index(request , True)
+ 
+    #href="{% url 'crescendo:add_to_playlist' song.id playlist.id %}"
