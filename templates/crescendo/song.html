@@ -31,12 +31,11 @@
                 Add to Your Playlist
                 <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="about-us"> 
+                <ul class="dropdown-menu" aria-labelledby="add_to_playlist"> 
                     {% for playlist in playlists %}  
                     <li class = "playlists">
                         <a href = "{% url 'crescendo:add_to_playlist' song.id playlist.id %}" class = "add_to_playlist" > {{ playlist.name }}</a>  
                     </li>
-                    
                     {% endfor %}
                 </ul>
                 </div>
