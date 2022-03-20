@@ -59,11 +59,10 @@ def show_playlist(request, playlist_slug, playlist_id):
         except Song.DoesNotExist:
             context_dict['songs'] = None
 
-        context_dict['crescendo_app'] = playlist 
         context_dict['playlist'] = playlist
 
     except Playlist.DoesNotExist:
-        context_dict['crescendo_app'] = None
+        context_dict['playlist'] = None
 
     return render(request, 'crescendo/playlist.html', context=context_dict)
 
