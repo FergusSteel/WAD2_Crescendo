@@ -1,30 +1,79 @@
 {% extends 'crescendo/base.html' %} {% load static %} {% block title %} Crescendo - {{ user.username }} {% endblock %} {% block css%}
-<link rel="stylesheet" type="text/css" href="{% static '/styles/edit_profile.css' %}" /> {% endblock %} {% block body_block %}
+<link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static '/styles/user_profile.css' %}" />
+<script src="{% static '/JS/sidescroller.js' %}">
+</script>
+{% endblock %} {% block body_block %}
 <div class="main">
-    <div class = "grid">
-        <div class="user-info item large">
-            <h1 class = "block">{{ user.username }}'s profile:</h1> 
-            <img src="{{ userprofile.image.url }}" alt = "profile-image">
-            <ul class = "block">
+    <div class="grid">
+        <div class="user-info">
+            <h1>{{ user.username }}'s profile:</h1>
+            <ul>
                 <li>Profile Views : {{ userprofile.numberOfProfileViews }}</li>
                 <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
             </ul>
         </div>
-        <div class='playlists item wide'>
-            {% for playlist in playlists %}
-            <p> {{ playlist.name }} </p> {% endfor %}
+        <div class="user-image">
+            <img src="{{ userprofile.image.url }}" alt="profile-image">
         </div>
-    <div class='songs item wide'>
-        {% for song in songs %}
-        <p> {{ song.name }}{% endfor %}
-    </div>  
-    <div class="comments item ">
+        <div class='playlists '>
+            <h2>Your Playlists</h2>
+            <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a>
+            <div class="menu-wrapper ">
+                <ul class="menu ">
+                    {% for playlist in playlists %}
+                    <li class="item ">
+                        <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %} ">
+                            <img class="playlistImages " src="{{ playlist.image.url }} ">
+                        </a> <br />
+                        <p class="playlistName ">{{ playlist.name }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <button class="on-top ">Add a new playlist</button>
+                <div class="paddles ">
+                    <button class="left-paddle paddle hidden ">
+
+                    <button class="right-paddle paddle ">
+        
+                          </button>
+                </div>
+
+            </div>
+        </div>
+        <div class='songs'>
+            <h2> Your Songs </h2>
+            <a href="#">Upload a song</a>
+            <div class="menu-wrapper ">
+                <ul class="menu ">
+                    {% for song in songs %}
+                    <li class="item ">
+                        <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %} ">
+                            <img class="song-image " src="{{ song.image.url }} ">
+                        </a> <br />
+                        <p class="playlistName ">{{ song.name }}</p>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+                <div class="paddles ">
+                    <button class="left-paddle paddle hidden ">
+
+                    <button class="right-paddle paddle ">
+        
+                          </button>
+                </div>
+
+            </div>
+        </div>
+        <div class="comments ">
+            <h2> Your Comments </h2>
             {% for comment in comments %}
-            <div class="comment">
+            <div class="comment ">
                 {{ comment.comment }} {{ comment.rating }}
             </div>
             {% endfor %}
-    </div> 
+        </div>
     </div>
 </div>
 

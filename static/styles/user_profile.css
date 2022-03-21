@@ -1,0 +1,56 @@
+ .grid {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     grid-template-rows: 1fr 1fr 1fr 1fr;
+     grid-template-areas: "user-info songs songs" "user-image songs songs" "user-image playlists playlists" "comments playlists playlists";
+     grid-gap: 1%;
+     height: 100vh;
+     width: 100%;
+     margin: auto;
+ }
+ 
+ .user-image {
+     grid-area: user-image;
+     display: flex;
+     justify-content: center;
+ }
+ 
+ .user-info {
+     grid-area: user-info;
+ }
+ 
+ .songs {
+     grid-area: songs;
+     padding: 2%
+ }
+ 
+ .playlists {
+     grid-area: playlists;
+     padding: 2%
+ }
+ 
+ .comments {
+     grid-area: comments;
+ }
+ 
+ .song-image {
+     width: 150%;
+     height: auto;
+     margin: auto;
+ }
+ 
+ .menu {
+     height: inherit;
+ }
+ 
+ @media screen and (max-width: 700px) {
+     .grid {
+         grid-template-columns: 1fr;
+         grid-template-rows: 1fr 2fr 1fr 1fr 1fr;
+         grid-template-areas: "user-info" "user-image" "songs" "playlists" "comments";
+     }
+ }
+ 
+ .on-top {
+     z-index: 99;
+ }

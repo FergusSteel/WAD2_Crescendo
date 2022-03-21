@@ -1,11 +1,35 @@
 .navbar {
-    background-color: #d6e9c6;
+    padding: 1.5rem;
 }
 
 footer.navbar-fixed-bottom {
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 }
 
 body {
-    margin-bottom: 5%;
+    padding-bottom: 5%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+.top-nav {
+    left: 50%;
+    position: absolute;
+    transform: translatex(-50%);
+}
+
+.top-nav a {
+    font-size: 500%;
+    color: #5336eb;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-item:hover {
+    background: #5336eb;
+    color: #E9DAC1;
 }
