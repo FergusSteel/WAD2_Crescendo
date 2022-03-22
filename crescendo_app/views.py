@@ -3,7 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect 
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 from django.urls import reverse
@@ -17,8 +18,8 @@ from django.shortcuts import redirect
 def index(request , added = False):
     context_dict = {} 
     context_dict['added'] = added
-    context_dict['playlists'] = Playlist.objects.all()
-    context_dict['songs'] = Song.objects.all()[:5]
+    context_dict['playlists'] = Playlist.objects.all() 
+    context_dict['songs'] = Song.objects.all()[:3]
     return render(request, 'crescendo/index.html', context=context_dict)
 
 
@@ -96,7 +97,8 @@ def show_song(request, song_slug, song_id):
     return render(request, 'crescendo/song.html', context=context_dict)
 
 
-def search(request):
+def search(request): 
+    print("HERE")
     search_word = request.GET.get('q', '').strip()
     condition = None
     for word in search_word.split(' '):
@@ -152,8 +154,10 @@ def add_playlist(request):
 
             PlaylistF.author_id = request.user.id
             PlaylistF.save()
+             
+            return redirect(request.META.get('HTTP_REFERER'))
 
-            return redirect('/crescendo/')
+            # return redirect('/crescendo/')
         else:
 
             print(form.errors)
@@ -217,7 +221,9 @@ def add_comment(request):
     if comment_form.is_valid():
         # for comment
         comment = Comment()
-        comment.author = comment_form.cleaned_data['user']
+        comment.author = comment_form.cleaned_data['user'] 
+        user_profile , _ = UserProfile.objects.get_or_create(user = comment_form.cleaned_data['user']) 
+        user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
 

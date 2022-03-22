@@ -9,13 +9,15 @@
 
 
 
-{% block body_block %}
+{% block body_block %} 
+    <div class = "container text-center mb-5 mt-5">
     <h1>Register for Rango</h1>
     <p>
         <form method="POST" action=".">
         {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Register" />
+            <input class = "btn-primary btn" type="submit" value="Register" />
         </form>
-    </p>
+    </p> 
+    </div>
 {% endblock %}

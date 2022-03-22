@@ -4,11 +4,13 @@
     Logged Out
 {% endblock %}
 
-{% block body_block %}
-    <h1>Logged Out</h1>
+{% block body_block %} 
+    <div class = "container mb-4 mt-4 text-center">
+        <h1>Logged Out</h1>
 
-    <p>
-        You have been successfully logged out. Thanks for spending time on crescendo!
-    </p>
-    <a href="{% url 'crescendo:index' %}">Click here back to the home page</a>
+        <p>
+            You have been successfully logged out. Thanks for spending time on crescendo!
+        </p>
+        <a href="{% url 'crescendo:index' %}">Click here back to the home page</a> 
+    </div>
 {% endblock %}

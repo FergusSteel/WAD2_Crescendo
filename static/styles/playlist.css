@@ -1,5 +1,5 @@
 /* Playlist Summary Styling */
-.playlistSummary {
+/* .playlistSummary {
   float: left;
   padding-top: 5px;
   padding-left: 50px;
@@ -10,7 +10,7 @@
 }
 
 /* Song List Styling */
-.playlistSongs {
+/* .playlistSongs {
   padding: 5px;
   padding-left: 25%;
 
@@ -26,4 +26,8 @@
 
 .songBlock {
   display: grid;
+} */  
+ 
+.wide { 
+  width : 100%;
 }

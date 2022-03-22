@@ -237,6 +237,30 @@ def populate():
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
             "comments": []
+        }, 
+        {
+            "author": "Michal",
+            "genres": ["Rap", "Rock"],
+            "name": "Tuesday",
+            "artist": "Michal",
+            "numberOfComments": 0,
+            "image": None,
+            "lyrics": None,
+            "playlists": [],
+            "actualSong": "population_script_music/sound3.mp3",
+            "comments": []
+        }, 
+                {
+            "author": "Fergus",
+            "genres": ["Punk Rock"],
+            "name": "Song",
+            "artist": "Fergus",
+            "numberOfComments": 0,
+            "image": None,
+            "lyrics": None,
+            "playlists": [],
+            "actualSong": "population_script_music/sound3.mp3",
+            "comments": []
         }
     ]
 

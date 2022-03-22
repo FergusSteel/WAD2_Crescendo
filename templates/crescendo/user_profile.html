@@ -6,17 +6,17 @@
 {% endblock %} {% block body_block %}
 <div class="main">
     <div class="grid">
-        <div class="user-info">
+        <div class="user-info grid-item">
             <h1>{{ user.username }}'s profile:</h1>
             <ul>
                 <li>Profile Views : {{ userprofile.numberOfProfileViews }}</li>
                 <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
             </ul>
         </div>
-        <div class="user-image">
+        <div class="user-image grid-item">
             <img src="{{ userprofile.image.url }}" alt="profile-image">
         </div>
-        <div class='playlists '>
+        <div class='playlists grid-item'>
             <h2>Your Playlists</h2>
             <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a>
             <div class="menu-wrapper ">
@@ -41,7 +41,7 @@
 
             </div>
         </div>
-        <div class='songs'>
+        <div class='songs grid-item'>
             <h2> Your Songs </h2>
             <a href="#">Upload a song</a>
             <div class="menu-wrapper ">
@@ -64,16 +64,18 @@
                           </button>
                 </div>
 
-            </div>
+            </div> 
+        </div> 
+        <div class = "buttons grid-item"> 
         </div>
-        <div class="comments ">
+        <!-- <div class="comments ">
             <h2> Your Comments </h2>
             {% for comment in comments %}
             <div class="comment ">
                 {{ comment.comment }} {{ comment.rating }}
             </div>
             {% endfor %}
-        </div>
+        </div> -->
     </div>
 </div>
 

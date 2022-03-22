@@ -2,10 +2,19 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 5%;
+} 
+ 
+.index-items { 
+    margin-top: 5%; 
+    margin-bottom: 5%; 
+    text-align: left;
+} 
+ 
+.jumbotron { 
+    background-image: url("https://get.pxhere.com/photo/silhouette-musical-note-clef-bass-treble-music-audio-sound-sonic-song-hearing-aural-ears-notes-black-and-white-text-font-automotive-design-drawing-design-line-line-art-monochrome-art-angle-monochrome-photography-illustration-hand-pattern-diagram-graphics-artwork-product-circle-1444321.jpg");
 }
-
 .index {
     text-align: center;
 }
@@ -16,12 +25,9 @@
     text-align: center;
 }
 
-h1 {
-    padding: 20px;
-}
 
-.block img {
+.image {
     padding-bottom: 25px;
-    height: 400px;
-    width: 400px;
+    height: 250px;
+    width: 250px;
 }

@@ -1,4 +1,4 @@
-/* CSS FOR SONG PAGE */
+/* CSS FOR SONG PAGE
 * {
   box-sizing: border-box;
 }
@@ -72,4 +72,53 @@ div.reply {
     margin-left: 1em;
 
 }
+ */
+  
+ .songPlayer {
+  padding: 20px;
+  position: relative;
+}
+  
+.songPlayer img {
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  position: relative;
+}    
+ 
+#topimage { 
+  position: absolute; 
+  opacity : 0.2;
+}
 
+ 
+  
+#topimage {
+  position: absolute;
+  z-index: 2;
+  opacity: 0.3;  
+  
+} 
+ 
+.wide { 
+  width : 100%; 
+  margin : 0.5%;
+} 
+ 
+#dropdownMenuButton1 { 
+  position: relative; 
+  bottom: -4rem;
+}  
+
+ 
+@media only screen and (max-width:1000px) { 
+  #dropdownMenuButton1 { 
+    position:static; 
+    margin : 5%;
+  }  
+  .comment-area { 
+    padding-left: 20px;
+  }
+   
+
+}

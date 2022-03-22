@@ -3,12 +3,12 @@
 
 {% block body_block %}
 {%if user.is_authenticated%}
-<div class="jumbotron p-4">
+<div class="jumbotron p-4 text-center">
     <div class="container">
     <h1 class="jumbotron-heading">Add a playlist {{playlist.name}}</h1>
     </div>
 </div>
-<div class="container">
+<div class="container text-center">
     <div class="row">
         <form role="form" id="playlist_form" method="post"
             action="{% url 'crescendo:add_playlist' %}">
@@ -21,7 +21,8 @@
             {{ field.help_text }}<br />
             {{ field }}<br />
             <div class="p-2"></div>
-        {% endfor %}
+        {% endfor %} 
+        <input type="hidden" name="next" value="{{ request.path }}">
         <br />
         <button class="btn btn-primary" type="submit" name="submit">
             Add Playlist

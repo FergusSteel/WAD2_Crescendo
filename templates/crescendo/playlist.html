@@ -1,10 +1,17 @@
 {% extends 'crescendo/base.html' %} {% load static %} {% block title %} {% if playlist %} {{ playlist.name }} {% else %} Playlist Does Not Exist {% endif %} {% endblock %} {% block css %}
-<link rel="stylesheet" type="text/css" href="{% static '/styles/playlist.css' %}" /> {% endblock %} {% block body_block %} {% if playlist %}
-<div class="playlistSummary">
-    <h1>{{ playlist.name }}</h1><br>
-    <img src="{{ playlist.image.url }}"><br>
-    <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
-</div>
+<link rel="stylesheet" type="text/css" href="{% static '/styles/playlist.css' %}" /> {% endblock %} 
+ {% block body_block %}   
+ {% if playlist %}  
+<div class = "container"> 
+<div class = "row"> 
+    <div class = "col-md">
+    <div class="playlistSummary">
+        <h1>{{ playlist.name }}</h1><br>
+        <img src="{{ playlist.image.url }}"><br>
+        <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
+    </div> 
+    </div> 
+    <div class = "col-md">
 <div class="playlistSongs">
     <h1>Song List</h1>
     {% if songs %} {% for song in songs %}
@@ -17,6 +24,8 @@
         </a>
     </div>
     <br> {% endfor %} {% else %} {{ playlist.name }} has no songs yet. {% endif %}
+</div> 
+</div> 
 </div>
 <div class="row">
     <div class="col-xs-10 col-xs-offset-1">

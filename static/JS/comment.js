@@ -1,6 +1,7 @@
 $("#comment_form").submit(function() {
 
-    // check none
+    // check none 
+    console.log("Here");
 
     $("#comment_error").text('');
     if (CKEDITOR.instances["id_text"].document.getBody().getText().trim() === '') {

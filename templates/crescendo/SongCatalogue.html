@@ -11,12 +11,13 @@
 
     {% block body_block %}
     <h1><strong>Songs</strong></h1>
-    <div class="grid">
-      {% if songs %}
-        {% for song in songs %}
-          <div class="block">
+    <div class="container"> 
+      {% if songs %} 
+      <div class = "row text-left">
+        {% for song in songs %} 
+          <div class="col-lg">
             <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
-              <img src="{{ song.image.url }}"><br>
+              <img class = "rounded image" src="{{ song.image.url }}"><br>
               <strong>{{ song.name }}</strong>
             </a>
           </div>
