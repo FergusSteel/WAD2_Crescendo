@@ -60,7 +60,9 @@ def show_playlist(request, playlist_slug, playlist_id):
         except Song.DoesNotExist:
             context_dict['songs'] = None
 
-        context_dict['playlist'] = playlist
+        context_dict['playlist'] = playlist 
+        playlist.views = playlist.views + 1 
+        playlist.save()
 
     except Playlist.DoesNotExist:
         context_dict['playlist'] = None

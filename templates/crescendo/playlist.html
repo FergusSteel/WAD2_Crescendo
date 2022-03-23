@@ -3,7 +3,7 @@
  {% block body_block %}   
  {% if playlist %}  
 <div class = "container"> 
-<div class = "row"> 
+<div class = "row top-row"> 
     <div class = "col-md">
     <div class="playlistSummary">
         <h1>{{ playlist.name }}</h1><br>
@@ -11,15 +11,15 @@
         <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
     </div> 
     </div> 
-    <div class = "col-md">
-<div class="playlistSongs">
-    <h1>Song List</h1>
+    <div class = "col-md"> 
+        <h1>Song List</h1>
+<div class="playlistSongs overflow-auto">
     {% if songs %} {% for song in songs %}
     <div class="songBlock">
         <a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}">
             <img src="{{ song.image.url }}">
             <p>
-                <strong>{{ song.name }}</strong><br> {{ song.description }}
+                <strong class = "inline" >{{ song.name }}</strong><br>
             </p>
         </a>
     </div>
@@ -27,59 +27,76 @@
 </div> 
 </div> 
 </div>
-<div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-        <div class="comment-area">
-            <h4 class="comment-area-title">Comment Here</h4>
-            {% if user.is_authenticated %}
-            <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden">
-                <label>{{ user.username }}, comment here!</label>
+<div class = "row">
+    <div class="comment-area">
+        <h4 class="comment-area-title">Comment Here</h4> 
+    </div>
+        {% if user.is_authenticated %} 
+            
+            <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden"> 
+                <div class = "row"> 
+                <label>{{ user.username }}, comment here!</label>  
+                </div> 
+                <div class = "row">
                 <div id="reply_content_container" style="display:none">
                     <p>Reply: </p>
                     <div id="reply_content"></div>
+                </div> 
+                </div> 
+                <div class = "row">
+                {% csrf_token %}
+                {% for field in comment_form %}
+                    {{ field }}
+                {% endfor %}
+                <span id="comment_error" class="text-danger text left"></span>  
                 </div>
-                {% csrf_token %} {% for field in comment_form %} {{ field }} {% endfor %}
-                <span id="comment_error" class="text-danger text left"></span>
-                <input type="submit" value="comment" class="btn btn-primary col-xs-6 col-sm-4 pull-right">
+            </div> 
+                <div class = "row">
+                <input type="submit" value="comment" class="btn btn-primary col-xs-6 col-sm-4 pull-right wide"> 
+                </div>
             </form>
-            {% else %} You are not logged in, please log in!<br/>
-            <a href="{% url 'auth_login' %}">Login here</a> {% endif %}
-        </div>
+        {% else %}
+           You are not logged in, please log in!<br/>
+            <a href="{% url 'auth_login' %}">Login here</a>
+        {% endif %}
+    </div>
 
-        <div class="comment-area">
-            <h4 class="comment-area-title">Comment({{ comment_count }})</h4>
-            <div id="comment_list">
-                {% for comment in comments %}
-                <div id='root_{{ comment.id }}' class="comment">
+    <div class="comment-area">
+        <h4 class="comment-area-title">Comment({{ amount_of_comments }})</h4>
+        <div id="comment_list">
+            {% for comment in comments %}
+                <div id ='root_{{ comment.id }}' class="comment">
                     <span>{{ comment.user.username }}</span>
                     <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }})：</span>
-                    <div id='comment_{{ comment.id}}'>
-                        {{ comment.text|safe }}
+                    <div id = 'comment_{{ comment.id}}'>
+                         {{ comment.text|safe }}
                     </div>
                     <a href="javascript:reply({{ comment.id }});">Reply</a>
                 </div>
-                {% for reply in comment.root_comment.all %}
-                <div class="reply">
-                    <span>{{ reply.user.username }}</span>
-                    <span>({{  reply.comment_time|date:"Y-m-d H:i:s" }})</span>
-                    <span>reply</span>
-                    <span>{{ reply.reply_to.username }}: </span>
-                    <div id='comment_{{ reply.id}}'>
-                        {{ reply.text|safe }}
-                    </div>
-                    <a href="javascript:reply({{ reply.id }});">Reply</a> {% endfor %}
+                    {% for reply in comment.root_comment.all %}
+                        <div class="reply">
+                            <span>{{ reply.user.username }}</span>
+                            <span>({{  reply.comment_time|date:"Y-m-d H:i:s" }})</span>
+                            <span>reply</span>
+                            <span>{{ reply.reply_to.username }}: </span>
+                             <div id ='comment_{{ reply.id}}'>
+                                {{ reply.text|safe }}
+                             </div>
+                            <a href="javascript:reply({{ reply.id }});">Reply</a>
+                        {% endfor %}
+                        </div>
+                    {% empty %}
+                        <span id="no_comment">There are no comments now!</span>
                 </div>
-                {% empty %}
-                <span id="no_comment">There are no comments now!</span>
-            </div>
-            {% endfor %}
+                    {% endfor %}
         </div>
     </div>
 </div>
 </div>
-{% else %} Playlist Does Not Exist {% endif %} {% endblock %} {% block script_extends %}
+{% else %} Playlist Does Not Exist {% endif %} {% endblock %}  
+{% block script_extends %}
 <script type="text/javascript">
     var myUrl = "{% url 'crescendo:add_comment' %}"
 </script>
-<script src="{% static " /JS/comment.js " %}"></script>
+<script src="{% static '/JS/comment.js' %}"></script>
 {% endblock %}
