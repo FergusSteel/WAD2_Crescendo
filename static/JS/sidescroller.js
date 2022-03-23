@@ -67,7 +67,7 @@ $(document).ready(function() {
     // scroll to left
     $(rightPaddle).on('click', function() {
         $('.menu').animate({
-            scrollLeft: getMenuPosition() + 400
+            scrollLeft: getMenuPosition() + 150
         }, scrollDuration);
     });
 
@@ -75,7 +75,7 @@ $(document).ready(function() {
     $(leftPaddle).on('click', function() {
 
         $('.menu').animate({
-            scrollLeft: getMenuPosition() - 400
+            scrollLeft: getMenuPosition() - 150
         }, scrollDuration);
     });
 });
