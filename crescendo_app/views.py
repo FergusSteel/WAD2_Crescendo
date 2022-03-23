@@ -83,7 +83,6 @@ def show_song(request, song_slug, song_id):
             user , _ = UserProfile.objects.get_or_create(user = request.user)
             playlists = user.playlists.all() 
           
-        print(playlists)
         context_dict['playlists'] = playlists
         comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None)
         context_dict['comments'] = comments.order_by('-comment_time')
@@ -101,7 +100,6 @@ def show_song(request, song_slug, song_id):
 
 
 def search(request): 
-    print("HERE")
     search_word = request.GET.get('q', '').strip()
     condition = None
     for word in search_word.split(' '):
@@ -167,7 +165,6 @@ def add_playlist(request):
 
 
 def edit_playlist(request, pk):
-    print(pk)
     try:
         playlist = Playlist.objects.get(id=pk)
     except Playlist.DoesNotExist:
@@ -233,7 +230,7 @@ def add_comment(request):
         user_profile.numberOfComments = int(user_profile.numberOfComments) + 1 
         user_profile.save()
         comment.text = comment_form.cleaned_data['text']
-        comment.content_object = comment_form.cleaned_data['content_object']
+        comment.content_object = comment_form.cleaned_data['content_object'] 
 
         # for reply
         parent = comment_form.cleaned_data['parent']
@@ -274,8 +271,6 @@ def add_to_playlist(request,song,playlist):
      
  
 def add_more_songs(request):  
-    print(request)
-    print("In add more songs") 
     data = {}
     return JsonResponse(data)
 
@@ -304,8 +299,6 @@ def edit_profile(request):
             profile.image = form.cleaned_data.get("image") 
             profile.save() 
             return redirect(f'/crescendo/userprofile/{user.id}') 
-        else: 
-            print(form.errors)
     else:
         form = EditUserProfile()
 
