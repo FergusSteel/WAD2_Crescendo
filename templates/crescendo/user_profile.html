@@ -74,8 +74,10 @@
 
             </div> 
         </div> 
-        <div class = "buttons grid-item">  
-            <a class = "btn btn-primary" href = "{% url 'crescendo:edit_profile' %}">Edit Profile</a>
+        <div class = "buttons grid-item">   
+            {% if userNotNative == user %}
+            <a class = "btn btn-primary wide" href = "{% url 'crescendo:edit_profile' %}">Edit Profile</a> 
+            {% endif %}
         </div>
     </div>
 </div>

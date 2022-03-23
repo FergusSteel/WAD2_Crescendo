@@ -6,14 +6,14 @@
 {% endblock %}
   
 {% block css %} 
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '/styles/faq.css' %}" />  -->
-    <!-- <script src="{% static '/JS/faq.js' %}"></script> -->
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/faq.css' %}" /> 
 {% endblock %} 
 
 {% block body_block %}  
     <div class = "mb-3 mt-3">
     <h2> FAQ </h2> 
-    {% if questions %} 
+    {% if questions %}  
+    <!-- BOOSTRAP ACCORDION - BUT CSS ONLY -->
     <div id="accordion">  
     {% for question in questions %}
         <div class="card mt-3 mb-3">
@@ -25,7 +25,7 @@
             </h5>
           </div>
       
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div id="collapseOne" data-parent="#accordion">
             <div class="card-body">
               {{ question.answer }}
             </div>

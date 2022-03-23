@@ -43,7 +43,7 @@
  .song-image {
      width: 150%;
      height: auto;
-     margin: auto;
+     margin: auto; 
  }
  
  .menu {
@@ -58,13 +58,20 @@
      .grid {
          grid-template-columns: 1fr;
          grid-template-rows: 1fr 2fr 1fr 1fr 1fr 1fr;
-         grid-template-areas: "user-info" "user-image" "songs" "playlists" "comments" "footer";
+         grid-template-areas: "user-info" "user-image" "songs" "playlists" "buttons"  "footer";
      } 
      .footer { 
          display: inline-block;
+     } 
+     .user-image img { 
+        max-width: 500px;
      }
  }
  
  .on-top {
      z-index: 99;
+ } 
+  
+ .wide { 
+     width:100%;
  }
