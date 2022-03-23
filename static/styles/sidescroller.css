@@ -81,3 +81,8 @@ span {
     display: inline-block;
     width: 100px;
 }
+
+.song {
+    color:black;
+    text-decoration: none;
+}
