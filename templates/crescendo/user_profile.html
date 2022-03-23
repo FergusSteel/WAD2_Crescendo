@@ -1,4 +1,4 @@
-{% extends 'crescendo/base.html' %} {% load static %} {% block title %} Crescendo - {{ user.username }} {% endblock %} {% block css%}
+{% extends 'crescendo/base.html' %} {% load static %} {% block title %} Crescendo - {{ userNotNative.username }} {% endblock %} {% block css%}
 <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static '/styles/user_profile.css' %}" />
 <script src="{% static '/JS/sidescroller.js' %}">
@@ -7,7 +7,7 @@
 <div class="main">
     <div class="grid">
         <div class="user-info grid-item">
-            <h1>{{ user.username }}'s profile:</h1>
+            <h1>{{ userNotNative.username }}'s profile:</h1>
             <ul>
                 <li>Profile Views : {{ userprofile.numberOfProfileViews }}</li>
                 <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
@@ -17,8 +17,10 @@
             <img src="{{ userprofile.image.url }}" alt="profile-image">
         </div>
         <div class='playlists grid-item'>
-            <h2>Your Playlists</h2>
-            <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a>
+            <h2>{{ userNotNative.username }}'s Playlists</h2> 
+            {% if user == userNotNative %}
+                <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a> 
+            {% endif %}
             <div class="menu-wrapper ">
                 <ul class="menu ">
                     {% for playlist in playlists %}
@@ -29,8 +31,10 @@
                         <p class="playlistName ">{{ playlist.name }}</p>
                     </li>
                     {% endfor %}
-                </ul>
-                <button class="on-top ">Add a new playlist</button>
+                </ul> 
+                {% if user == userNotNative %}
+                    <button class="on-top ">Add a new playlist</button> 
+                {% endif %}
                 <div class="paddles ">
                     <button class="left-paddle paddle hidden ">
 
@@ -42,8 +46,10 @@
             </div>
         </div>
         <div class='songs grid-item'>
-            <h2> Your Songs </h2>
-            <a href="#">Upload a song</a>
+            <h2> {{ userNotNative.username }}'s Songs </h2> 
+            {% if user == userNotNative %}
+            <a href="#">Upload a song</a> 
+            {% endif %}
             <div class="menu-wrapper ">
                 <ul class="menu ">
                     {% for song in songs %}

@@ -42,11 +42,11 @@
             <ul class="navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{% url 'crescendo:userprofile' %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="{% url 'crescendo:userprofile' user.id %}" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {{ user.username }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="{% url 'crescendo:userprofile' %}">User Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'crescendo:userprofile' user.id %}">User Profile</a></li>
                       <li><a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a></li> 
                       </ul> 
                 </li> 

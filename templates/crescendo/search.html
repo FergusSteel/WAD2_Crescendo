@@ -13,7 +13,7 @@ Search
     <p class="text-center">
         {% if search_words == '' %}
             <h2>You didn't entry anything</h2><br/>
-            <p>Please try entry something here, like:playlist, gold...</p>
+            <p>Please try entry something here, like: playlist, gold...</p>
         {% else %}
             {% if page_of_playlist%}
             <h4>You search {{ search_words }}, and {{ playlist_count }} results found! </h4>
@@ -28,7 +28,7 @@ Search
                              <tr>
                                 <td class="col-xs-12 col-md-3"><img src="{{ playlist.image.url }}" class="img-rounded" width="20%" height="auto"></td>
                                 <td class="col-xs-6 col-md-3"><a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}" >{{ playlist.name }}</a></td>
-                                <td class="col-xs-6 col-md-3"><a href="{% url 'crescendo:userprofile'%}">{{ playlist.author }}</a> </td>
+                                <td class="col-xs-6 col-md-3"><a href="{% url 'crescendo:userprofile' playlist.author.id %}">{{ playlist.author }}</a> </td>
                              </tr>
                         </table>
                     {% endfor %}
@@ -56,17 +56,13 @@ Search
                                         <th>Image</th>
                                         <th>Name</th>
                                         <th>Artist</th>
-                                        <th>Playlist</th>
                                         <th>Author</th>
                                     </tr>
                                     <tr>
                                         <td class="col-xs-12 col-md-3"><img src="{{ song.image.url }}" class="img-rounded" width="15%" height="auto"></td>
                                         <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:show_song' song.nameAsSlug song.id %}" >{{ song.name }}</a></td>
                                         <td class="col-xs-6 col-md-3">{{ song.artist }}</td>
-                                        {%for playlist in page_of_playlist %}
-                                            <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}" >{{ song.playlist }}</a></td>
-                                        {% endfor %}
-                                        <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:userprofile'%}">{{ playlist.author }}</a> </td>
+                                        <td class="col-xs-6 col-md-2"><a href="{% url 'crescendo:userprofile' song.author.id %}">{{ song.author }}</a> </td>
                                     </tr>
                                 </table>
                             {% endfor %}

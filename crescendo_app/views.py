@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
-from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment
+from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment,User
 from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
@@ -189,29 +189,35 @@ def edit_playlist(request, pk):
         return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
 
-def userProfile(request):
-    username = None
+def userProfile(request , id):
+    
     context = {}
     songs = []
-    playlists = []
-    if request.user.is_authenticated:
-        username = request.user.username
-        user , _ = UserProfile.objects.get_or_create(user=request.user) 
-        user_id = request.user.id
-        songs = user.songs.all()
-        playlists = user.playlists.all()
+    playlists = [] 
+    user = User.objects.get(id = id) 
+    context['userNotNative'] = user 
+    user_content_type = ContentType.objects.get_for_model(user)
+    username = user.username 
 
-        user_content_type = ContentType.objects.get_for_model(user)
-        comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
-        context['comments'] = comments
-        context['comment_form'] = CommentForm(
-            initial={'content_type': user_content_type.model, 'object_id': user_id})
-        context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
+    user , _ = UserProfile.objects.get_or_create(user=user) 
+    user_id = id
+    songs = user.songs.all()
+    playlists = user.playlists.all()
+
+   
+    comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
+    context['comments'] = comments
+    context['comment_form'] = CommentForm(
+        initial={'content_type': user_content_type.model, 'object_id': user_id})
+    context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
                                                           object_id=user_id).count()
-        context['songs'] = songs
-        context['playlists'] = playlists 
-        context['userprofile'] = user
-
+    context['songs'] = songs
+    context['playlists'] = playlists 
+    context['userprofile'] = user 
+     
+    user.numberOfProfileViews = user.numberOfProfileViews + 1 
+    user.save()
+    
     return render(request, 'crescendo/user_profile.html',
                   context=context)
 

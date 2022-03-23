@@ -5,11 +5,19 @@
 {% endblock %} {% block body_block %}
 <div class="index"> 
     <div class="jumbotron mt-3 mb-3 ">
-        <h1 class="display-4 text-center">Welcome To Crescendo</h1> 
-        <p class="lead">A playlist and song sharing website.</p>
-        <p class="lead">
-          <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a>
-        </p> 
+            {% if user.is_authenticated %}   
+            <h1 class="display-4 text-center"> {{ user.username }} , Welcome To Crescendo</h1> 
+            <p class="lead">A playlist and song sharing website.</p>
+            <p class="lead"> 
+            <a class="btn btn-primary btn-md" href="{% url 'crescendo:userprofile' user.id %}" role="button">Start Playlisting</a>  
+            </p>
+            {% else %} 
+            <h1 class="display-4 text-center">Welcome To Crescendo</h1> 
+            <p class="lead">A playlist and song sharing website.</p>
+            <p class="lead">  
+            </p>
+          <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a> 
+          {% endif %}
         <hr class="my-4">
     </div> 
     <div class = "index-items">
@@ -36,7 +44,7 @@
             </div>
     
         </div> 
-        </div>s
+        </div>
  
     <div class = "index-items">
     <h2>Popular Songs</h2><br>
