@@ -34,7 +34,8 @@
 
 .playlistName {
     margin:auto; 
-    width: 50%; 
+    justify-content: center;
+    overflow-wrap: break-word;
 }
 
 .paddle {

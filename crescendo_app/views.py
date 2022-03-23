@@ -288,10 +288,8 @@ class PlaylistSort(View):
             sortBy = ''
 
         if sortBy == "views" or sortBy == "":
-            print(1)
             playlists = Playlist.objects.order_by("-views")
         elif sortBy == "noOfComments":
-            print(2)
             playlists = Playlist.objects.order_by("-numberOfComments")
 
         return render(request, "crescendo/playlist_sort.html", {'playlists':playlists})

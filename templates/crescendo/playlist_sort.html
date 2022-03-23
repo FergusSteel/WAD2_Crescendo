@@ -1,19 +1,9 @@
-<ul class="menu">
-    
-    {% for playlist in playlists %}
-    <li class="item">
-        <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
-            <img class="playlistImages" src="{{ playlist.image.url }}">
-        </a> <br />
-        <p class="playlistName">{{ playlist.name }}</p>
-    </li>
-    {% endfor %}
-</ul>
 
-<div class="paddles">
-    <button class="left-paddle paddle hidden" >
-
-    <button class="right-paddle paddle">
-
-          </button>
-</div>
+{% for playlist in playlists %}
+<li class="item">
+    <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
+        <img class="playlistImages" src="{{ playlist.image.url }}">
+    </a> <br />
+    <p class="playlistName">{{ playlist.name }}</p>
+</li>
+{% endfor %}
