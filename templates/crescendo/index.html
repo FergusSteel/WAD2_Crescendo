@@ -2,6 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
 <script src="{% static '/JS/sidescroller.js' %}"></script>
+<script src="{% static '/JS/ajax.js' %}"></script>
 {% endblock %} {% block body_block %}
 <div class="index"> 
     <div class="jumbotron mt-3 mb-3 ">
@@ -14,7 +15,11 @@
     </div> 
     <div class = "index-items">
         <h2 id="playlist title">Popular Playlists</h2>
-        <div class="menu-wrapper">
+        Sort by: <select id="playlistSortSelector">
+          <option value="views">Views</option>
+          <option value="noOfComments">Number of Comments</option>
+        </select>
+        <div class="menu-wrapper" id="playlist-menu">
             <ul class="menu">
     
                 {% for playlist in playlists %}
@@ -36,7 +41,7 @@
             </div>
     
         </div> 
-        </div>s
+        </div>
  
     <div class = "index-items">
     <h2>Popular Songs</h2><br>
