@@ -231,7 +231,8 @@ def add_comment(request):
         comment = Comment()
         comment.author = comment_form.cleaned_data['user'] 
         user_profile , _ = UserProfile.objects.get_or_create(user = comment_form.cleaned_data['user']) 
-        user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
+        user_profile.numberOfComments = int(user_profile.numberOfComments) + 1 
+        user_profile.save()
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
 
