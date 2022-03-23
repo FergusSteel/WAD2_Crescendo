@@ -14,8 +14,8 @@ Search
         {% if search_words == '' %}
             <h2>You didn't entry anything</h2><br/>
             <p>Please try entry something here, like:playlist, gold...</p>
-            {% else %}
-             {% if page_of_playlist%}
+        {% else %}
+            {% if page_of_playlist%}
             <h4>You search {{ search_words }}, and {{ playlist_count }} results found! </h4>
                 <div class="table-responsive">
                     {%for playlist in page_of_playlist %}

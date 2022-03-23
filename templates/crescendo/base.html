@@ -59,8 +59,8 @@
                 {% endif %}
             </ul> 
             <div class = "center" id = "search-bar">
-            <form class="d-flex" action="{% url 'crescendo:search' %}" @name="q" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex" action="{% url 'crescendo:search' %}" role="search" method="get">
+              <input class="form-control me-2" type="search" placeholder="Search" name="q" required>
               <button class="btn btn-primary" type="submit">Search</button>
             </form> 
             </div>
