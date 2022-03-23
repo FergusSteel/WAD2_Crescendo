@@ -1,8 +1,8 @@
  .grid {
      display: grid;
      grid-template-columns: 1fr 1fr 1fr;
-     grid-template-rows: 1fr 1fr 1fr 1fr;
-     grid-template-areas: "user-info songs songs" "user-image songs songs" "user-image playlists playlists" "buttons playlists playlists";
+     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+     grid-template-areas: "user-info songs songs" "user-image songs songs" "user-image playlists playlists" "buttons playlists playlists" "footer footer footer";
      grid-gap: 1%;
      height: 100vh;
      width: 100%;

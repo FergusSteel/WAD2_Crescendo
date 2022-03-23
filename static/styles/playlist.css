@@ -29,5 +29,35 @@
 } */  
  
 .wide { 
-  width : 100%;
+  width : 100%; 
+  margin: 1%;
 }
+ 
+.top-row { 
+  padding: 1%;
+} 
+ 
+textarea { 
+  width: 100%;
+} 
+ 
+.playlistSongs {  
+  display: flex; 
+  flex-direction: column;  
+  max-height: 500px;
+
+}
+  
+.songBlock a { 
+  float: left; 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center;
+}
+.songBlock img{
+  height: 150px;
+  width: 150px; 
+  padding-right: 5%; 
+  padding-bottom: 5%;
+
+}  
