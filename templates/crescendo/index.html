@@ -35,7 +35,7 @@
                     <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
                         <img class="playlistImages" src="{{ playlist.image.url }}">
                     </a> <br />
-                    <p class="playlistName">{{ playlist.name }}</p>
+                    <div class="playlistName"><p>{{ playlist.name }}</p></div>
                 </li>
                 {% endfor %}
             </ul>

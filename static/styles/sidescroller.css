@@ -1,7 +1,7 @@
 .menu-wrapper {
     position: relative;
     max-width: 90%;
-    height: 200px;
+    height: auto;
     width: 90%;
     margin: 1em auto;
     border: none;
@@ -10,7 +10,7 @@
 }
 
 .menu {
-    height: 150px;
+    height: auto;
     background: #f3f3f300;
     box-sizing: border-box;
     white-space: nowrap;
@@ -33,9 +33,16 @@
 }
 
 .playlistName {
-    margin:auto; 
+    display: flex;
+    margin:auto;
     justify-content: center;
-    overflow-wrap: break-word;
+    text-align: center;
+    word-wrap:break-word;
+    overflow-x:hidden;
+    height:auto;
+    width:100%;
+    white-space:pre-wrap;
+    max-height: 300px;
 }
 
 .paddle {
