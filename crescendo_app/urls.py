@@ -43,5 +43,6 @@ urlpatterns = [
                 #   path('myaccount/', views.userProfile, name='myaccount'),
                   path('add_comment/', views.add_comment, name='add_comment'), 
                   path('add_to_playlist/<int:song>-<int:playlist>', views.add_to_playlist, name='add_to_playlist'), 
-                  path('ajax/add_more_songs/', views.add_more_songs , name='add_more_songs')
+                  path('ajax/add_more_songs/', views.add_more_songs , name='add_more_songs'), 
+                  path('edit_profile' , views.edit_profile , name = "edit_profile"),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

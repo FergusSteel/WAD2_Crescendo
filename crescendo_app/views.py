@@ -11,7 +11,7 @@ from django.urls import reverse
 
 
 from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment,User
-from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm 
 from django.shortcuts import redirect
 
 
@@ -278,4 +278,22 @@ def add_more_songs(request):
     print(request)
     print("In add more songs") 
     data = {}
-    return JsonResponse(data)
+    return JsonResponse(data)  
+
+
+def edit_profile(request):  
+    
+    if request.method == 'POST':
+        form = EditUserProfile(request.POST , request.FILES)   
+        user = request.user
+        if form.is_valid():   
+            profile = UserProfile.objects.get(id = user.id) 
+            profile.image = form.cleaned_data.get("image") 
+            profile.save() 
+            return redirect(f'/crescendo/userprofile/{user.id}') 
+        else: 
+            print(form.errors)
+    else:
+        form = EditUserProfile()
+
+    return render(request, 'crescendo/edit_profile.html', context={'form': form})

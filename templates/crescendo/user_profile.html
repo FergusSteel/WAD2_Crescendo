@@ -13,8 +13,10 @@
                 <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
             </ul>
         </div>
-        <div class="user-image grid-item">
-            <img src="{{ userprofile.image.url }}" alt="profile-image">
+        <div class="user-image grid-item"> 
+            {% if userprofile.image %}
+            <img src="{{ userprofile.image.url }}" alt="profile-image"> 
+            {% endif %}
         </div>
         <div class='playlists grid-item'>
             <h2>{{ userNotNative.username }}'s Playlists</h2> 
@@ -72,16 +74,9 @@
 
             </div> 
         </div> 
-        <div class = "buttons grid-item"> 
+        <div class = "buttons grid-item">  
+            <a class = "btn btn-primary" href = "{% url 'crescendo:edit_profile' %}">Edit Profile</a>
         </div>
-        <!-- <div class="comments ">
-            <h2> Your Comments </h2>
-            {% for comment in comments %}
-            <div class="comment ">
-                {{ comment.comment }} {{ comment.rating }}
-            </div>
-            {% endfor %}
-        </div> -->
     </div>
 </div>
 
