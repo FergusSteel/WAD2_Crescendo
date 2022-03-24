@@ -1,9 +1,56 @@
-{% extends 'crescendo/base.html' %} {% block title %} Editing Playlist - {{playlist.name}} {% endblock %} {% block body_block %} {% if user.is_authenticated %}
-<h2> Editing {{ playlist.name }} </h2>
-<div>
-    <form id="edit_playlist_form" method="post" action="/crescendo_app/edit_category/">
-        {% csrf_token %} {{ form.as_p }}
-        <input type="submit" name="submit" value="Edit a Playlist" />
-    </form>
+{% extends 'crescendo/base.html' %}
+{% load static %}
+{% load comment_tags %}
+
+{% block title %}
+    {% if playlist %}
+        Editing - {{ playlist.name }}
+    {% else %} Playlist Does Not Exist
+    {% endif %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static '/styles/playlist.css' %}" />
+<script type="text/javascript">
+  function deleteSong(playlistID, songID) {
+    console.log(songID);
+    if (confirm("Are you sure you want to remove this song?") == true) {
+      $.post("{% url 'crescendo:delete_song' %}", {csrfmiddlewaretoken : "{{ csrf_token }}", playlistID : playlistID,songID : songID});
+      location.reload();
+    } else {
+      console.log("Cancelled Delete.");
+  }
+}</script>
+{% endblock %}
+
+ {% block body_block %}
+ {% if playlist %}
+<div class = "container">
+<div class = "row top-row">
+    <div class = "col-md">
+    <div class="playlistSummary">
+        <h1>{{ playlist.name }}</h1><br>
+        <img src="{{ playlist.image.url }}"><br>
+        <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
+    </div>
+    </div>
+    <div class = "col-md">
+        <h1>Song List</h1>
+<div class="playlistSongs overflow-auto">
+    {% if songs %}
+     {% for song in songs %}
+        <div class="songBlock" onclick="deleteSong('{{ playlist.id }}', '{{ song.id }}')" style="cursor:pointer;">
+          <a>
+          <img src="{{ song.image.url }}">
+          <p>
+            <strong class = "inline" >Remove {{ song.name }}?<br></strong><br>
+          </p>
+      </a>
+    </div>
+    <br>
+    {% endfor %} {% else %} {{ playlist.name }} has no songs yet. {% endif %}
 </div>
-{% endif %} {% endblock %}
+</div>
+</div>
+{% endif %}
+{% endblock %}

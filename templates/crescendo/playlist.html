@@ -15,18 +15,18 @@
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 
- {% block body_block %}   
- {% if playlist %}  
-<div class = "container"> 
-<div class = "row top-row"> 
+ {% block body_block %}
+ {% if playlist %}
+<div class = "container">
+<div class = "row top-row">
     <div class = "col-md">
     <div class="playlistSummary">
         <h1>{{ playlist.name }}</h1><br>
         <img src="{{ playlist.image.url }}"><br>
         <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
-    </div> 
-    </div> 
-    <div class = "col-md"> 
+    </div>
+    </div>
+    <div class = "col-md">
         <h1>Song List</h1>
 <div class="playlistSongs overflow-auto">
     {% if songs %} {% for song in songs %}
@@ -39,8 +39,16 @@
         </a>
     </div>
     <br> {% endfor %} {% else %} {{ playlist.name }} has no songs yet. {% endif %}
-</div> 
-</div> 
+</div>
+</div>
+</div>
+
+<div class="edit_playlist">
+  {% if user.is_authenticated %}
+    {% if user.get_username == playlist.author.user.get_username %}
+      <a href="{% url 'crescendo:edit_playlist' playlist.nameAsSlug playlist.id %}">EDIT PLAYLIST</a>
+    {% endif %}
+  {% endif %}
 </div>
  <div class = "row">
                <div class="comment-area">
