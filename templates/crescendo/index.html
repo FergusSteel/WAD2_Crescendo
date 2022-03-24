@@ -2,27 +2,40 @@
 <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
 <script src="{% static '/JS/sidescroller.js' %}"></script>
+<script src="{% static '/JS/ajax.js' %}"></script>
 {% endblock %} {% block body_block %}
 <div class="index"> 
     <div class="jumbotron mt-3 mb-3 ">
-        <h1 class="display-4 text-center">Welcome To Crescendo</h1> 
-        <p class="lead">A playlist and song sharing website.</p>
-        <p class="lead">
-          <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a>
-        </p> 
+            {% if user.is_authenticated %}   
+            <h1 class="display-4 text-center"> {{ user.username }} , Welcome To Crescendo</h1> 
+            <p class="lead">A playlist and song sharing website.</p>
+            <p class="lead"> 
+            <a class="btn btn-primary btn-md" href="{% url 'crescendo:userprofile' user.id %}" role="button">Start Playlisting</a>  
+            </p>
+            {% else %} 
+            <h1 class="display-4 text-center">Welcome To Crescendo</h1> 
+            <p class="lead">A playlist and song sharing website.</p>
+            <p class="lead">  
+            </p>
+          <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a> 
+          {% endif %}
         <hr class="my-4">
     </div> 
     <div class = "index-items">
         <h2 id="playlist title">Popular Playlists</h2>
-        <div class="menu-wrapper">
-            <ul class="menu">
+        Sort by: <select id="playlistSortSelector">
+          <option value="views">Views</option>
+          <option value="noOfComments">Number of Comments</option>
+        </select>
+        <div class="menu-wrapper" id="playlist-menu-wrapper">
+            <ul class="menu" id="playlist-menu">
     
                 {% for playlist in playlists %}
                 <li class="item">
                     <a href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}">
                         <img class="playlistImages" src="{{ playlist.image.url }}">
                     </a> <br />
-                    <p class="playlistName">{{ playlist.name }}</p>
+                    <div class="playlistName"><p><a class="playlist-title-link" href="{% url 'crescendo:show_playlist' playlist.nameAsSlug playlist.id %}" >{{ playlist.name }}</a></p></div>
                 </li>
                 {% endfor %}
             </ul>

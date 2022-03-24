@@ -1,23 +1,23 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import  JsonResponse
+from django.shortcuts import render
 
 # Create your views here.
-from django.urls import reverse
+from django.views import View
 
-from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment
-from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
+from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment,User
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
 
 def index(request, added=False):
     context_dict = {}
     context_dict['added'] = added
+
     context_dict['playlists'] = Playlist.objects.all()
+    context_dict['playlists'] = Playlist.objects.order_by("-views")
     context_dict['songs'] = Song.objects.all()[:3]
     return render(request, 'crescendo/index.html', context=context_dict)
 
@@ -52,7 +52,9 @@ def show_playlist(request, playlist_slug, playlist_id):
         except Song.DoesNotExist:
             context_dict['songs'] = None
 
-        context_dict['playlist'] = playlist
+        context_dict['playlist'] = playlist 
+        playlist.views = playlist.views + 1 
+        playlist.save()
 
     except Playlist.DoesNotExist:
         context_dict['playlist'] = None
@@ -71,6 +73,13 @@ def show_song(request, song_slug, song_id):
             playlists = user.playlists.all()
 
         print(playlists)
+        song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
+        # comment and reply for song
+        song_content_type = ContentType.objects.get_for_model(song)  
+        if request.user.is_authenticated:  
+            user , _ = UserProfile.objects.get_or_create(user = request.user)
+            playlists = user.playlists.all() 
+
         context_dict['playlists'] = playlists
         context_dict['song'] = song
 
@@ -137,10 +146,11 @@ def add_playlist(request):
 
             PlaylistF.author_id = request.user.id
             PlaylistF.save()
-
             return redirect(request.META.get('HTTP_REFERER'))
 
             # return redirect('/crescendo/')
+        
+            return redirect('/crescendo/')
         else:
 
             print(form.errors)
@@ -149,7 +159,6 @@ def add_playlist(request):
 
 
 def edit_playlist(request, pk):
-    print(pk)
     try:
         playlist = Playlist.objects.get(id=pk)
     except Playlist.DoesNotExist:
@@ -170,8 +179,8 @@ def edit_playlist(request, pk):
         return render(request, 'crescendo/edit_playlist.html', context={'form': form, 'playlist': playlist})
 
 
-def userProfile(request):
-    username = None
+def userProfile(request , id):
+    
     context = {}
     songs = []
     playlists = []
@@ -185,6 +194,31 @@ def userProfile(request):
         context['songs'] = songs
         context['playlists'] = playlists
         context['userprofile'] = user
+
+    playlists = [] 
+    user = User.objects.get(id = id) 
+    context['userNotNative'] = user 
+    user_content_type = ContentType.objects.get_for_model(user)
+    username = user.username 
+
+    user , _ = UserProfile.objects.get_or_create(user=user) 
+    user_id = id
+    songs = user.songs.all()
+    playlists = user.playlists.all()
+
+   
+    comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
+    context['comments'] = comments
+    context['comment_form'] = CommentForm(
+        initial={'content_type': user_content_type.model, 'object_id': user_id})
+    context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
+                                                          object_id=user_id).count()
+    context['songs'] = songs
+    context['playlists'] = playlists 
+    context['userprofile'] = user 
+     
+    user.numberOfProfileViews = user.numberOfProfileViews + 1 
+    user.save()
 
     return render(request, 'crescendo/user_profile.html',
                   context=context)
@@ -200,8 +234,12 @@ def add_comment(request):
         comment.author = comment_form.cleaned_data['user']
         user_profile, _ = UserProfile.objects.get_or_create(user=comment_form.cleaned_data['user'])
         user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
+        comment.author = comment_form.cleaned_data['user'] 
+        user_profile , _ = UserProfile.objects.get_or_create(user = comment_form.cleaned_data['user']) 
+        user_profile.numberOfComments = int(user_profile.numberOfComments) + 1 
+        user_profile.save()
         comment.text = comment_form.cleaned_data['text']
-        comment.content_object = comment_form.cleaned_data['content_object']
+        comment.content_object = comment_form.cleaned_data['content_object'] 
 
         # for reply
         parent = comment_form.cleaned_data['parent']
@@ -240,9 +278,38 @@ def add_to_playlist(request, song, playlist):
     songObject.playlist.add(playlistObject)
     return index(request, True)
 
-
-def add_more_songs(request):
-    print(request)
-    print("In add more songs")
+     
+ 
+def add_more_songs(request):  
     data = {}
     return JsonResponse(data)
+
+
+class PlaylistSort(View):
+    def get(self, request):
+        if 'sortBy' in request.GET:
+            sortBy = request.GET['sortBy']
+        else:
+            sortBy = ''
+
+        if sortBy == "views" or sortBy == "":
+            playlists = Playlist.objects.order_by("-views")
+        elif sortBy == "noOfComments":
+            playlists = Playlist.objects.order_by("-numberOfComments")
+
+        return render(request, "crescendo/playlist_sort.html", {'playlists':playlists})
+
+def edit_profile(request):  
+    
+    if request.method == 'POST':
+        form = EditUserProfile(request.POST , request.FILES)   
+        user = request.user
+        if form.is_valid():   
+            profile = UserProfile.objects.get(id = user.id) 
+            profile.image = form.cleaned_data.get("image") 
+            profile.save() 
+            return redirect(f'/crescendo/userprofile/{user.id}') 
+    else:
+        form = EditUserProfile()
+
+    return render(request, 'crescendo/edit_profile.html', context={'form': form})

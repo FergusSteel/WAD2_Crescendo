@@ -1,16 +1,5 @@
-/* CSS FOR SONG PAGE
-* {
-  box-sizing: border-box;
-}
-.leftBar {
-    position: absolute;
-    width: 50%;
-    height: 600px;
-    padding-bottom: 580px;
-    float: left;
-    display: grid;
-}
 
+<<<<<<< HEAD
 .leftBar h1 {
   padding-left: 20px;
 }
@@ -71,6 +60,8 @@ div.reply {
 }
 
   
+=======
+>>>>>>> 3f4aca10021c9e33654ed70938378e7bac53d486
  .songPlayer {
   padding: 20px;
   position: relative;

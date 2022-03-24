@@ -6,37 +6,37 @@
 {% endblock %}
   
 {% block css %} 
-    <!-- <link rel="stylesheet" type="text/css" href="{% static '/styles/faq.css' %}" />  -->
-    <!-- <script src="{% static '/JS/faq.js' %}"></script> -->
+    <link rel="stylesheet" type="text/css" href="{% static '/styles/faq.css' %}" /> 
 {% endblock %} 
 
 {% block body_block %}  
-    <div>
+    <div class = "mb-3 mt-3">
     <h2> FAQ </h2> 
-    {% if questions %} 
+    {% if questions %}  
+    <!-- BOOSTRAP ACCORDION - BUT CSS ONLY -->
     <div id="accordion">  
     {% for question in questions %}
         <div class="card mt-3 mb-3">
           <div class="card-header" id="headingOne">
             <h5 class="mb-0">
-              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <button class="btn btn-link">
                 {{ question.question }}
               </button>
             </h5>
           </div>
       
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div id="collapseOne" data-parent="#accordion">
             <div class="card-body">
               {{ question.answer }}
             </div>
           </div>
-        </div> 
+        </div>  
         {% endfor %} 
     </div> 
     {% endif %}  
-    <p class = "center">if you have any questions please towards this webpage <a href="{% url 'crescendo:contactUs' %}">Contact Us</a> </p>
-    {% endblock %}
-</div>
+
+</div> 
+{% endblock %}
 
 
  

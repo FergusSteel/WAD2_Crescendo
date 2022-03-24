@@ -6,7 +6,7 @@ import django
 
 django.setup()
 
-from crescendo_app.models import User, UserProfile, Genre, Song,  Playlist,  Question
+from crescendo_app.models import User, UserProfile, Genre, Song,  Playlist,  Question, Comment
 from django.db import models
 
 
@@ -69,14 +69,12 @@ def populate():
          "genres": ["Upbeat", "Mellow"],
          "image": None,
          "comments": [{"comment": "Great collection of songs",
-                       "rating": 4,
                        "author": "Sarah"},
                       {"comment": "Could be better",
                        "rating": 3,
                        "author": "Greg"
                        },
                       {"comment": "Very upbeat and nice to listen to",
-                       "rating": 4,
                        "author": "Craig"}
                       ]
          },
@@ -89,14 +87,11 @@ def populate():
          "image": None,
          "comments": [
              {"comment": "Plain collection of songs",
-              "rating": 2,
               "author": "Sarah"},
              {"comment": "Could be better, better luck next time",
-              "rating": 3,
               "author": "Greg"
               },
              {"comment": ".....",
-              "rating": 4,
               "author": "Craig"}
          ]
          },
@@ -109,7 +104,6 @@ def populate():
          "image": None,
          "comments": [
              {"comment": "Great collection of songs",
-              "rating": 4,
               "author": "Sarah"},
          ]
          },
@@ -122,10 +116,8 @@ def populate():
          "genres": ["Mellow", "Pop"],
          "comments":[
              {"comment": "All time favourite",
-              "rating": 4,
               "author": "Sarah"},
              {"comment": "Very upbeat and nice to listen to",
-              "rating": 4,
               "author": "Greg"}
          ]
          },
@@ -138,10 +130,8 @@ def populate():
          "image": None,
          "comments": [
              {"comment": "Great collection of songs",
-              "rating": 4,
               "author": "Sarah"},
              {"comment": "Could be better",
-              "rating": 3,
               "author": "Greg",
               }
          ]
@@ -165,7 +155,6 @@ def populate():
          "genres": ["Mellow"],
          "comments": [
              {"comment": "Heat",
-              "rating": 4,
               "author": "Angelo"},
          ]
          }, 
@@ -193,7 +182,6 @@ def populate():
         "K-Pop"],
          "comments": [
              {"comment": "Some of my favourites are here",
-              "rating": 4,
               "author": "Angelo"},
          ]
          }
@@ -212,19 +200,21 @@ def populate():
             "lyrics": None,
             "playlists": ["Playlist 1", "Playlist 2"],
             "actualSong": "population_script_music/sound1.mp3",
-            "comments": []
+            "comments": [{"comment":"Beautiful Song", "author":"Craig"}]
         },
         {
             "author": "Greg",
             "genres": ["Indie", "Rap", "Mellow"],
             "name": "Gold",
             "artist": "Anonymous Artist",
-            "numberOfComments": 1,
+            "numberOfComments": 2,
             "image": None,
             "playlists": ["Playlist 1", "Playlist 3"],
             "lyrics": None,
             "actualSong": "population_script_music/sound2.mp3",
-            "comments": []
+            "comments": [{"author" : "Sarah",  
+                        "comment" : "Great" },{"author" : "Fergus",  
+                            "comment" : "mid"}]
         },
         {
             "author": "Craig",
@@ -233,10 +223,15 @@ def populate():
             "artist": "Anonymous Artist",
             "numberOfComments": 3,
             "image": None,
-            "lyrics": None,
+            "lyrics": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus congue sem quam, vel porttitor ligula vulputate ut. Morbi elementum dolor tellus, et porta enim ultricies dapibus. Cras in nunc ullamcorper, rutrum eros et, porta elit. Curabitur porttitor, mi ut hendrerit placerat, dolor purus aliquam mi, quis semper ligula ligula vel dolor. Sed suscipit nulla ut ante ultricies rutrum. Aenean tristique efficitur felis, sit amet bibendum felis facilisis quis. Aliquam sit amet elit ligula. Donec dapibus sem vel dui finibus convallis. Vestibulum efficitur lobortis dapibus. Fusce rhoncus, diam sed gravida varius, odio tortor ornare turpis, et aliquam nisi felis in dolor. Phasellus gravida efficitur lectus in efficitur. Suspendisse maximus dui sapien, nec tristique diam facilisis non. Fusce metus turpis, molestie dictum est sit amet, imperdiet molestie quam. In eu eros et tellus hendrerit eleifend. ",
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
-            "comments": []
+            "comments": [{"author" : "Fergus", 
+                            "comment" : "mid",},
+                            {"author" : "Craig", 
+                            "comment" : "Great" },  
+                            {"author" : "Michal", 
+                            "comment" : "My favourite"}]
         }, 
         {
             "author": "Michal",
@@ -275,21 +270,27 @@ def populate():
         genresForLaterUsage[genre] = genreObject
 
     playlistsForLaterUsage = {}
-    for playlist in playlists:
+    for playlist in playlists: 
+        comments = playlist['comments']
         genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
         playlistObject = add_playlist(playlist['name'], genre, usersForLaterUsage[playlist['author']][1],
                                       playlist['views'], playlist['numberOfComments'], playlist['description'],
                                       playlist['image'])
-        playlistsForLaterUsage[playlist['name']] = playlistObject
+        playlistsForLaterUsage[playlist['name']] = playlistObject 
+         
+        for comment in comments: 
+             add_comment(usersForLaterUsage[comment['author']][0] , comment['comment'],playlistObject) 
 
     for song in songs:
         comments = song['comments']
         genre = [genresForLaterUsage[genre] for genre in song['genres']]
         playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
         songObject = add_song(song["name"], genre, usersForLaterUsage[song['author']][1], song['artist'],
-                              song['numberOfComments'], song["actualSong"], playlist)
+                              song['numberOfComments'], song["actualSong"], playlist , lyrics = song["lyrics"])
 
-  
+        for comment in comments: 
+            add_comment(usersForLaterUsage[comment['author']][0] , comment['comment'],songObject) 
+
     for question in questions: 
         questionObject = add_question(question['question'],question['answer'])
 
@@ -319,9 +320,13 @@ def add_playlist(name, genreList, author, views, numberOfComments, description, 
 
 
 
-def add_song(name, genreList, author, artist, numberOfComments, song, playlists, lyrics=None, image=None):
+def add_song(name, genreList, author, artist, numberOfComments, song, playlists, lyrics=None, image=None): 
     songObject, _ = Song.objects.get_or_create(name=name, author=author, artist=artist,
-                                               numberOfComments=numberOfComments, actualSong=song)
+                                               numberOfComments=numberOfComments, actualSong=song) 
+                               
+    if lyrics: 
+        songObject.lyrics = lyrics 
+
     songObject.genre.add(*genreList)
     songObject.playlist.add(*playlists)
     songObject.save()
@@ -332,6 +337,14 @@ def add_question(question , answer):
     questionObject , _ = Question.objects.get_or_create(question = question , answer = answer) 
     questionObject.save() 
     return questionObject
+ 
+def add_comment(author , text, content_object): 
+    comment = Comment() 
+    comment.author = author 
+    comment.text = text 
+    comment.content_object = content_object
+    comment.save() 
+    return comment 
 
 if __name__ == "__main__":
     populate()

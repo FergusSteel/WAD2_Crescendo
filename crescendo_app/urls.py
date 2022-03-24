@@ -29,7 +29,7 @@ urlpatterns = [
                   path('about/', views.about, name='about'),
                   path('contactUs/', views.contactUs, name='contactUs'),
                   path('faq', views.faq, name='faq'),
-                  path('userprofile', views.userProfile, name='userprofile'),
+                  path('userprofile/<int:id>', views.userProfile, name='userprofile'),
                   path('crescendo_app/<slug:playlist_slug>-<slug:playlist_id>/', views.show_playlist,
                        name='show_playlist'),
                   path('PlaylistCatalogue/', views.PlaylistCatalogue, name='PlaylistCatalogue'),
@@ -40,8 +40,10 @@ urlpatterns = [
                   path('add_playlist/<slug:playlist_slug>-<slug:playlist_id>/', views.add_playlist,
                        name='add_playlist_1'),
                   path('playlist/edit_playlist/<int:pk>/', views.edit_playlist, name='edit_playlist'),
-                  path('myaccount/', views.userProfile, name='userprofile'),
+                #   path('myaccount/', views.userProfile, name='myaccount'),
                   path('add_comment/', views.add_comment, name='add_comment'), 
                   path('add_to_playlist/<int:song>-<int:playlist>', views.add_to_playlist, name='add_to_playlist'), 
-                  path('ajax/add_more_songs/', views.add_more_songs , name='add_more_songs')
+                  path('ajax/add_more_songs/', views.add_more_songs , name='add_more_songs'),
+                  path('playlistSort/', views.PlaylistSort.as_view(), name='sortPlaylist'), 
+                  path('edit_profile' , views.edit_profile , name = "edit_profile"),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

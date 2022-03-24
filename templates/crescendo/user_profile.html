@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'crescendo/base.html' %}
 {% load static %}
 {% load comment_tags %}
@@ -7,6 +8,9 @@
     {{ user.username }}
 {% endblock %}
 {% block css%}
+=======
+{% extends 'crescendo/base.html' %} {% load static %} {% block title %} Crescendo - {{ userNotNative.username }} {% endblock %} {% block css%}
+>>>>>>> 3f4aca10021c9e33654ed70938378e7bac53d486
 <link rel="stylesheet" type="text/css" href="{% static '/styles/sidescroller.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static '/styles/user_profile.css' %}" />
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -17,18 +21,22 @@
 <div class="main">
     <div class="grid">
         <div class="user-info grid-item">
-            <h1>{{ user.username }}'s profile:</h1>
+            <h1>{{ userNotNative.username }}'s profile:</h1>
             <ul>
                 <li>Profile Views : {{ userprofile.numberOfProfileViews }}</li>
                 <li>Number Of Comments : {{ userprofile.numberOfComments }}</li>
             </ul>
         </div>
-        <div class="user-image grid-item">
-            <img src="{{ userprofile.image.url }}" alt="profile-image">
+        <div class="user-image grid-item"> 
+            {% if userprofile.image %}
+            <img src="{{ userprofile.image.url }}" alt="profile-image"> 
+            {% endif %}
         </div>
         <div class='playlists grid-item'>
-            <h2>Your Playlists</h2>
-            <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a>
+            <h2>{{ userNotNative.username }}'s Playlists</h2> 
+            {% if user == userNotNative %}
+                <a href="{% url 'crescendo:add_playlist'  %}" class="add_to_playlist">Add a new playlist</a> 
+            {% endif %}
             <div class="menu-wrapper ">
                 <ul class="menu ">
                     {% for playlist in playlists %}
@@ -39,8 +47,10 @@
                         <p class="playlistName ">{{ playlist.name }}</p>
                     </li>
                     {% endfor %}
-                </ul>
-                <button class="on-top ">Add a new playlist</button>
+                </ul> 
+                {% if user == userNotNative %}
+                    <button class="on-top ">Add a new playlist</button> 
+                {% endif %}
                 <div class="paddles ">
                     <button class="left-paddle paddle hidden "></button>
 
@@ -50,8 +60,10 @@
             </div>
         </div>
         <div class='songs grid-item'>
-            <h2> Your Songs </h2>
-            <a href="#">Upload a song</a>
+            <h2> {{ userNotNative.username }}'s Songs </h2> 
+            {% if user == userNotNative %}
+            <a href="#">Upload a song</a> 
+            {% endif %}
             <div class="menu-wrapper ">
                 <ul class="menu ">
                     {% for song in songs %}
@@ -72,6 +84,7 @@
 
             </div> 
         </div> 
+<<<<<<< HEAD
          <div class = "row">
                <div class="comment-area">
                     <h4 class="comment-area-title">Comment Here</h4>
@@ -137,6 +150,13 @@
                                 {% endfor %}
                             </div>
                 </div>
+=======
+        <div class = "buttons grid-item">   
+            {% if userNotNative == user %}
+            <a class = "btn btn-primary wide" href = "{% url 'crescendo:edit_profile' %}">Edit Profile</a> 
+            {% endif %}
+        </div>
+>>>>>>> 3f4aca10021c9e33654ed70938378e7bac53d486
     </div>
 {% endblock %}
 
