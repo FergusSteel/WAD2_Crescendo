@@ -1,13 +1,9 @@
 {% extends 'crescendo/base.html' %}
 {% load staticfiles %}
 
-
 {% block title %}
    Register
 {% endblock %}
-
-
-
 
 {% block body_block %} 
     <div class = "container text-center mb-5 mt-5">
@@ -15,9 +11,11 @@
     <p>
         <form method="POST" action=".">
         {% csrf_token %}
-            {{ form.as_p }}
+            <span class="text-left"> {{ form.as_p }}</span>
             <input class = "btn-primary btn" type="submit" value="Register" />
+            <button type="reset" class="btn btn-default pull-left">Reset</button>
         </form>
+    </form>
     </p> 
     </div>
 {% endblock %}

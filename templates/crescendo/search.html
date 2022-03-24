@@ -37,10 +37,10 @@ Search
                         <div class="text-center text-primary">{{ page_of_playlist.number }}/{{ page_of_playlist.paginator.num_pages }} pages</div>
                     <div class="row row-no-gutters">
                          {% if page_of_playlist.has_previous %}
-                             <div class="col-md-offset-9"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.previous_page_number }}" aria-label="Previous">Previous</a></div>
+                             <div class="text-left"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.previous_page_number }}" aria-label="Previous">Previous</a></div>
                          {% endif %}
                         {% if page_of_playlist.has_next %}
-                            <div class="col-md-offset-10"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.next_page_number }}" aria-label="Next">Next</a></div>
+                            <div class="text-right"><a class="btn btn-default" href="{% url 'crescendo:search' %}?q={{ search_words }}&page={{ page_of_playlist.next_page_number }}" aria-label="Next">Next</a></div>
                         {% endif %}
                     </div>
                     </ul>

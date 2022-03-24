@@ -47,7 +47,7 @@
   position: absolute;
   z-index: 2;
   opacity: 0.3;
-}
+}*/
 
 div.comment-area {
     margin-top: 2em;
@@ -57,9 +57,6 @@ h4.comment-area-title {
     padding-bottom: 0.4em;
 }
 
-div.django-ckeditor-widget {
-    width: 100%;
-}
 
 div.comment {
     border-bottom: 1px dashed #ccc;
@@ -72,7 +69,7 @@ div.reply {
     margin-left: 1em;
 
 }
- */
+
   
  .songPlayer {
   padding: 20px;
@@ -108,17 +105,21 @@ div.reply {
 #dropdownMenuButton1 { 
   position: relative; 
   bottom: -4rem;
-}  
-
+}
  
-@media only screen and (max-width:1000px) { 
+@media only screen and (max-width:1000px) {
   #dropdownMenuButton1 { 
     position:static; 
     margin : 5%;
-  }  
-  .comment-area { 
-    padding-left: 20px;
   }
-   
-
+  .comment-area {
+     padding-left: 20px;
+     border-bottom: 1px dashed #ccc;
+     margin-bottom: 0.5em;
+  }
+  .reply {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5em;
+    margin-left: 1em;
+}
 }

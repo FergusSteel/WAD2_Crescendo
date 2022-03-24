@@ -62,7 +62,7 @@ class Playlist(models.Model):
 
 
 class Comment(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, null=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 
@@ -71,9 +71,9 @@ class Comment(models.Model):
     comment_time = models.DateTimeField(auto_now_add=True)
 
     # for reply
-    root = models.ForeignKey('self', related_name='root_comment', null=True, on_delete=models.DO_NOTHING)
-    parent = models.ForeignKey('self', related_name='parent_comment', null=True, on_delete=models.DO_NOTHING)
-    reply_to = models.ForeignKey(User, related_name='reply', null=True, on_delete=models.DO_NOTHING)
+    root = models.ForeignKey('self', related_name='root_comment', null=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', related_name='parent_comment', null=True, on_delete=models.CASCADE)
+    reply_to = models.ForeignKey(User, related_name='reply', null=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['comment_time']

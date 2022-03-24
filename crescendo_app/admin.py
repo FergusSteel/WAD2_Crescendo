@@ -17,7 +17,7 @@ class GenreAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'content_object', 'text', 'comment_time', 'author')
+    list_display = ('id', 'content_object', 'text', 'comment_time', 'author', 'root', 'parent')
  
 
 admin.site.register(UserProfile)

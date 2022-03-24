@@ -80,13 +80,14 @@
             <a class = "btn btn-outline-primary" href = "{% url 'crescendo:faq' %}" > FAQ </a>
           </div>
           <div class="col-md">
-            <a class = "btn btn-outline-primary"href = "{% url 'crescendo:about' %}"> About Us</a>
+            <a class = "btn btn-outline-primary" href = "{% url 'crescendo:about' %}"> About Us</a>
           </div>
           <div class="col-md">
-            <a class = "btn btn-outline-primary"href = "{% url 'crescendo:contactUs' %}"> Contact Us </a>
+            <a class = "btn btn-outline-primary" href = "{% url 'crescendo:contactUs' %}"> Contact Us </a>
           </div>
         </div>
       </div>
+    {% block script_extends %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->
 

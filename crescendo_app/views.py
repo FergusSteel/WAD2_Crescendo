@@ -3,22 +3,21 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 
 # Create your views here.
 from django.urls import reverse
-
 
 from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment
 from crescendo_app.form import PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
 
-def index(request , added = False):
-    context_dict = {} 
+def index(request, added=False):
+    context_dict = {}
     context_dict['added'] = added
-    context_dict['playlists'] = Playlist.objects.all() 
+    context_dict['playlists'] = Playlist.objects.all()
     context_dict['songs'] = Song.objects.all()[:3]
     return render(request, 'crescendo/index.html', context=context_dict)
 
@@ -43,14 +42,7 @@ def show_playlist(request, playlist_slug, playlist_id):
     context_dict = {}
 
     try:
-        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
-        playlist_content_type = ContentType.objects.get_for_model(playlist)
-        comments = Comment.objects.filter(content_type=playlist_content_type, object_id=playlist_id, parent=None)
-        context_dict['comments'] = comments.order_by('-comment_time')
-        context_dict['comment_form'] = CommentForm(
-            initial={'content_type': playlist_content_type.model, 'object_id': playlist_id})
-        context_dict['comment_count'] = Comment.objects.filter(content_type=playlist_content_type,
-                                                               object_id=playlist_id).count()
+        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id= playlist_id)
         try:
             songs = []
             for song in Song.objects.all():
@@ -69,26 +61,17 @@ def show_playlist(request, playlist_slug, playlist_id):
 
 
 def show_song(request, song_slug, song_id):
-    context_dict = {} 
+    context_dict = {}
     playlists = None
 
     try:
-        song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
-        # comment and reply for song
-        song_content_type = ContentType.objects.get_for_model(song)  
-        if request.user.is_authenticated:  
-            user , _ = UserProfile.objects.get_or_create(user = request.user)
-            playlists = user.playlists.all() 
-          
+        song = Song.objects.get(nameAsSlug=song_slug, id = song_id)
+        if request.user.is_authenticated:
+            user, _ = UserProfile.objects.get_or_create(user=request.user)
+            playlists = user.playlists.all()
+
         print(playlists)
         context_dict['playlists'] = playlists
-        comments = Comment.objects.filter(content_type=song_content_type, object_id=song_id, parent=None)
-        context_dict['comments'] = comments.order_by('-comment_time')
-        context_dict['comment_form'] = CommentForm(
-            initial={'content_type': song_content_type.model, 'object_id': song_id, 'reply_comment_id': 0})
-        context_dict['comment_count'] = Comment.objects.filter(content_type=song_content_type,
-                                                               object_id=song_id).count()
-
         context_dict['song'] = song
 
     except Song.DoesNotExist:
@@ -97,7 +80,7 @@ def show_song(request, song_slug, song_id):
     return render(request, 'crescendo/song.html', context=context_dict)
 
 
-def search(request): 
+def search(request):
     print("HERE")
     search_word = request.GET.get('q', '').strip()
     condition = None
@@ -154,7 +137,7 @@ def add_playlist(request):
 
             PlaylistF.author_id = request.user.id
             PlaylistF.save()
-             
+
             return redirect(request.META.get('HTTP_REFERER'))
 
             # return redirect('/crescendo/')
@@ -194,20 +177,13 @@ def userProfile(request):
     playlists = []
     if request.user.is_authenticated:
         username = request.user.username
-        user , _ = UserProfile.objects.get_or_create(user=request.user) 
+        user, _ = UserProfile.objects.get_or_create(user=request.user)
         user_id = request.user.id
         songs = user.songs.all()
         playlists = user.playlists.all()
 
-        user_content_type = ContentType.objects.get_for_model(user)
-        comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
-        context['comments'] = comments
-        context['comment_form'] = CommentForm(
-            initial={'content_type': user_content_type.model, 'object_id': user_id})
-        context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
-                                                          object_id=user_id).count()
         context['songs'] = songs
-        context['playlists'] = playlists 
+        context['playlists'] = playlists
         context['userprofile'] = user
 
     return render(request, 'crescendo/user_profile.html',
@@ -221,8 +197,8 @@ def add_comment(request):
     if comment_form.is_valid():
         # for comment
         comment = Comment()
-        comment.author = comment_form.cleaned_data['user'] 
-        user_profile , _ = UserProfile.objects.get_or_create(user = comment_form.cleaned_data['user']) 
+        comment.author = comment_form.cleaned_data['user']
+        user_profile, _ = UserProfile.objects.get_or_create(user=comment_form.cleaned_data['user'])
         user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
@@ -254,19 +230,19 @@ def add_comment(request):
     # ajax error message
     else:
         context_dict['status'] = 'ERROR'
-        context_dict['message'] = list(comment_form.errors.values())[0][0] 
+        context_dict['message'] = list(comment_form.errors.values())[0][0]
     return JsonResponse(context_dict)
- 
-  
-def add_to_playlist(request,song,playlist):    
-    playlistObject= Playlist.objects.get(id = playlist) 
-    songObject = Song.objects.get(id = song)
+
+
+def add_to_playlist(request, song, playlist):
+    playlistObject = Playlist.objects.get(id=playlist)
+    songObject = Song.objects.get(id=song)
     songObject.playlist.add(playlistObject)
-    return index(request , True) 
-     
- 
-def add_more_songs(request):  
+    return index(request, True)
+
+
+def add_more_songs(request):
     print(request)
-    print("In add more songs") 
+    print("In add more songs")
     data = {}
     return JsonResponse(data)

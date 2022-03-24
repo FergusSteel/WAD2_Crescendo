@@ -157,6 +157,7 @@ MEDIA_URL = '/media/'
 CKEDITOR_UPLOAD_PATH = 'upload/'
 
 CKEDITOR_CONFIGS = {
+    'default': {},
     'comment_ckeditor': {
         'toolbar': 'custom',
         'toolbar_custom': [
