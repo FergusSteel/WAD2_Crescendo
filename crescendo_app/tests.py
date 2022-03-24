@@ -3,7 +3,9 @@
 from cgitb import strong
 from operator import contains
 from django.test import TestCase  
-from crescendo_app.models import User,UserProfile , Playlist , Song , PlaylistComment , SongComment , Genre
+from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
+from datetime import datetime 
+from crescendo_app.views import index
  
 # MODEL TESTS
  
@@ -106,17 +108,73 @@ class SongMethodTests(TestCase):
 
         self.assertEquals(playlist.nameAsSlug , 'the-best-song')  
  
-    # def test_ensure_song_is_added_to_playlists(self): 
-    #     user = User(username = "Playlist Owner") 
-    #     user.save()   
-    #     names = ["Playlist 1" , "Playlist 2 " , "Playlist 3" , "Playlist 4"]  
-    #     playlists = {}
-    #     for name in names: 
-    #         crescendo_app = Playlist(author = user , name = name)
-    #         crescendo_app.save()
+    def test_ensure_song_is_added_to_playlists(self): 
+        user = User(username = "Playlist Owner") 
+        user.save()    
+        userprofile = UserProfile(user = user) 
+        userprofile.save()
+        names = ["Playlist 1" , "Playlist 2 " , "Playlist 3" , "Playlist 4"]  
+        playlists = {}
+        for name in names: 
+            playlist = Playlist(author = userprofile , name = name)
+            playlist.save() 
+            playlists[name] = playlist
 
-    #     song = Song(author = user,name  = "The second best song I guess")  
-        #song.crescendo_app.add(*playlists.values)
-        #song.save()
+        song = Song(author = userprofile,name  = "The second best song I guess")   
+        song.save() 
+        song.playlist.add(*playlists.values())
+        song.save()
 
-        #self.assertTrue(all([True if names.contains(crescendo_app.name) else False for crescendo_app in song.crescendo_app]))
+        self.assertTrue(all([True if playlist.name in names else False for playlist in song.playlist.all()]))  
+         
+          
+class CommentMethodTests(TestCase):  
+     
+    def test_ensure_comment_is_added(self): 
+        user = User(username = "A User") 
+        user.save()    
+        userprofile = UserProfile(user = user) 
+        userprofile.save()  
+        song = Song(author = userprofile,name  = "The next big song")   
+        song.save()  
+         
+        comment = Comment() 
+        comment.text = "A new Commment" 
+        comment.author = user 
+        comment.content_object = song 
+        comment.save() 
+         
+        self.assertEquals(1, Comment.objects.filter(author = user).count()) 
+         
+          
+    def test_ensure_correct_comment_time(self):  
+        user = User(username = "A User") 
+        user.save()    
+        userprofile = UserProfile(user = user) 
+        userprofile.save()  
+        song = Song(author = userprofile,name  = "The next big song")   
+        song.save()  
+         
+        comment = Comment() 
+        comment.text = "A new Commment" 
+        comment.author = user 
+        comment.content_object = song 
+        comment.save() 
+        print(comment.comment_time)   
+        today = datetime.today().strftime('%Y-%m-%d')
+         
+        self.assertEquals(str(today) , str(Comment.objects.get(id = comment.id).comment_time)[0:10])
+         
+         
+
+#Views 
+ 
+
+         
+        
+
+
+
+         
+         
+    
