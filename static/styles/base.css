@@ -1,23 +1,13 @@
 .navbar {
-    padding: 1.5rem;
+    padding: 1.5rem; 
+    background: orange;
 }
 
 body {
-    padding-right: 5%;
-    padding-left: 5%;
+    margin-right: 5%;
+    margin-left: 5%; 
 } 
 
-
-.top-nav {
-    left: 50%;
-    position: absolute;
-    transform: translatex(-50%);
-}
-
-.top-nav a {
-    font-size: 500%;
-    color: #5336eb;
-}
 
 .center {
     position: absolute;

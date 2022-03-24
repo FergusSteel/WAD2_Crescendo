@@ -8,7 +8,8 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static '/styles/catalogue.css' %}" />
 {% endblock %}
-    {% block body_block %}
+    {% block body_block %} 
+    <div class = "mt-3 mb-3">
     <h1>Playlists</h1><br>
     <div class="grid">
       {% if playlists %}
@@ -23,5 +24,6 @@
 
       {% else %}
         <li><strong>No playlists found.</strong></li>
-      {% endif %}
+      {% endif %} 
+      </div>
     {% endblock %}

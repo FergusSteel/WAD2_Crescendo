@@ -4,7 +4,11 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+     
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%232000ff%22></rect><path fill=%22%23ffffff%22 d=%22M52.02 80.69Q44.91 80.69 38.98 77.36Q33.03 74.03 29.52 67.95Q26.02 61.88 26.02 53.96L26.02 53.96Q26.02 45.14 30.02 37.08Q34.02 29.03 40.46 24.17Q46.89 19.31 53.73 19.31L53.73 19.31Q57.60 19.31 60.39 20.25Q63.19 21.20 65.70 22.82L65.70 22.82Q65.97 22.28 66.60 21.92Q67.23 21.56 68.05 21.56L68.05 21.56Q69.22 21.56 70.03 22.37Q70.84 23.18 70.84 24.35L70.84 24.35L70.84 30.11Q70.84 31.28 69.98 32.13Q69.13 32.99 67.95 32.99L67.95 32.99Q66.78 32.99 65.93 32.18Q65.07 31.37 65.07 30.20L65.07 30.20L65.07 29.48Q63.09 27.59 60.48 26.28Q57.88 24.98 53.73 24.98L53.73 24.98Q48.42 24.98 43.38 29.03Q38.34 33.08 35.15 39.78Q31.95 46.49 31.95 53.96L31.95 53.96Q31.95 60.35 34.74 65.12Q37.53 69.89 42.13 72.45Q46.72 75.02 52.02 75.02L52.02 75.02Q62.38 75.02 68.85 66.56L68.85 66.56Q69.39 65.93 69.89 65.70Q70.38 65.48 71.10 65.48L71.10 65.48Q72.28 65.48 73.13 66.24Q73.98 67.01 73.98 68.36L73.98 68.36Q73.98 69.44 73.44 70.07L73.44 70.07Q69.66 75.20 64.09 77.94Q58.50 80.69 52.02 80.69L52.02 80.69Z%22></path></svg>" />
+
+
 
     <!-- Bootstrap CSS -->   
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,8 +29,10 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'crescendo:index' %}"> <u>Crescendo</u></a>
+        <div class="container-fluid"> 
+          <div class = "navbar-brand"> 
+            <a href="{% url 'crescendo:index' %}"> <u>Crescendo</u></a> 
+          </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

@@ -146,9 +146,9 @@ def add_playlist(request):
 
             PlaylistF.author_id = request.user.id
             PlaylistF.save()
-            return redirect(request.META.get('HTTP_REFERER'))
+            # return redirect(request.META.get('HTTP_REFERER'))
 
-            # return redirect('/crescendo/')
+            return redirect(f'/crescendo/userprofile/{request.user.id}')
         
             return redirect('/crescendo/')
         else:
