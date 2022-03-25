@@ -26,8 +26,8 @@
                 <div class = "col-md player">
                     <h1>{{ song.name }} - {{ song.artist }}</h1>
                     <div class="songPlayer">
-                        <img src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
-                        <img id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
+                        <img class = "image" src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
+                        <img class = "image" id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
                             <audio id="audiofile" src="{{ song.actualSong.url }}"></audio> 
                     </div> 
                 </div> 

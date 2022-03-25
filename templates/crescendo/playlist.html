@@ -46,7 +46,7 @@
 <div class="edit_playlist">
   {% if user.is_authenticated %}
     {% if user.get_username == playlist.author.user.get_username %}
-      <a href="{% url 'crescendo:edit_playlist' playlist.nameAsSlug playlist.id %}">EDIT PLAYLIST</a>
+      <a class = "btn" href="{% url 'crescendo:edit_playlist' playlist.nameAsSlug playlist.id %}">EDIT PLAYLIST</a>
     {% endif %}
   {% endif %}
 </div>

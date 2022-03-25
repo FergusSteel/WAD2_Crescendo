@@ -10,14 +10,14 @@
             <h1 class="display-4 text-center"> {{ user.username }} , Welcome To Crescendo</h1> 
             <p class="lead">A playlist and song sharing website.</p>
             <p class="lead"> 
-            <a class="btn btn-primary btn-md" href="{% url 'crescendo:userprofile' user.id %}" role="button">Start Playlisting</a>  
+            <a class="btn btn-md" href="{% url 'crescendo:userprofile' user.id %}" role="button">Start Playlisting</a>  
             </p>
             {% else %} 
             <h1 class="display-4 text-center">Welcome To Crescendo</h1> 
             <p class="lead">A playlist and song sharing website.</p>
             <p class="lead">  
             </p>
-          <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a> 
+          <a class="btn btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a> 
           {% endif %}
         <hr class="my-4">
     </div> 

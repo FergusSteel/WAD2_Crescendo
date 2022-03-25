@@ -112,7 +112,7 @@ def populate():
          "views": 500,
          "numberOfComments": 2,
          "description": "The best",
-         "image": "default.png",
+         "image": None,
          "genres": ["Mellow", "Pop"],
          "comments":[
              {"comment": "All time favourite",
@@ -151,7 +151,7 @@ def populate():
          "views": 500,
          "numberOfComments": 1,
          "description": "Some of the best music pieces",
-         "image": None,
+         "image": "population_script_images/unnamed.jpg",
          "genres": ["Mellow"],
          "comments": [
              {"comment": "Heat",
@@ -208,7 +208,7 @@ def populate():
             "name": "Gold",
             "artist": "Anonymous Artist",
             "numberOfComments": 2,
-            "image": None,
+            "image": "population_script_images/2.jpg",
             "playlists": ["Playlist 1", "Playlist 3"],
             "lyrics": None,
             "actualSong": "population_script_music/sound2.mp3",
@@ -222,7 +222,7 @@ def populate():
             "name": "SIU",
             "artist": "Anonymous Artist",
             "numberOfComments": 3,
-            "image": None,
+            "image": "population_script_images/3.jpg",
             "lyrics": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus congue sem quam, vel porttitor ligula vulputate ut. Morbi elementum dolor tellus, et porta enim ultricies dapibus. Cras in nunc ullamcorper, rutrum eros et, porta elit. Curabitur porttitor, mi ut hendrerit placerat, dolor purus aliquam mi, quis semper ligula ligula vel dolor. Sed suscipit nulla ut ante ultricies rutrum. Aenean tristique efficitur felis, sit amet bibendum felis facilisis quis. Aliquam sit amet elit ligula. Donec dapibus sem vel dui finibus convallis. Vestibulum efficitur lobortis dapibus. Fusce rhoncus, diam sed gravida varius, odio tortor ornare turpis, et aliquam nisi felis in dolor. Phasellus gravida efficitur lectus in efficitur. Suspendisse maximus dui sapien, nec tristique diam facilisis non. Fusce metus turpis, molestie dictum est sit amet, imperdiet molestie quam. In eu eros et tellus hendrerit eleifend. ",
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
@@ -239,7 +239,7 @@ def populate():
             "name": "Tuesday",
             "artist": "Michal",
             "numberOfComments": 0,
-            "image": None,
+            "image": "population_script_images/4.jpg",
             "lyrics": None,
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
@@ -275,7 +275,7 @@ def populate():
         genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
         playlistObject = add_playlist(playlist['name'], genre, usersForLaterUsage[playlist['author']][1],
                                       playlist['views'], playlist['numberOfComments'], playlist['description'],
-                                      playlist['image'])
+                                      image = playlist['image'] )
         playlistsForLaterUsage[playlist['name']] = playlistObject 
          
         for comment in comments: 
@@ -286,7 +286,7 @@ def populate():
         genre = [genresForLaterUsage[genre] for genre in song['genres']]
         playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
         songObject = add_song(song["name"], genre, usersForLaterUsage[song['author']][1], song['artist'],
-                              song['numberOfComments'], song["actualSong"], playlist , lyrics = song["lyrics"])
+                              song['numberOfComments'], song["actualSong"], playlist , lyrics = song["lyrics"] , image = song['image'])
 
         for comment in comments: 
             add_comment(usersForLaterUsage[comment['author']][0] , comment['comment'],songObject) 
@@ -312,9 +312,14 @@ def add_genre(name):
 
 def add_playlist(name, genreList, author, views, numberOfComments, description, image=None):
     playlistObject, _ = Playlist.objects.get_or_create(name=name, author=author, views=views,
-                                                       numberOfComments=numberOfComments, description=description)
+                                                       numberOfComments=numberOfComments, description=description) 
+                                                        
+    if image: 
+        playlistObject.image = image 
+
     playlistObject.genre.add(*genreList)
-    playlistObject.save()
+    playlistObject.save() 
+     
 
     return playlistObject
 
@@ -326,6 +331,9 @@ def add_song(name, genreList, author, artist, numberOfComments, song, playlists,
                                
     if lyrics: 
         songObject.lyrics = lyrics 
+         
+    if image: 
+        songObject.image = image
 
     songObject.genre.add(*genreList)
     songObject.playlist.add(*playlists)

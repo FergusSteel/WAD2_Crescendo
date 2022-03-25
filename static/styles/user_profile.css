@@ -29,7 +29,10 @@
      padding: 2%; 
      width:100%;
  }
- 
+  
+ .paddle { 
+     width: 100%;
+ }
  /* .comments {
      grid-area: comments;
  } */

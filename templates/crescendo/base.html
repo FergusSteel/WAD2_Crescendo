@@ -28,7 +28,7 @@
     {% block css %}{% endblock %}
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid"> 
           <div class = "navbar-brand"> 
             <a href="{% url 'crescendo:index' %}"> <u>Crescendo</u></a> 
@@ -67,29 +67,32 @@
             <div class = "center" id = "search-bar">
             <form class="d-flex" action="{% url 'crescendo:search' %}" role="search" method="get">
               <input class="form-control me-2" type="search" placeholder="Search" name="q" required>
-              <button class="btn btn-primary" type="submit">Search</button>
+              <button class="btn" type="submit">Search</button>
             </form> 
             </div>
           </div>
         </div> 
         
       </nav> 
+      <hr>
+      <div class = "main">
+      {% block body_block %}  
+
        
-      {% block body_block %} 
-       
-      {% endblock %} 
+      {% endblock %}  
+      </div>
        
       <div class="container text-center mt-1 mb-0 footer"> 
         <hr class="my-4">
         <div class="row">
           <div class="col-md">
-            <a class = "btn btn-outline-primary" href = "{% url 'crescendo:faq' %}" > FAQ </a>
+            <a class = "btn" href = "{% url 'crescendo:faq' %}" > FAQ </a>
           </div>
           <div class="col-md">
-            <a class = "btn btn-outline-primary" href = "{% url 'crescendo:about' %}"> About Us</a>
+            <a class = "btn" href = "{% url 'crescendo:about' %}"> About Us</a>
           </div>
           <div class="col-md">
-            <a class = "btn btn-outline-primary" href = "{% url 'crescendo:contactUs' %}"> Contact Us </a>
+            <a class = "btn" href = "{% url 'crescendo:contactUs' %}"> Contact Us </a>
           </div>
         </div>
       </div>
