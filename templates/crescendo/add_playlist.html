@@ -31,5 +31,10 @@
         </form>
     </div>
 </div>
-{%endif%}
+{% else %} 
+<div class = "text-center mb-3 mt-3"> 
+    <p> Can't add a playlist without an account </p> 
+    <a class="btn btn-primary btn-md" href="{% url 'registration_register' %}" role="button">Start Playlisting</a>  
+    </div>
+{% endif %}
 {% endblock %}
