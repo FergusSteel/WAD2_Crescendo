@@ -29,9 +29,17 @@
 <div class = "row top-row">
     <div class = "col-md">
     <div class="playlistSummary">
-        <h1>{{ playlist.name }}</h1><br>
-        <img src="{{ playlist.image.url }}"><br>
-        <p>{{ playlist.description }}</p><br> Views: {{ playlist.views }}
+        <h1>Edit Playlist</h1><br>
+        <form id="edit_details" action="{% url 'crescendo:edit_playlist' playlist.nameAsSlug playlist.id %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text}}
+            {{ field }}
+            <br>
+          {% endfor %}
+          <input type="submit" name="submit" value="Save Changes" />
+        </form>
     </div>
     </div>
     <div class = "col-md">

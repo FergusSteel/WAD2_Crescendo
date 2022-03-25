@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import  JsonResponse
 from django.shortcuts import render
+from django.template.defaultfilters import slugify
 
 # Create your views here.
 from django.views import View
@@ -160,9 +161,24 @@ def add_playlist(request):
 
 def edit_playlist(request, playlist_slug, playlist_id):
     context_dict = {}
+    form = PlaylistEditForm()
 
+    context_dict['form'] = form
     try:
         playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id= playlist_id)
+        if request.method == 'POST':
+            form = PlaylistEditForm(request.POST, request.FILES)
+            if form.is_valid():
+                print("SUBMIT")
+                playlist.image = form.cleaned_data.get("image")
+                playlist.name = form.cleaned_data.get("name")
+                playlist.nameAsSlug = slugify(form.cleaned_data.get("name"))
+                playlist.description = form.cleaned_data.get("description")
+                playlist.save()
+                return redirect("index")
+            else:
+                print(form.errors)
+
         try:
             songs = []
             for song in Song.objects.all():
@@ -174,7 +190,6 @@ def edit_playlist(request, playlist_slug, playlist_id):
 
         context_dict['playlist'] = playlist
         playlist.views = playlist.views + 1
-        playlist.save()
 
     except Playlist.DoesNotExist:
         context_dict['playlist'] = None
@@ -328,3 +343,21 @@ class delete_song(View):
         targetSong.playlist.remove(targetPlaylist)
 
         return render(request, 'crescendo/edit_playlist.html')
+
+def edit_details(request, playlist_slug, playlist_id):
+    form = PlaylistEditForm()
+    playlist = Playlist.objects.get(playlist_id)
+    if request.method == 'POST':
+        form = PlaylistEditForm(request.POST)
+        if form.is_valid():
+            playlist.image = form.cleaned_data.get("image")
+            playlist.name = form.cleaned_data.get("name")
+            playlist.description = form.cleaned_data.get("description")
+            playlist.save()
+            context_dict = {}
+            context_dict['playlists'] = Playlist.objects.order_by()
+            return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
+        else:
+            print(form.errors)
+
+    return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)

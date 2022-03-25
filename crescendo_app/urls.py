@@ -48,4 +48,5 @@ urlpatterns = [
                   path('playlistSort/', views.PlaylistSort.as_view(), name='sortPlaylist'),
                   path('edit_profile' , views.edit_profile , name = "edit_profile"),
                   path('delete_song/', views.delete_song.as_view(), name = "delete_song"),
+                  path('edit_details', views.edit_details, name="edit_details"),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
