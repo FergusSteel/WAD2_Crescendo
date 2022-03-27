@@ -1,11 +1,14 @@
  
 # IMPORTS  
+from doctest import TestResults
+from this import d
 from django.test import TestCase  
 from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
 from datetime import datetime 
 from crescendo_app.views import index 
 from django.urls import reverse 
-from django.test import Client
+from django.test import Client 
+from django.contrib import auth
  
 # MODEL TESTS
  
@@ -260,12 +263,125 @@ class Login(TestCase):
     def test_song_catalogue_has_response(self):
         response = self.client.get(reverse('auth_login')) 
         self.assertEquals(response.status_code, 200)  
-             
+              
+    def test_can_login(self):  
+        user = User(username = "Another user")  
+        user.password = "test123"
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save()  
+        response = self.client.post(reverse('auth_login'), {'username': user.username, 'password': user.password})
+  
+        self.assertTrue(user.is_authenticated)
  
+    def login_redirects_to_index(self):  
+        user = User(username = "Another user")  
+        user.password = "test123"
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save()  
+        response = self.client.post(reverse('auth_login'), {'username': user.username, 'password': user.password}) 
+
+        self.assertRedirects(response, 'crescendo:index', status_code=302, 
+        target_status_code=200, fetch_redirect_response=True) 
+ 
+
 class Register(TestCase):  
-    def test_song_catalogue_has_response(self):
-            response = self.client.get(reverse('registration_register')) 
-            self.assertEquals(response.status_code, 200) 
+
+    def test_register_has_response(self):
+        response = self.client.get(reverse('registration_register')) 
+        self.assertEquals(response.status_code, 200)  
+             
+    def test_successfull_register(self): 
+        username = "usernameOfUser" 
+        email = "usernameOfUser@gmail.com" 
+        password = "testpass123"  
+
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        
+
+        self.assertFalse(User.objects.get_or_create(username = username)[1]) 
+         
+    def test_register_incorrect_username_invalid_invalid_character(self):  
+        username = "usernameOfUser........*&^%$#@#$%^&*().." 
+        email = "usernameOfUser@gmail.com" 
+        password = "testpass123"  
+ 
+  
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        try:  
+            User.objects.get(username = username)  
+            self.assertFalse(True , "User has been creted with an invalid username") 
+        except User.DoesNotExist:  
+            self.assertTrue(True) 
+             
+
+    def test_register_invalid_email(self):  
+        username = "usernameOfUser........*&^%$#@#$%^&*().." 
+        email = "usernameOfUsergmail.com" 
+        password = "testpass123"    
+         
+          
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        try:  
+            User.objects.get(username = username)  
+            self.assertFalse(True , "User has been creted with an invalid email") 
+        except User.DoesNotExist:  
+            self.assertTrue(True) 
+             
+              
+    def test_register_invalid_password_fully_numeric(self):   
+        username = "usernameOfUser........*&^%$#@#$%^&*().." 
+        email = "usernameOfUser@gmail.com" 
+        password = "123456789"   
+
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        try:  
+            User.objects.get(username = username)  
+            self.assertFalse(True , "User has been creted with an invalid password") 
+        except User.DoesNotExist:  
+            self.assertTrue(True)   
+             
+    def test_register_invalid_password_too_short(self):   
+        username = "usernameOfUser........*&^%$#@#$%^&*().." 
+        email = "usernameOfUser@gmail.com" 
+        password = "a"   
+
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        try:  
+            User.objects.get(username = username)  
+            self.assertFalse(True , "User has been creted with an invalid password") 
+        except User.DoesNotExist:  
+            self.assertTrue(True)  
+             
+
+    def test_register_invalid_password_common_word(self):  
+        username = "usernameOfUser........*&^%$#@#$%^&*().." 
+        email = "usernameOfUser@gmail.com" 
+        password = "hello123"   
+         
+        self.client.post(reverse('registration_register'), {'username': username, 'email': email,'password1': password , 'password2':password}) 
+        try:  
+            User.objects.get(username = username)  
+            self.assertFalse(True , "User has been creted with an invalid password - common word of hello") 
+        except User.DoesNotExist:  
+            self.assertTrue(True) 
+ 
+
+# class UserProfileTests(TestCase): 
+     
+#     def test_userprofile_displays_correctly(self):  
+#         user = User(username = "Another user") 
+#         user.save()
+#         user_profile = UserProfile(user = user)
+#         user_profile.save()    
+         
+#         response = self.client.get(reverse('crescendo:userprofile' , kwargs= {''}))    
+
+          
+        
+        
+
 
          
         
