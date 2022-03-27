@@ -19,12 +19,12 @@ def populate():
             os.makedirs(folder)
 
     questions = [
-        {"question": "What is this website for ?",
-         "answer": "Crescendo is a website used for music and playlist sharing, aimed mainly at independent artists looking to put their music out there"},
+        {"question": "What is this website for?",
+         "answer": "Crescendo is a website used for music and playlist uploading and sharing. It is aimed mainly at independent artists looking to put their music out there."},
         {"question": "How to make an account?",
-         "answer": "Simply head over to crescedo/register to access our registration page , where you can make an account by providing a bunch of information"},
-        {"question": "Can i publish music that I have not made?",
-         "answer": "Only if you have the legal ownership of the product"}
+         "answer": "Simply head over to crescedo/register to access our registration page, where you can make an account by providing a bunch of information."},
+        {"question": "Can I publish music that I have not made?",
+         "answer": "Only if you have the legal ownership of the product."}
     ]
     users = [
         {"name": "Greg",
