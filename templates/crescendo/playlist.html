@@ -53,7 +53,7 @@
   {% endif %}
 </div>
 
-<<<<<<< HEAD
+
   <h4 class="text-left">Liked Here!</h4>
 
            <div class="like" onclick="like_change(this, '{% get_content_type playlist %}', {{ playlist.id }})">
@@ -67,8 +67,7 @@
                 <strong>Warning!</strong> You are not log in, please log in. You can log in <a href="{% url 'auth_login' %}">here</a>
         </div>
               {% endif %}
-=======
->>>>>>> 61969ac6d9c93e8a9a92718f7013a71c213e8282
+
  <div class = "row">
                <div class="comment-area">
                     <h4 class="comment-area-title">Comment Here</h4>
@@ -149,15 +148,11 @@
                         
                     </div>
              </div>
-<<<<<<< HEAD
-{% else %} Playlist Does Not Exist {% endif %} {% endblock %}
-{% block script_extends %}
-=======
-</div>
 
-        
-{% else %} Playlist Does Not Exist {% endif %} {% endblock %} {% block script_extends %}
->>>>>>> 61969ac6d9c93e8a9a92718f7013a71c213e8282
+{% else %} Playlist Does Not Exist {% endif %} {% endblock %}
+
+{% block script_extends %}
+
 <script type="text/javascript">
         var CommentUrl = "{% url 'crescendo:add_comment' %}";
         var likeUrl = "{% url 'crescendo:likes' %}";
