@@ -1,11 +1,11 @@
  
 # IMPORTS  
-from cgitb import strong
-from operator import contains
 from django.test import TestCase  
 from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
 from datetime import datetime 
-from crescendo_app.views import index
+from crescendo_app.views import index 
+from django.urls import reverse 
+from django.test import Client
  
 # MODEL TESTS
  
@@ -159,16 +159,113 @@ class CommentMethodTests(TestCase):
         comment.text = "A new Commment" 
         comment.author = user 
         comment.content_object = song 
-        comment.save() 
-        print(comment.comment_time)   
+        comment.save()   
         today = datetime.today().strftime('%Y-%m-%d')
          
         self.assertEquals(str(today) , str(Comment.objects.get(id = comment.id).comment_time)[0:10])
          
          
 
-#Views 
+#View Tests 
  
+class ViewMethodTests(TestCase):  
+      
+    def test_index_page_has_response(self):
+        response = self.client.get(reverse('crescendo:index')) 
+        self.assertEquals(response.status_code, 200) 
+         
+    def test_index_page_has_playlist(self):   
+        user = User(username = "Another user") 
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save() 
+        playlist = Playlist(author = user_profile , name = "The best crescendo_app" , views = -100 )
+        playlist.save() 
+        
+        response = self.client.get(reverse('crescendo:index'))  
+        self.assertTrue('The best crescendo_app' in response.content.decode()) 
+          
+    def test_index_page_has_song(self):  
+        user = User(username = "Another user") 
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save()  
+        song = Song(author = user_profile,name  = "The second best song I guess")   
+        song.save()  
+          
+        response = self.client.get(reverse('crescendo:index')) 
+        self.assertTrue('The second best song I guess' in response.content.decode())
+   
+class SongPage(TestCase):   
+    
+    def test_song_catalogue_has_response(self):
+        response = self.client.get(reverse('crescendo:SongCatalogue')) 
+        self.assertEquals(response.status_code, 200)  
+
+
+    def test_amount_of_songs_matches_amount_in_database(self):
+        user = User(username = "Another user") 
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save()  
+        
+
+        songs = ['Song1','Song2','Song3'] 
+        
+        for song in songs:  
+            songObject = Song.objects.create(author = user_profile,name = song)  
+            songObject.save()
+            
+            
+        response = self.client.get(reverse('crescendo:SongCatalogue'))   
+        
+        
+
+        self.assertTrue('<strong>Song1</strong>' in response.content.decode())
+        self.assertTrue('<strong>Song2</strong>' in response.content.decode())  
+        self.assertTrue('<strong>Song3</strong>' in response.content.decode()) 
+
+
+class PlaylistPage(TestCase):   
+     
+        def test_song_catalogue_has_response(self):
+            response = self.client.get(reverse('crescendo:PlaylistCatalogue')) 
+            self.assertEquals(response.status_code, 200) 
+        
+        def test_amount_of_playlists_matches_amount_in_database(self):
+            user = User(username = "Another user") 
+            user.save()
+            user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+            user_profile.save()  
+            
+
+            playlists = ['Playlist1','Playlist2','Playlist3'] 
+            
+            for playlist in playlists:  
+                playlistObject = Playlist.objects.create(author = user_profile,name = playlist)  
+                playlistObject.save()
+                
+                
+            response = self.client.get(reverse('crescendo:PlaylistCatalogue'))   
+            
+            
+
+            self.assertTrue('<strong>Playlist1</strong>' in response.content.decode())
+            self.assertTrue('<strong>Playlist2</strong>' in response.content.decode())  
+            self.assertTrue('<strong>Playlist3</strong>' in response.content.decode()) 
+
+        
+                
+class Login(TestCase):  
+    def test_song_catalogue_has_response(self):
+        response = self.client.get(reverse('auth_login')) 
+        self.assertEquals(response.status_code, 200)  
+             
+ 
+class Register(TestCase):  
+    def test_song_catalogue_has_response(self):
+            response = self.client.get(reverse('registration_register')) 
+            self.assertEquals(response.status_code, 200) 
 
          
         

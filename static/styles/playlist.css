@@ -77,7 +77,12 @@ textarea {
  
 .playlist-image { 
   max-width:500px;
-} 
+}  
+ 
+.comment { 
+  margin-left: 2%; 
+  margin-top: 0.5%;
+}
  
 @media screen and (max-width: 1000px) { 
   .playlist-image { 
