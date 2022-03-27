@@ -6,7 +6,7 @@ import django
 
 django.setup()
 
-from crescendo_app.models import User, UserProfile, Genre, Song,  Playlist,  Question, Comment
+from crescendo_app.models import User, UserProfile, Genre, Song, Playlist, Question, Comment
 from django.db import models
 
 
@@ -17,14 +17,14 @@ def populate():
     for folder in necessary_folders:
         if not os.path.exists(folder):
             os.makedirs(folder)
- 
-    questions = [ 
-        {"question" : "What is this website for ?", 
-        "answer" : "Crescendo is a website used for music and playlist sharing, aimed mainly at independent artists looking to put their music out there"}, 
-        {"question" : "How to make an account?", 
-        "answer" : "Simply head over to crescedo/register to access our registration page , where you can make an account by providing a bunch of information"}, 
-        {"question" : "Can i publish music that I have not made?", 
-        "answer" : "Only if you have the legal ownership of the product"}
+
+    questions = [
+        {"question": "What is this website for ?",
+         "answer": "Crescendo is a website used for music and playlist sharing, aimed mainly at independent artists looking to put their music out there"},
+        {"question": "How to make an account?",
+         "answer": "Simply head over to crescedo/register to access our registration page , where you can make an account by providing a bunch of information"},
+        {"question": "Can i publish music that I have not made?",
+         "answer": "Only if you have the legal ownership of the product"}
     ]
     users = [
         {"name": "Greg",
@@ -32,13 +32,13 @@ def populate():
         {"name": "Sarah",
          "image": "population_script_images/sarah.png"},
         {"name": "Craig",
-         "image": "population_script_images/craig.png"}, 
-        {"name" : "Michal", 
-        "image" : None}, 
-        {"name" : "Angelo", 
-        "image" : None}, 
-        {"name" : "Fergus", 
-        "image" : None},
+         "image": "population_script_images/craig.png"},
+        {"name": "Michal",
+         "image": None},
+        {"name": "Angelo",
+         "image": None},
+        {"name": "Fergus",
+         "image": None},
     ]
 
     genres = [
@@ -50,13 +50,13 @@ def populate():
         "Alternative Rock",
         "Pop",
         "Rap",
-        "Emo", 
-        "Hip-Hop", 
-        "Trap", 
-        "Punk Rock", 
-        "Dance", 
-        "Dub-Step", 
-        "Electronic", 
+        "Emo",
+        "Hip-Hop",
+        "Trap",
+        "Punk Rock",
+        "Dance",
+        "Dub-Step",
+        "Electronic",
         "K-Pop"
     ]
 
@@ -114,7 +114,7 @@ def populate():
          "description": "The best",
          "image": None,
          "genres": ["Mellow", "Pop"],
-         "comments":[
+         "comments": [
              {"comment": "All time favourite",
               "author": "Sarah"},
              {"comment": "Very upbeat and nice to listen to",
@@ -135,17 +135,17 @@ def populate():
               "author": "Greg",
               }
          ]
-         },  
+         },
         {"author": "Angelo",
          "name": "Best of 2020",
          "views": 0,
          "numberOfComments": 0,
          "description": "Biggest Hits from 2020 - the quarantine year",
-         "genres": ["Rap", "Pop", "Electronic" , "Dance" , "Punk Rock"],
+         "genres": ["Rap", "Pop", "Electronic", "Dance", "Punk Rock"],
          "image": None,
-         "comments":[
+         "comments": [
          ]
-        },
+         },
         {"author": "Michal",
          "name": "Movie Soundtracks",
          "views": 500,
@@ -157,35 +157,34 @@ def populate():
              {"comment": "Heat",
               "author": "Angelo"},
          ]
-         }, 
-         {"author": "Fergus",
+         },
+        {"author": "Fergus",
          "name": "Personal Favourites",
          "views": 10,
          "numberOfComments": 1,
          "description": "Some of my favourite music pieces, all genres included",
          "image": None,
          "genres": ["Upbeat",
-        "Mellow",
-        "Rock",
-        "Punk",
-        "Indie",
-        "Alternative Rock",
-        "Pop",
-        "Rap",
-        "Emo", 
-        "Hip-Hop", 
-        "Trap", 
-        "Punk Rock", 
-        "Dance", 
-        "Dub-Step", 
-        "Electronic", 
-        "K-Pop"],
+                    "Mellow",
+                    "Rock",
+                    "Punk",
+                    "Indie",
+                    "Alternative Rock",
+                    "Pop",
+                    "Rap",
+                    "Emo",
+                    "Hip-Hop",
+                    "Trap",
+                    "Punk Rock",
+                    "Dance",
+                    "Dub-Step",
+                    "Electronic",
+                    "K-Pop"],
          "comments": [
              {"comment": "Some of my favourites are here",
               "author": "Angelo"},
          ]
          }
-
 
     ]
 
@@ -200,7 +199,7 @@ def populate():
             "lyrics": None,
             "playlists": ["Playlist 1", "Playlist 2"],
             "actualSong": "population_script_music/sound1.mp3",
-            "comments": [{"comment":"Beautiful Song", "author":"Craig"}]
+            "comments": [{"comment": "Beautiful Song", "author": "Craig"}]
         },
         {
             "author": "Greg",
@@ -212,9 +211,9 @@ def populate():
             "playlists": ["Playlist 1", "Playlist 3"],
             "lyrics": None,
             "actualSong": "population_script_music/sound2.mp3",
-            "comments": [{"author" : "Sarah",  
-                        "comment" : "Great" },{"author" : "Fergus",  
-                            "comment" : "mid"}]
+            "comments": [{"author": "Sarah",
+                          "comment": "Great"}, {"author": "Fergus",
+                                                "comment": "mid"}]
         },
         {
             "author": "Craig",
@@ -226,13 +225,13 @@ def populate():
             "lyrics": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus congue sem quam, vel porttitor ligula vulputate ut. Morbi elementum dolor tellus, et porta enim ultricies dapibus. Cras in nunc ullamcorper, rutrum eros et, porta elit. Curabitur porttitor, mi ut hendrerit placerat, dolor purus aliquam mi, quis semper ligula ligula vel dolor. Sed suscipit nulla ut ante ultricies rutrum. Aenean tristique efficitur felis, sit amet bibendum felis facilisis quis. Aliquam sit amet elit ligula. Donec dapibus sem vel dui finibus convallis. Vestibulum efficitur lobortis dapibus. Fusce rhoncus, diam sed gravida varius, odio tortor ornare turpis, et aliquam nisi felis in dolor. Phasellus gravida efficitur lectus in efficitur. Suspendisse maximus dui sapien, nec tristique diam facilisis non. Fusce metus turpis, molestie dictum est sit amet, imperdiet molestie quam. In eu eros et tellus hendrerit eleifend. ",
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
-            "comments": [{"author" : "Fergus", 
-                            "comment" : "mid",},
-                            {"author" : "Craig", 
-                            "comment" : "Great" },  
-                            {"author" : "Michal", 
-                            "comment" : "My favourite"}]
-        }, 
+            "comments": [{"author": "Fergus",
+                          "comment": "mid", },
+                         {"author": "Craig",
+                          "comment": "Great"},
+                         {"author": "Michal",
+                          "comment": "My favourite"}]
+        },
         {
             "author": "Michal",
             "genres": ["Rap", "Rock"],
@@ -244,8 +243,8 @@ def populate():
             "playlists": [],
             "actualSong": "population_script_music/sound3.mp3",
             "comments": []
-        }, 
-                {
+        },
+        {
             "author": "Fergus",
             "genres": ["Punk Rock"],
             "name": "Song",
@@ -270,29 +269,31 @@ def populate():
         genresForLaterUsage[genre] = genreObject
 
     playlistsForLaterUsage = {}
-    for playlist in playlists: 
+    for playlist in playlists:
         comments = playlist['comments']
         genre = [genresForLaterUsage[genre] for genre in playlist['genres']]
         playlistObject = add_playlist(playlist['name'], genre, usersForLaterUsage[playlist['author']][1],
                                       playlist['views'], playlist['numberOfComments'], playlist['description'],
-                                      image = playlist['image'] )
-        playlistsForLaterUsage[playlist['name']] = playlistObject 
-         
-        for comment in comments: 
-             add_comment(usersForLaterUsage[comment['author']][0] , comment['comment'],playlistObject) 
+                                      image=playlist['image'])
+        playlistsForLaterUsage[playlist['name']] = playlistObject
+
+        for comment in comments:
+            add_comment(usersForLaterUsage[comment['author']][0], comment['comment'], playlistObject)
 
     for song in songs:
         comments = song['comments']
         genre = [genresForLaterUsage[genre] for genre in song['genres']]
         playlist = [playlistsForLaterUsage[playlist] for playlist in song['playlists']]
         songObject = add_song(song["name"], genre, usersForLaterUsage[song['author']][1], song['artist'],
-                              song['numberOfComments'], song["actualSong"], playlist , lyrics = song["lyrics"] , image = song['image'])
+                              song['numberOfComments'], song["actualSong"], playlist, lyrics=song["lyrics"],
+                              image=song['image'])
 
-        for comment in comments: 
-            add_comment(usersForLaterUsage[comment['author']][0] , comment['comment'],songObject) 
+        for comment in comments:
+            add_comment(usersForLaterUsage[comment['author']][0], comment['comment'], songObject)
 
-    for question in questions: 
-        questionObject = add_question(question['question'],question['answer'])
+    for question in questions:
+        questionObject = add_question(question['question'], question['answer'])
+
 
 def add_user(name, image):
     userObject, _ = User.objects.get_or_create(username=name)
@@ -312,27 +313,25 @@ def add_genre(name):
 
 def add_playlist(name, genreList, author, views, numberOfComments, description, image=None):
     playlistObject, _ = Playlist.objects.get_or_create(name=name, author=author, views=views,
-                                                       numberOfComments=numberOfComments, description=description) 
-                                                        
-    if image: 
-        playlistObject.image = image 
+                                                       numberOfComments=numberOfComments, description=description)
+
+    if image:
+        playlistObject.image = image
 
     playlistObject.genre.add(*genreList)
-    playlistObject.save() 
-     
+    playlistObject.save()
 
     return playlistObject
 
 
-
-def add_song(name, genreList, author, artist, numberOfComments, song, playlists, lyrics=None, image=None): 
+def add_song(name, genreList, author, artist, numberOfComments, song, playlists, lyrics=None, image=None):
     songObject, _ = Song.objects.get_or_create(name=name, author=author, artist=artist,
-                                               numberOfComments=numberOfComments, actualSong=song) 
-                               
-    if lyrics: 
-        songObject.lyrics = lyrics 
-         
-    if image: 
+                                               numberOfComments=numberOfComments, actualSong=song)
+
+    if lyrics:
+        songObject.lyrics = lyrics
+
+    if image:
         songObject.image = image
 
     songObject.genre.add(*genreList)
@@ -340,20 +339,22 @@ def add_song(name, genreList, author, artist, numberOfComments, song, playlists,
     songObject.save()
 
     return songObject
- 
-def add_question(question , answer): 
-    questionObject , _ = Question.objects.get_or_create(question = question , answer = answer) 
-    questionObject.save() 
+
+
+def add_question(question, answer):
+    questionObject, _ = Question.objects.get_or_create(question=question, answer=answer)
+    questionObject.save()
     return questionObject
- 
-def add_comment(author , text, content_object): 
-    comment = Comment() 
-    comment.author = author 
-    comment.text = text 
+
+
+def add_comment(author, text, content_object):
+    comment = Comment()
+    comment.author = author
+    comment.text = text
     comment.content_object = content_object
-    comment.save() 
-    return comment 
+    comment.save()
+    return comment
+
 
 if __name__ == "__main__":
     populate()
- 

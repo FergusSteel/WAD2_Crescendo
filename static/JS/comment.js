@@ -1,4 +1,4 @@
-   function reply(reply_comment_id){
+    function reply(reply_comment_id){
         $('#reply_comment_id').val(reply_comment_id);
         var html = $('#comment_' + reply_comment_id).html();
         $('#reply_content').html(html);
@@ -8,6 +8,8 @@
         CKEDITOR.instances['id_text'].focus();
         });
         }
+
+
 
     $("#comment_form").submit(function() {
     // check none
@@ -22,7 +24,7 @@
 
     //AJAX
     $.ajax({
-        url: myUrl,
+        url: CommentUrl,
         type: 'POST',
         data: $(this).serialize(),
         cache: false,
@@ -31,14 +33,14 @@
 
             // insert data
             if (data['status'] === "SUCCESS") {
-                // comment
+                // comment and like
                 if ($('#reply_comment_id').val() === '0') {
                     var comment_html = '<div id="root_' + data['pk'] + '" class="comment"><span>' + data['username'] + '</span><span> (' + data['comment_time'] + ')：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">Reply</a></div>';
-                    $('#comment_list').prepend(comment_html);
+                    $("#comment_list").prepend(comment_html);
                 } else {
                     // reply
-                    var reply_html = '<div class="reply"><span>' + data['username'] + '</span><span> (' +  data['comment_time'] + ')</span><span> Reply </span><span>' + data['reply_to'] + '：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">Reply</a></div>';
-                    $('#root_' + data['root_id']).append(reply_html)
+                  var reply_html ='<div class="reply"><span>' + data['username'] + '</span><span> (' + data['comment_time'] + ')</span><span> Reply </span><span>' + data['reply_to'] + '：</span><div id="comment_' + data['pk'] + '">' + data['text'] + '</div><a href="javascript:reply(' + data['pk'] + ');">Reply</a></div>';
+                   $("#root_" + data['root_pk']).append(reply_html);
                 }
 
                 // clean textarea
@@ -59,3 +61,35 @@
     });
     return false;
 });
+
+         function like_change(obj, content_type, object_id){
+            var is_like = obj.getElementsByClassName('active').length === 0;
+            $.ajax({
+                url: likeUrl,
+                type: 'GET',
+                data: {
+                    content_type: content_type,
+                    object_id: object_id,
+                    is_like: is_like
+                },
+                cache: false,
+                success: function(data){
+                    console.log(data);
+                    if(data['status']==='SUCCESS'){
+                        // 更新点赞状态
+                        var element = $(obj.getElementsByClassName('glyphicon'));
+                        if(is_like){
+                            element.addClass('active');
+                        }else{
+                            element.removeClass('active');
+                        }
+                        // 更新点赞数量
+                        var liked_num = $(obj.getElementsByClassName('liked-num'));
+                        liked_num.text(data['liked_num']);
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr)
+                }
+            });
+        }

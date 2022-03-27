@@ -1,14 +1,17 @@
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import  JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.defaultfilters import slugify
+from django.contrib import auth
 
 # Create your views here.
 from django.views import View
+from registration.forms import RegistrationForm
 
-from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment,User
+from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment, User, LikeRecord, LikeCount
 from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm
 from django.shortcuts import redirect
 
@@ -43,7 +46,7 @@ def show_playlist(request, playlist_slug, playlist_id):
     context_dict = {}
 
     try:
-        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id= playlist_id)
+        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
         try:
             songs = []
             for song in Song.objects.all():
@@ -68,7 +71,7 @@ def show_song(request, song_slug, song_id):
     playlists = None
 
     try:
-        song = Song.objects.get(nameAsSlug=song_slug, id = song_id)
+        song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
         if request.user.is_authenticated:
             user, _ = UserProfile.objects.get_or_create(user=request.user)
             playlists = user.playlists.all()
@@ -78,7 +81,7 @@ def show_song(request, song_slug, song_id):
         # comment and reply for song
         song_content_type = ContentType.objects.get_for_model(song)
         if request.user.is_authenticated:
-            user , _ = UserProfile.objects.get_or_create(user = request.user)
+            user, _ = UserProfile.objects.get_or_create(user=request.user)
             playlists = user.playlists.all()
 
         context_dict['playlists'] = playlists
@@ -151,7 +154,6 @@ def add_playlist(request):
 
             return redirect(f'/crescendo/userprofile/{request.user.id}')
 
-            return redirect('/crescendo/')
         else:
 
             print(form.errors)
@@ -165,7 +167,7 @@ def edit_playlist(request, playlist_slug, playlist_id):
 
     context_dict['form'] = form
     try:
-        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id= playlist_id)
+        playlist = Playlist.objects.get(nameAsSlug=playlist_slug, id=playlist_id)
         if request.method == 'POST':
             form = PlaylistEditForm(request.POST, request.FILES)
             if form.is_valid():
@@ -197,8 +199,7 @@ def edit_playlist(request, playlist_slug, playlist_id):
     return render(request, 'crescendo/edit_playlist.html', context=context_dict)
 
 
-def userProfile(request , id):
-
+def userProfile(request, id):
     context = {}
     songs = []
     playlists = []
@@ -214,23 +215,16 @@ def userProfile(request , id):
         context['userprofile'] = user
 
     playlists = []
-    user = User.objects.get(id = id)
+    user = User.objects.get(id=id)
     context['userNotNative'] = user
     user_content_type = ContentType.objects.get_for_model(user)
     username = user.username
 
-    user , _ = UserProfile.objects.get_or_create(user=user)
+    user, _ = UserProfile.objects.get_or_create(user=user)
     user_id = id
     songs = user.songs.all()
     playlists = user.playlists.all()
 
-
-    comments = Comment.objects.filter(content_type=user_content_type, object_id=user_id, parent=None)
-    context['comments'] = comments
-    context['comment_form'] = CommentForm(
-        initial={'content_type': user_content_type.model, 'object_id': user_id})
-    context['comment_count'] = Comment.objects.filter(content_type=user_content_type,
-                                                          object_id=user_id).count()
     context['songs'] = songs
     context['playlists'] = playlists
     context['userprofile'] = user
@@ -253,7 +247,7 @@ def add_comment(request):
         user_profile, _ = UserProfile.objects.get_or_create(user=comment_form.cleaned_data['user'])
         user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
         comment.author = comment_form.cleaned_data['user']
-        user_profile , _ = UserProfile.objects.get_or_create(user = comment_form.cleaned_data['user'])
+        user_profile, _ = UserProfile.objects.get_or_create(user=comment_form.cleaned_data['user'])
         user_profile.numberOfComments = int(user_profile.numberOfComments) + 1
         user_profile.save()
         comment.text = comment_form.cleaned_data['text']
@@ -297,7 +291,6 @@ def add_to_playlist(request, song, playlist):
     return index(request, True)
 
 
-
 def add_more_songs(request):
     data = {}
     return JsonResponse(data)
@@ -315,15 +308,15 @@ class PlaylistSort(View):
         elif sortBy == "noOfComments":
             playlists = Playlist.objects.order_by("-numberOfComments")
 
-        return render(request, "crescendo/playlist_sort.html", {'playlists':playlists})
+        return render(request, "crescendo/playlist_sort.html", {'playlists': playlists})
+
 
 def edit_profile(request):
-
     if request.method == 'POST':
-        form = EditUserProfile(request.POST , request.FILES)
+        form = EditUserProfile(request.POST, request.FILES)
         user = request.user
         if form.is_valid():
-            profile = UserProfile.objects.get(id = user.id)
+            profile = UserProfile.objects.get(id=user.id)
             profile.image = form.cleaned_data.get("image")
             profile.save()
             return redirect(f'/crescendo/userprofile/{user.id}')
@@ -331,6 +324,7 @@ def edit_profile(request):
         form = EditUserProfile()
 
     return render(request, 'crescendo/edit_profile.html', context={'form': form})
+
 
 class delete_song(View):
     def post(self, request):
@@ -344,8 +338,10 @@ class delete_song(View):
 
         return render(request, 'crescendo/edit_playlist.html')
 
+
 def edit_details(request, playlist_slug, playlist_id):
     form = PlaylistEditForm()
+    context_dict = {}
     playlist = Playlist.objects.get(playlist_id)
     if request.method == 'POST':
         form = PlaylistEditForm(request.POST)
@@ -354,10 +350,67 @@ def edit_details(request, playlist_slug, playlist_id):
             playlist.name = form.cleaned_data.get("name")
             playlist.description = form.cleaned_data.get("description")
             playlist.save()
-            context_dict = {}
+
             context_dict['playlists'] = Playlist.objects.order_by()
             return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
         else:
             print(form.errors)
 
     return render(request, 'crescendo/PlaylistCatalogue.html', context=context_dict)
+
+
+def ErrorResponse(code, message):
+    data = {'status': 'ERROR', 'code': code, 'message': message}
+    return JsonResponse(data)
+
+
+def SuccessResponse(liked_num):
+    data = {'status': 'SUCCESS', 'liked_num': liked_num}
+    return JsonResponse(data)
+
+
+def like_change(request):
+    # get data
+    user = request.user
+    if not user.is_authenticated:
+        return ErrorResponse(400, 'you were not login')
+
+    content_type = request.GET.get('content_type')
+    object_id = int(request.GET.get('object_id'))
+
+    try:
+        content_type = ContentType.objects.get(model=content_type)
+        model_class = content_type.model_class()
+        model_obj = model_class.objects.get(id=object_id)
+    except ObjectDoesNotExist:
+        return ErrorResponse(401, 'object not exist')
+
+    if request.GET.get('is_like') == 'true':
+        # likes
+        like_record, created = LikeRecord.objects.get_or_create(content_type=content_type, object_id=object_id,
+                                                                user=user)
+        if created:
+            like_count, created = LikeCount.objects.get_or_create(content_type=content_type, object_id=object_id)
+            like_count.liked_num += 1
+            like_count.save()
+            return SuccessResponse(like_count.liked_num)
+        else:
+            # already liked
+            return ErrorResponse(402, 'you were liked')
+    else:
+        # cancel like
+        if LikeRecord.objects.filter(content_type=content_type, object_id=object_id, user=user).exists():
+            like_record = LikeRecord.objects.get(content_type=content_type, object_id=object_id, user=user)
+            like_record.delete()
+            like_count, created = LikeCount.objects.get_or_create(content_type=content_type, object_id=object_id)
+            if not created:
+                like_count.liked_num -= 1
+                like_count.save()
+                return SuccessResponse(like_count.liked_num)
+            else:
+                return ErrorResponse(404, 'data error')
+        else:
+            # not liked, can not cancel
+            return ErrorResponse(403, 'you were not liked')
+
+

@@ -32,7 +32,7 @@
   width : 100%; 
   margin: 1%;
 }
-<<<<<<< HEAD
+
 .comment-area {
      padding-left: 20px;
      border-bottom: 1px dashed #ccc;
@@ -43,7 +43,7 @@
     padding-bottom: 0.5em;
     margin-left: 1em;
 }
-=======
+
  
 .top-row { 
   padding: 1%;
@@ -72,5 +72,4 @@ textarea {
   padding-right: 5%; 
   padding-bottom: 5%;
 
-}  
->>>>>>> 3f4aca10021c9e33654ed70938378e7bac53d486
+}

@@ -40,18 +40,32 @@
     position:static; 
     margin : 5%;
   }
-  .comment-area {
+
+}
+ .comment-list {
      padding-left: 20px;
      border-bottom: 1px dashed #ccc;
      margin-bottom: 0.5em;
   }
-  .reply {
+
+ .reply {
     border-bottom: 1px dashed #ccc;
     padding-bottom: 0.5em;
     margin-left: 1em;
 }
-}
- 
 .image { 
   width: 500px; 
+}
+.like {
+
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5em 0.3em;
+}
+.glyphicon {
+    color: gray;
+}
+
+.like .active{
+    color: red;
 }

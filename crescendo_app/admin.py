@@ -1,5 +1,5 @@
 from django.contrib import admin
-from crescendo_app.models import UserProfile, Genre, Song, Playlist, Question, Comment
+from crescendo_app.models import UserProfile, Genre, Song, Playlist, Question, Comment, LikeCount, LikeRecord
 
 
 # Register your models here.
@@ -26,3 +26,5 @@ admin.site.register(Song, SongAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Playlist, PlaylistAdmin)
 admin.site.register(Question)
+admin.site.register(LikeCount)
+admin.site.register(LikeRecord)

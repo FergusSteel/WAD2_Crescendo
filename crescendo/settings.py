@@ -174,3 +174,5 @@ CKEDITOR_CONFIGS = {
         'resize_enabled': False,
     }
 }
+
+SECURE_CONTENT_TYPE_NOSNIFF = False
