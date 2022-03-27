@@ -6,13 +6,14 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.defaultfilters import slugify
 from django.contrib import auth
+from django.urls import reverse
 
 # Create your views here.
 from django.views import View
 from registration.forms import RegistrationForm
 
 from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment, User, LikeRecord, LikeCount
-from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm,SongForm
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm, SongForm
 from django.shortcuts import redirect
 
 
@@ -151,16 +152,17 @@ def add_playlist(request):
 
     return render(request, 'crescendo/add_playlist.html', {'form': form})
 
-def add_song(request):
-    form=SongForm()
 
-    if request.method=='POST':
-        form=SongForm(request.POST,request.FILES)
-        
+def add_song(request):
+    form = SongForm()
+
+    if request.method == 'POST':
+        form = SongForm(request.POST, request.FILES)
+
         if form.is_valid():
-            
+
             print("isvalid")
-            SongF=form.save(commit=False)
+            SongF = form.save(commit=False)
             form.author = UserProfile.objects.get_or_create(user=request.user)
 
             SongF.author_id = request.user.id
@@ -170,7 +172,6 @@ def add_song(request):
             print("notValid")
             print(form.errors)
     return render(request, 'crescendo/add_song.html', {'form': form})
-
 
 
 def edit_playlist(request, playlist_slug, playlist_id):
@@ -188,8 +189,7 @@ def edit_playlist(request, playlist_slug, playlist_id):
                 playlist.nameAsSlug = slugify(form.cleaned_data.get("name"))
                 playlist.description = form.cleaned_data.get("description")
                 playlist.save()
-                return redirect("index")
-
+                return render(request, 'crescendo/playlist.html', context={'playlist_slug': slugify(form.cleaned_data.get("name")), 'playlist_id' : playlist_id})
 
         try:
             songs = []
@@ -301,9 +301,9 @@ def add_to_playlist(request, song, playlist):
     songs = []
     for song in Song.objects.all():
         if playlistObject in song.playlist.all():
-            songs.append(song) 
+            songs.append(song)
 
-    return render(request, 'crescendo/playlist.html', context={"playlist":playlistObject,"songs":songs})
+    return render(request, 'crescendo/playlist.html', context={"playlist": playlistObject, "songs": songs})
 
 
 def add_more_songs(request):
@@ -353,6 +353,21 @@ class delete_song(View):
 
         return render(request, 'crescendo/edit_playlist.html')
 
+class delete_playlist(View):
+    def post(self, request):
+        playlistID = request.POST['playlistID']
+
+        Playlist.objects.filter(id=playlistID).delete()
+
+        return render(request, 'crescendo/edit_playlist.html')
+
+class drop_song(View):
+    def post(self, request):
+        songID = request.POST['songID']
+
+        Song.objects.filter(id=songID).delete()
+
+        return render(request, 'crescendo/SongCatalogue.html')
 
 def edit_details(request, playlist_slug, playlist_id):
     form = PlaylistEditForm()
@@ -391,7 +406,7 @@ def like_change(request):
         return ErrorResponse(400, 'you were not login')
 
     content_type = request.GET.get('content_type')
-    object_id = int(request.GET.get('object_id'))
+    object_id = request.GET.get('object_id')
 
     try:
         content_type = ContentType.objects.get(model=content_type)
@@ -427,5 +442,3 @@ def like_change(request):
         else:
             # not liked, can not cancel
             return ErrorResponse(403, 'you were not liked')
-
-
