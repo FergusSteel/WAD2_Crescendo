@@ -89,3 +89,16 @@ textarea {
     width: 250px;
   }
 }
+
+.like {
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.5em 0.3em;
+}
+.glyphicon {
+    color: gray;
+}
+
+.like .active{
+    color: red;
+}

@@ -44,7 +44,6 @@
 }
  .comment-list {
      padding-left: 20px;
-     border-bottom: 1px dashed #ccc;
      margin-bottom: 0.5em;
   }
 
@@ -57,7 +56,6 @@
   width: 500px; 
 }
 .like {
-
     cursor: pointer;
     display: inline-block;
     padding: 0.5em 0.3em;

@@ -17,7 +17,6 @@
   <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
   <link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/js/bootstrap.js">
 {% endblock %}
 
     {% block body_block %}  
@@ -59,7 +58,7 @@
                         {% endif %}
                     </p>
                 </div>
-            <h3>Liked Here!</h3>
+            <h4 class="text-left">Liked Here!</h4>
 
            <div class="like" onclick="like_change(this, '{% get_content_type song %}', {{ song.id }})">
                     <span class="glyphicon glyphicon-thumbs-up btn-lg {% get_like_status song %}"></span>
@@ -120,12 +119,12 @@
                                 <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }})：</span>
                                 <div id = 'comment_{{ comment.id}}'>
                                      {{ comment.text|safe }}
+                                </div>
 
                                 <div class="like" onclick="like_change(this, '{% get_content_type comment %}', {{ comment.pk }})">
                                             <span class="glyphicon glyphicon-thumbs-up {% get_like_status comment %}"></span>
                                             <span class="liked-num">{% get_like_count comment %}</span>
                                         </div>
-                                </div>
                                 <a href="javascript:reply({{ comment.id }})">Reply</a>
                             </div>
                                 {% for reply in comment.root_comment.all %}
@@ -137,6 +136,11 @@
                                          <div id ='comment_{{ reply.id }}'>
                                             {{ reply.text|safe }}
                                          </div>
+                                    <div class="like" onclick="like_change(this, '{% get_content_type reply %}', {{ reply.pk }})">
+                                        <span class="glyphicon glyphicon-thumbs-up {% get_like_status reply %}"></span>
+                                        <span class="liked-num">{% get_like_count reply %}</span>
+                                        </div>
+
                                         <a href="javascript:reply({{ reply.id }})">Reply</a>
                                     {% endfor %}
                                     </div>
@@ -155,6 +159,6 @@
         var CommentUrl = "{% url 'crescendo:add_comment' %}";
         var likeUrl = "{% url 'crescendo:likes' %}";
     </script>
-   <script src="{% static '/JS/comment.js' %}"></script>
+   <script src="{% static '/JS/comment_and_like.js' %}"></script>
 
 {% endblock %}
