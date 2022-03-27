@@ -1,7 +1,7 @@
 
     $(document).ready(function() { 
         var width = $(document).width();   
-        if (width < 1100) { 
+        if (width < 1250) { 
             $("#search-bar").removeClass( "center" ); 
         }
         $(window).resize(function() { 
@@ -12,7 +12,7 @@
                 $("#search-bar").removeClass( "center" ); 
                 change = true;
             }  
-            if (width > 1100) {   
+            if (width > 1250) {   
                 console.log("Adding")
                 $("#search-bar").addClass( "center" ); 
             }
