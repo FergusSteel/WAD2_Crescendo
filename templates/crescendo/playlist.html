@@ -50,10 +50,11 @@
     {% endif %}
   {% endif %}
 </div>
+
  <div class = "row">
                <div class="comment-area">
                     <h4 class="comment-area-title">Comment Here</h4>
-               </div>
+               
                     {% if user.is_authenticated %}
                         <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden">
                             <div class = "row">
@@ -77,15 +78,15 @@
                             <input type="submit" value="Comment" class="btn btn-primary pull-right wide">
                             </div>
                         </form>
-                        </div>
+                        
 
                     {% else %}
                        You are not logged in, please log in!<br/>
                         <a href="{% url 'auth_login' %}">Login here</a>
                     {% endif %}
-                </div>
+               
 
-                <div class="comment-area">
+                
                     <h4 class="comment-area-title">Comment({% get_comment_count playlist %})</h4>
                     <div id="comment_list">
                     {% get_comment_list playlist as comments %}
@@ -108,13 +109,18 @@
                                             {{ reply.text|safe }}
                                          </div>
                                         <a href="javascript:reply({{ reply.id }})">Reply</a>
-                                    {% endfor %}
                                     </div>
-                                {% empty %}
-                                    <span id="no_comment">There are no comments now!</span>
-                                {% endfor %}
-                            </div>
+                                    {% endfor %}
+                                    
+                            {% empty %}
+                                <span id="no_comment">There are no comments now!</span>
+                            {% endfor %}
+                        
+                    </div>
              </div>
+</div>
+
+        
 {% else %} Playlist Does Not Exist {% endif %} {% endblock %} {% block script_extends %}
 <script type="text/javascript">
     var myUrl = "{% url 'crescendo:add_comment' %}"

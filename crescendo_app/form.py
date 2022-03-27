@@ -36,11 +36,11 @@ class SongForm(forms.ModelForm):
     lyrics = forms.CharField(max_length=1000, required=False,help_text="Please enter the lyrics:")
     image = forms.ImageField(help_text="Please upload image",required=False)
     actualSong= forms.FileField()
-    #Need to add the genre field(multiple choice field from the current genres?)
-    #genre = forms.ManyCharField(max_length=300,required=False)
+    genre = forms.ModelMultipleChoiceField(queryset=Genre.objects.all())
+
     class Meta:
             model = Song
-            fields = ('artist','name','lyrics', 'image','actualSong',)
+            fields = ('artist','name','lyrics', 'image','actualSong','genre',)
 
 
 class CommentForm(forms.Form):
