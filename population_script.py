@@ -207,7 +207,7 @@ def populate():
             "name": "Gold",
             "artist": "Anonymous Artist",
             "numberOfComments": 2,
-            "image": "population_script_images/2.jpg",
+            "image": "population_script_images/1.jpg",
             "playlists": ["Playlist 1", "Playlist 3"],
             "lyrics": None,
             "actualSong": "population_script_music/sound2.mp3",

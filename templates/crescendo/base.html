@@ -34,7 +34,7 @@
             <a href="{% url 'crescendo:index' %}"> <u>Crescendo</u></a> 
           </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span>Toggler</span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -43,7 +43,12 @@
               </li> 
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'crescendo:PlaylistCatalogue' %}">Playlists</a>
-              </li>
+              </li> 
+              {% if user.is_authenticated %} 
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'crescendo:add_playlist'  %}">Add A New Playlist</a>
+              </li>  
+              {% endif %}
             </ul> 
             <ul class="navbar-nav navbar-right">
                 {% if user.is_authenticated %}
@@ -53,7 +58,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="{% url 'crescendo:userprofile' user.id %}">User Profile</a></li>
-                      <li><a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a></li> 
+                      <li><a class="dropdown-item" href="{% url 'auth_password_change' %}">Change Password</a></li>  
+                      <li><a class="dropdown-item" href="{% url 'crescendo:edit_profile' %}">Edit Profile Picture</a></li> 
                       </ul> 
                 </li> 
                 <li class="nav-item">
@@ -79,8 +85,8 @@
       {% block body_block %}  
 
        
-      {% endblock %}  
-      </div>
+
+      {% endblock %}   
        
       <div class="container text-center mt-1 mb-0 footer"> 
         <hr class="my-4">
@@ -96,6 +102,9 @@
           </div>
         </div>
       </div>
+      </div>
+       
+
     {% block script_extends %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->

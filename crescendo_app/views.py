@@ -16,10 +16,8 @@ from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, 
 from django.shortcuts import redirect
 
 
-def index(request, added=False):
+def index(request):
     context_dict = {}
-    context_dict['added'] = added
-
     context_dict['playlists'] = Playlist.objects.all()
     context_dict['playlists'] = Playlist.objects.order_by("-views")
     context_dict['songs'] = Song.objects.all()[:3]
@@ -288,7 +286,12 @@ def add_to_playlist(request, song, playlist):
     playlistObject = Playlist.objects.get(id=playlist)
     songObject = Song.objects.get(id=song)
     songObject.playlist.add(playlistObject)
-    return index(request, True)
+    songs = []
+    for song in Song.objects.all():
+        if playlistObject in song.playlist.all():
+            songs.append(song) 
+
+    return render(request, 'crescendo/playlist.html', context={"playlist":playlistObject,"songs":songs})
 
 
 def add_more_songs(request):
