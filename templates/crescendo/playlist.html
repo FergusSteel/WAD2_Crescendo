@@ -52,7 +52,6 @@
     {% endif %}
   {% endif %}
 </div>
-
   <h4 class="text-left">Liked Here!</h4>
 
            <div class="like" onclick="like_change(this, '{% get_content_type playlist %}', {{ playlist.id }})">
@@ -149,8 +148,10 @@
              </div>
 </div>
 
+{% else %} Playlist Does Not Exist {% endif %} {% endblock %}
 
-{% else %} Playlist Does Not Exist {% endif %} {% endblock %} {% block script_extends %}
+{% block script_extends %}
+
 <script type="text/javascript">
         var CommentUrl = "{% url 'crescendo:add_comment' %}";
         var likeUrl = "{% url 'crescendo:likes' %}";
