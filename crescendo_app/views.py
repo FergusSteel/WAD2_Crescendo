@@ -12,7 +12,7 @@ from django.views import View
 from registration.forms import RegistrationForm
 
 from crescendo_app.models import Playlist, Song, Question, UserProfile, Comment, User, LikeRecord, LikeCount
-from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm,SongForm
 from django.shortcuts import redirect
 
 
@@ -143,7 +143,6 @@ def add_playlist(request):
 
     if request.method == 'POST':
         form = PlaylistForm(request.POST)
-
         if form.is_valid():
             PlaylistF = form.save(commit=False)
             form.author = UserProfile.objects.get_or_create(user=request.user)
@@ -159,6 +158,26 @@ def add_playlist(request):
             print(form.errors)
 
     return render(request, 'crescendo/add_playlist.html', {'form': form})
+
+def add_song(request):
+    form=SongForm()
+
+    if request.method=='POST':
+        form=SongForm(request.POST,request.FILES)
+        
+        if form.is_valid():
+            print("isvalid")
+            SongF=form.save(commit=False)
+            form.author = UserProfile.objects.get_or_create(user=request.user)
+
+            SongF.author_id = request.user.id
+            SongF.save()
+            return redirect(f'/crescendo/userprofile/{request.user.id}')
+        else:
+            print("notValid")
+            print(form.errors)
+    return render(request, 'crescendo/add_song.html', {'form': form})
+
 
 
 def edit_playlist(request, playlist_slug, playlist_id):

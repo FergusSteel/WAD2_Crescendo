@@ -39,9 +39,11 @@ urlpatterns = [
                   path('search/', views.search, name='search'),
                   path('add_playlist/<slug:playlist_slug>-<slug:playlist_id>/', views.add_playlist,
                        name='add_playlist_1'),
+                 
                   path('crescendo_app/<slug:playlist_slug>-<slug:playlist_id>/edit', views.edit_playlist,
                        name='edit_playlist'),
                   #   path('myaccount/', views.userProfile, name='myaccount'),
+    
                   path('add_comment/', views.add_comment, name='add_comment'),
                   path('add_to_playlist/<int:song>-<int:playlist>', views.add_to_playlist, name='add_to_playlist'),
                   path('ajax/add_more_songs/', views.add_more_songs, name='add_more_songs'),
@@ -50,4 +52,5 @@ urlpatterns = [
                   path('delete_song/', views.delete_song.as_view(), name="delete_song"),
                   path('edit_details', views.edit_details, name="edit_details"),
                   path('likes/', views.like_change, name="likes"),
+                path('add_song/', views.add_song, name='add_song'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -29,6 +29,20 @@ class PlaylistEditForm(forms.ModelForm):
         fields = ('name', 'image', 'description',)
 
 
+
+class SongForm(forms.ModelForm):
+    artist = forms.CharField(max_length=300, required=True,help_text="Please enter the artist name:")
+    name = forms.CharField(max_length=30,help_text="Please enter the song name:")
+    lyrics = forms.CharField(max_length=1000, required=False,help_text="Please enter the lyrics:")
+    image = forms.ImageField(help_text="Please upload image",required=False)
+    actualSong= forms.FileField()
+    #Need to add the genre field(multiple choice field from the current genres?)
+    #genre = forms.ManyCharField(max_length=300,required=False)
+    class Meta:
+            model = Song
+            fields = ('artist','name','lyrics', 'image','actualSong',)
+
+
 class CommentForm(forms.Form):
     content_type = forms.CharField(widget=forms.HiddenInput)
     object_id = forms.IntegerField(widget=forms.HiddenInput)
