@@ -158,6 +158,7 @@ def add_song(request):
         form=SongForm(request.POST,request.FILES)
         
         if form.is_valid():
+            
             print("isvalid")
             SongF=form.save(commit=False)
             form.author = UserProfile.objects.get_or_create(user=request.user)
