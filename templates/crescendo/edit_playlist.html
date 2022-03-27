@@ -11,16 +11,7 @@
 
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static '/styles/playlist.css' %}" />
-<script type="text/javascript">
-  function deleteSong(playlistID, songID) {
-    console.log(songID);
-    if (confirm("Are you sure you want to remove this song?") == true) {
-      $.post("{% url 'crescendo:delete_song' %}", {csrfmiddlewaretoken : "{{ csrf_token }}", playlistID : playlistID,songID : songID});
-      location.reload();
-    } else {
-      console.log("Cancelled Delete.");
-  }
-}</script>
+
 {% endblock %}
 
  {% block body_block %}
@@ -38,8 +29,9 @@
             {{ field }}
             <br>
           {% endfor %}
-          <input type="submit" name="submit" value="Save Changes" />
+          <input class="btn" type="submit" name="submit" value="Save Changes" />
         </form>
+        <button class="btn" type="button" onclick="deletePlaylist('{{ playlist.id }}')" style="cursor:pointer;">Delete Playlist</button>
     </div>
     </div>
     <div class = "col-md">
@@ -60,5 +52,27 @@
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+  function deleteSong(playlistID, songID) {
+    console.log(songID);
+    if (confirm("Are you sure you want to remove this song?") == true) {
+      $.post("{% url 'crescendo:delete_song' %}", {csrfmiddlewaretoken : "{{ csrf_token }}", playlistID : playlistID,songID : songID});
+      window.location.href("{% url 'crescendo:index' %}");
+    } else {
+      console.log("Cancelled Delete.");
+  }
+}
+
+  function deletePlaylist(playlistID) {
+    if (confirm("Are you sure you want to delete this playlist?") == true) {
+      $.post("{% url 'crescendo:delete_playlist' %}", {csrfmiddlewaretoken : "{{ csrf_token }}", playlistID : playlistID});
+      location.reload();
+      location.reload();
+    } else {
+      console.log("Cancelled Delete.");
+    }
+  }
+</script>
 {% endif %}
 {% endblock %}

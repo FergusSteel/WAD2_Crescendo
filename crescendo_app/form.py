@@ -18,9 +18,9 @@ class PlaylistForm(forms.ModelForm):
 
 
 class PlaylistEditForm(forms.ModelForm):
-    name = forms.CharField(max_length=128, help_text="Please enter the playlist name:")
-    image = forms.ImageField()
-    description = forms.CharField(max_length=300, help_text="Please enter the description:")
+    name = forms.CharField(max_length=128, help_text="Please enter the playlist name: ")
+    image = forms.ImageField(help_text="Please change playlist picture: ")
+    description = forms.CharField(max_length=300, help_text="Please enter the description: ")
 
     # genre = forms.ChoiceField(*Genre.objects)
 
