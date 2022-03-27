@@ -24,14 +24,9 @@ hr {
     background-color: #eeb34b;
 }
 body { 
-    background: #fffff8; 
-} 
-.navbar-brand a { 
-    color:#fffff8;
-}
-.nav-item a { 
-    color:#fffff8;
-} 
+    background: #fffff8;  
+    font-family: "Times New Roman", Times, serif;
+}  
  
 .nav-link a , .navbar-brand a , .nav-item a { 
     color:#1a1a1a;
@@ -73,4 +68,10 @@ body {
     body { 
         padding: 0;
     }
+} 
+ 
+.navbar-toggler { 
+    background: #fe8529; 
+    color:#fffff8; 
+    font-size: smaller;
 }

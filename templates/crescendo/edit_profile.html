@@ -6,8 +6,8 @@
     <form id="edit_profile_form" method="post" action="{% url 'crescendo:edit_profile' %}" enctype= multipart/form-data>
         {% csrf_token %}  
         {{ form.as_p }}
-        <input type="submit" name="submit" value="Edit a Playlist" />
+        <input class = "btn" type="submit" name="submit" value="Edit The Profile Picture" />
     </form> 
 </div> 
 </div>
-{% endif %} {% endblock %}s
+{% endif %} {% endblock %}
