@@ -1,8 +1,9 @@
 {% extends "crescendo/base.html" %}
 {% block title %}Add Song{% endblock %}
 
-{% block body_block %}
-{%if user.is_authenticated%}
+{% block body_block %} 
+<div class = "text-center">
+{%if user.is_authenticated%} 
 <div class="jumbotron p-4">
     <div class="container">
     <h1 class="jumbotron-heading">Add a song</h1>
@@ -30,6 +31,9 @@
         <div class="p-5"></div>
         </form>
     </div>
+</div> 
+{% else %} 
+<p>Please register to add a song</p> 
+{%endif%} 
 </div>
-{%endif%}
 {% endblock %}

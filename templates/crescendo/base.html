@@ -46,7 +46,10 @@
               </li> 
               {% if user.is_authenticated %} 
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'crescendo:add_playlist'  %}">Add A New Playlist</a>
+                <a class="nav-link" href="{% url 'crescendo:add_playlist'  %}">New Playlist</a>
+              </li>   
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'crescendo:add_song'  %}">New Song</a>
               </li>  
               {% endif %}
             </ul> 

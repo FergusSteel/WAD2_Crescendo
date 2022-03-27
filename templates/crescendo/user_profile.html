@@ -47,7 +47,7 @@
         <div class='songs grid-item'>
             <h2> {{ userNotNative.username }}'s Songs </h2> 
             {% if user == userNotNative %}
-            <a href="#">Upload a song</a> 
+            <a href="{% url 'crescendo:add_song' %}">Upload a song</a> 
             {% endif %}
             <div class="menu-wrapper ">
                 <ul class="menu ">
