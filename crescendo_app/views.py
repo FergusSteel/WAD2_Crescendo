@@ -74,7 +74,6 @@ def show_song(request, song_slug, song_id):
             user, _ = UserProfile.objects.get_or_create(user=request.user)
             playlists = user.playlists.all()
 
-        print(playlists)
         song = Song.objects.get(nameAsSlug=song_slug, id=song_id)
         # comment and reply for song
         song_content_type = ContentType.objects.get_for_model(song)
@@ -92,7 +91,6 @@ def show_song(request, song_slug, song_id):
 
 
 def search(request):
-    print("HERE")
     search_word = request.GET.get('q', '').strip()
     condition = None
     for word in search_word.split(' '):
@@ -152,10 +150,6 @@ def add_playlist(request):
 
             return redirect(f'/crescendo/userprofile/{request.user.id}')
 
-        else:
-
-            print(form.errors)
-
     return render(request, 'crescendo/add_playlist.html', {'form': form})
 
 
@@ -169,15 +163,13 @@ def edit_playlist(request, playlist_slug, playlist_id):
         if request.method == 'POST':
             form = PlaylistEditForm(request.POST, request.FILES)
             if form.is_valid():
-                print("SUBMIT")
                 playlist.image = form.cleaned_data.get("image")
                 playlist.name = form.cleaned_data.get("name")
                 playlist.nameAsSlug = slugify(form.cleaned_data.get("name"))
                 playlist.description = form.cleaned_data.get("description")
                 playlist.save()
                 return redirect("index")
-            else:
-                print(form.errors)
+
 
         try:
             songs = []

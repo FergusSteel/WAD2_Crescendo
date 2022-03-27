@@ -27,11 +27,6 @@ body {
     background: #fffff8;  
     font-family: "Times New Roman", Times, serif;
 }  
-
-.navbar-brand a,.nav-item a { 
-    color:#fffff8;
-}
-
  
 .nav-link a , .navbar-brand a , .nav-item a { 
     color:#1a1a1a;

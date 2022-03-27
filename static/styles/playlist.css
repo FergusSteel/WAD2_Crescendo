@@ -65,11 +65,22 @@ textarea {
   display: flex; 
   flex-direction: row; 
   justify-content: center;
-}
+} 
+
 .songBlock img{
   height: 150px;
   width: 150px; 
   padding-right: 5%; 
   padding-bottom: 5%;
 
+} 
+ 
+.playlist-image { 
+  max-width:500px;
+} 
+ 
+@media screen and (max-width: 1000px) { 
+  .playlist-image { 
+    width: 250px;
+  }
 }
