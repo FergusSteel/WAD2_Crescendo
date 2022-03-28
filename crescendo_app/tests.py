@@ -1,7 +1,7 @@
  
 # IMPORTS  
 from doctest import TestResults
-from this import d
+from django.core.files import File
 from django.test import TestCase  
 from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
 from datetime import datetime 
@@ -9,7 +9,10 @@ from crescendo_app.views import index
 from django.urls import reverse 
 from django.test import Client 
 from django.contrib import auth
- 
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm, SongForm
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django import forms
+
 # MODEL TESTS
  
 class UserMethodTests(TestCase):  
@@ -366,8 +369,30 @@ class Register(TestCase):
             self.assertFalse(True , "User has been creted with an invalid password - common word of hello") 
         except User.DoesNotExist:  
             self.assertTrue(True) 
- 
 
+class TestForms(TestCase):
+    def test_empty_forms(self):
+        self.assertEqual(len(PlaylistForm(data={}).errors),2)
+        self.assertEqual(len(SongForm(data={}).errors),3)
+        self.assertEqual(len(EditUserProfile(data={}).errors),0)
+        self.assertEqual(len(PlaylistEditForm(data={}).errors),3)
+
+    def test_playlist_form_fields(self):
+        form=PlaylistForm(data={
+            'name':'Playlist1',
+            'likes':2,
+            'description':'description test'
+        })
+        self.assertTrue(form.is_valid())
+    
+    # def test_song_form_fields(self):              
+    #     form=SongForm(data={
+    #         'artist':'John',
+    #         'name':'a song',
+    #         'lyrics':'lala',
+    #     })
+    #     print(form.errors)
+    #     self.assertTrue(form.is_valid())
 # class UserProfileTests(TestCase): 
      
 #     def test_userprofile_displays_correctly(self):  

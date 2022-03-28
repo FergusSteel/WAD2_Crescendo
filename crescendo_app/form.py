@@ -36,7 +36,7 @@ class SongForm(forms.ModelForm):
     lyrics = forms.CharField(max_length=1000, required=False,help_text="Please enter the lyrics:")
     image = forms.ImageField(help_text="Please upload image",required=False)
     actualSong= forms.FileField()
-    genre = forms.ModelMultipleChoiceField(queryset=Genre.objects.all())
+    genre = forms.ModelMultipleChoiceField(queryset=Genre.objects.all(),required=False)
 
     class Meta:
             model = Song
