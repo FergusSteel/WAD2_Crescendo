@@ -145,6 +145,7 @@ def add_playlist(request):
             form.author = UserProfile.objects.get_or_create(user=request.user)
 
             PlaylistF.author_id = request.user.id
+            PlaylistF.name = form.cleaned_data.get("name")
             PlaylistF.save()
             # return redirect(request.META.get('HTTP_REFERER'))
 
