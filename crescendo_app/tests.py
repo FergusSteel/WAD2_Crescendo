@@ -28,7 +28,7 @@ def create_comment(user,song,name="A new comment"):
         comment.content_object = song 
         comment.save()
         return comment   
-
+#SOME OF THE TESTS ARE MADE USING "TANGO WITH DJANGO 2" AS REFERENCE
 # MODEL TESTS
 
 class UserMethodTests(TestCase):  
@@ -428,43 +428,6 @@ class TestForms(TestCase):
         self.assertTrue('form' in context)
         self.assertTrue('<title> Editing Profile -  </title>' in content,'form response does not match')
     
-
-    # def test_playlist_edit_fields(self):
-    #     form=PlaylistEditForm(data={
-    #         'name':'new name',
-    #         'image':django_fields.FileField,
-    #         'description':'new description'
-    #     })
-    #     print(form.errors)
-    #     self.assertTrue(form.is_valid())
-
-    # def test_comment_form_fields(self):
-    #     form=CommentForm(data={
-    #         'content_type':'content',
-    #         'object_id':2,
-    #         'text':'comment',
-    #         'reply_comment_id':2
-    #     })
-    #     self.assertTrue(form.is_valid())
-
-    # def test_song_form_fields(self):              
-    #     form=SongForm(data={
-    #         'artist':'John',
-    #         'name':'a song',
-    #         'lyrics':'lala',
-    #     })
-    #     print(form.errors)
-    #     self.assertTrue(form.is_valid())
-# class UserProfileTests(TestCase): 
-     
-#     def test_userprofile_displays_correctly(self):  
-#         user = User(username = "Another user") 
-#         user.save()
-#         user_profile = UserProfile(user = user)
-#         user_profile.save()    
-         
-#         response = self.client.get(reverse('crescendo:userprofile' , kwargs= {''}))    
-
           
         
         
