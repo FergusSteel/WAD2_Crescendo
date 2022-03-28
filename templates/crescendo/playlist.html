@@ -52,6 +52,8 @@
     {% endif %}
   {% endif %}
 </div>
+
+
   <h4 class="text-left">Liked Here!</h4>
 
            <div class="like" onclick="like_change(this, '{% get_content_type playlist %}', {{ playlist.id }})">
@@ -62,14 +64,14 @@
         </div>
           {% if not user.is_authenticated %}
         <div class="alert alert-danger alert-dismissible" role="alert">
-                <strong>Warning!</strong> You are not log in, please log in. You can log in <a href="{% url 'auth_login' %}">here</a>
+                <strong>Warning!</strong> You are not logged in, please log in. You can log in <a href="{% url 'auth_login' %}">here</a>
         </div>
               {% endif %}
 
  <div class = "row">
                <div class="comment-area">
                     <h4 class="comment-area-title">Comment Here</h4>
-
+                    </div>
                     {% if user.is_authenticated %}
                         <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden">
                             <div class = "row">
@@ -90,9 +92,10 @@
                                 <span id="comment_error" class="text-danger text left"></span>
                             </div>
                             <div class = "row">
-                            <input type="submit" value="Comment" class="btn btn-primary pull-right wide">
+                            <input type="submit" value="Comment" class="btn pull-right wide" />
                             </div>
                         </form>
+                        </div>
 
 
                     {% else %}
@@ -102,7 +105,7 @@
         </div>
               {% endif %}
                     {% endif %}
-
+                    </div>
 
 
                     <h4 class="comment-area-title">Comment({% get_comment_count playlist %})</h4>
