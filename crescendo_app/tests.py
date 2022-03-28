@@ -21,13 +21,18 @@ def create_user_test(username="A Brand New Test User"):
     user_profile = UserProfile(user = user, numberOfProfileViews=-100)
     user_profile.save() 
     return user_profile
+def create_comment(user,song,name="A new comment"):
+        comment = Comment() 
+        comment.text = "A new Commment" 
+        comment.author = user 
+        comment.content_object = song 
+        comment.save()
+        return comment   
 
 # MODEL TESTS
 
 class UserMethodTests(TestCase):  
     
-    
-
     def test_ensure_profile_views_are_positive(self): 
         user_profile= create_user_test()
         self.assertEqual((user_profile.numberOfProfileViews >= 0), True) 
@@ -116,13 +121,6 @@ class SongMethodTests(TestCase):
 
         self.assertTrue(all([True if playlist.name in names else False for playlist in song.playlist.all()]))  
          
-def create_comment(user,song,name="A new comment"):
-        comment = Comment() 
-        comment.text = "A new Commment" 
-        comment.author = user 
-        comment.content_object = song 
-        comment.save()
-        return comment   
 class CommentMethodTests(TestCase):  
      
     def test_ensure_comment_is_added(self): 
@@ -143,13 +141,9 @@ class CommentMethodTests(TestCase):
         comment=create_comment(user_profile.user,song) 
         today = datetime.today().strftime('%Y-%m-%d')
          
-        self.assertEquals(str(today) , str(Comment.objects.get(id = comment.id).comment_time)[0:10])
-         
-         
+        self.assertEquals(str(today) , str(Comment.objects.get(id = comment.id).comment_time)[0:10])      
+#View Tests  
 
-
-#View Tests 
- 
 class ViewMethodTests(TestCase):  
       
     def test_index_page_has_response(self):
@@ -171,6 +165,8 @@ class ViewMethodTests(TestCase):
           
         response = self.client.get(reverse('crescendo:index')) 
         self.assertTrue('The second best song I guess' in response.content.decode())
+    
+    
    
 class SongPage(TestCase):   
     
@@ -178,22 +174,17 @@ class SongPage(TestCase):
         response = self.client.get(reverse('crescendo:SongCatalogue')) 
         self.assertEquals(response.status_code, 200)  
 
-
     def test_amount_of_songs_matches_amount_in_database(self):
         user_profile=create_user_test("Another User")  
-        
-
+    
         songs = ['Song1','Song2','Song3'] 
         
         for song in songs:  
             songObject = Song.objects.create(author = user_profile,name = song)  
             songObject.save()
             
-            
         response = self.client.get(reverse('crescendo:SongCatalogue'))   
         
-        
-
         self.assertTrue('<strong>Song1</strong>' in response.content.decode())
         self.assertTrue('<strong>Song2</strong>' in response.content.decode())  
         self.assertTrue('<strong>Song3</strong>' in response.content.decode()) 
@@ -208,18 +199,14 @@ class PlaylistPage(TestCase):
         def test_amount_of_playlists_matches_amount_in_database(self):
             user_profile=create_user_test("Another User")   
             
-
             playlists = ['Playlist1','Playlist2','Playlist3'] 
             
             for playlist in playlists:  
                 playlistObject = Playlist.objects.create(author = user_profile,name = playlist)  
                 playlistObject.save()
                 
-                
             response = self.client.get(reverse('crescendo:PlaylistCatalogue'))   
-            
-            
-
+    
             self.assertTrue('<strong>Playlist1</strong>' in response.content.decode())
             self.assertTrue('<strong>Playlist2</strong>' in response.content.decode())  
             self.assertTrue('<strong>Playlist3</strong>' in response.content.decode()) 
@@ -252,7 +239,6 @@ class Login(TestCase):
         self.assertRedirects(response, 'crescendo:index', status_code=302, 
         target_status_code=200, fetch_redirect_response=True) 
  
-
 class Register(TestCase):  
 
     def test_register_has_response(self):
