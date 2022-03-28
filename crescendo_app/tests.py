@@ -6,13 +6,13 @@ from django.test import TestCase
 from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
 from datetime import datetime 
 from crescendo_app.views import index 
-from django.urls import reverse 
+from django.urls import reverse, resolve
 from django.test import Client 
 from django.contrib import auth
 from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm, SongForm
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django import forms
-
+from django.forms import fields as django_fields
 # MODEL TESTS
  
 class UserMethodTests(TestCase):  
@@ -371,11 +371,20 @@ class Register(TestCase):
             self.assertTrue(True) 
 
 class TestForms(TestCase):
+    def test_form_exist(self):
+        import crescendo_app.form
+        self.assertTrue('SongForm' in dir(crescendo_app.form))
+        self.assertTrue('PlaylistForm' in dir(crescendo_app.form))
+        self.assertTrue('EditUserProfile' in dir(crescendo_app.form))
+        self.assertTrue('CommentForm' in dir(crescendo_app.form))
+        self.assertTrue('PlaylistEditForm' in dir(crescendo_app.form))
+
     def test_empty_forms(self):
         self.assertEqual(len(PlaylistForm(data={}).errors),2)
         self.assertEqual(len(SongForm(data={}).errors),3)
         self.assertEqual(len(EditUserProfile(data={}).errors),0)
         self.assertEqual(len(PlaylistEditForm(data={}).errors),3)
+    
 
     def test_playlist_form_fields(self):
         form=PlaylistForm(data={
@@ -384,7 +393,93 @@ class TestForms(TestCase):
             'description':'description test'
         })
         self.assertTrue(form.is_valid())
+
+    def test_edit_user_profile(self):
+        user = User(username = "Another user")  
+        user.password = "test123"
+        user.save()
+        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+        user_profile.save()
+        form=EditUserProfile(data={
+            'image':'image.png'
+        })
+        self.assertTrue(form.is_valid())
+
+
+
     
+    def test_forms_type(self):
+        self.assertEqual(type(SongForm().__dict__['instance']), Song)
+        self.assertEqual(type(PlaylistForm().__dict__['instance']), Playlist)
+        self.assertEqual(type(EditUserProfile().__dict__['instance']), UserProfile)
+        self.assertEqual(type(PlaylistEditForm().__dict__['instance']), Playlist)
+    
+    def test_add_playlist_mapping(self):
+        try:
+            resolved_name = resolve('/crescendo/add_playlist/').view_name
+        except:
+            resolved_name = ''
+        self.assertEqual(resolved_name, 'crescendo:add_playlist','Correct mapping has not been returned from crescendo/add_playlist')
+    def test_add_song_mapping(self):
+        try:
+            resolved_name = resolve('/crescendo/add_song/').view_name
+        except:
+            resolved_name = ''
+        self.assertEqual(resolved_name, 'crescendo:add_song','Correct mapping has not been returned from crescendo/add_song')
+    
+    def test_add_song_template(self):
+        response = self.client.get(reverse('crescendo:add_song'))
+        self.assertTemplateUsed(response, 'crescendo/add_song.html')
+
+    def test_add_song_template(self):
+        response = self.client.get(reverse('crescendo:add_playlist'))
+        self.assertTemplateUsed(response, 'crescendo/add_playlist.html')
+    def test_add_song_template(self):
+        response = self.client.get(reverse('crescendo:edit_profile'))
+        self.assertTemplateUsed(response, 'crescendo/edit_profile.html')
+
+    def test_add_playlist_form_response(self):
+        response = self.client.get(reverse('crescendo:add_playlist'))
+        context = response.context
+        content = response.content.decode()
+
+        self.assertTrue('form' in context)
+        self.assertTrue('<title>Add Playlist</title>' in content)
+
+    def test_add_song_form_response(self):
+        response = self.client.get(reverse('crescendo:add_song'))
+        context = response.context
+        content = response.content.decode()
+
+        self.assertTrue('form' in context)
+        self.assertTrue('<title>Add Song</title>' in content)
+        
+    def test_edit_playlist_form_response(self):
+        response = self.client.get(reverse('crescendo:edit_profile'))
+        context = response.context
+        content = response.content.decode()
+
+        self.assertTrue('form' in context)
+        self.assertTrue('<title> Editing Profile -  </title>' in content)
+    
+    # def test_playlist_edit_fields(self):
+    #     form=PlaylistEditForm(data={
+    #         'name':'new name',
+    #         'image':django_fields.FileField,
+    #         'description':'new description'
+    #     })
+    #     print(form.errors)
+    #     self.assertTrue(form.is_valid())
+
+    # def test_comment_form_fields(self):
+    #     form=CommentForm(data={
+    #         'content_type':'content',
+    #         'object_id':2,
+    #         'text':'comment',
+    #         'reply_comment_id':2
+    #     })
+    #     self.assertTrue(form.is_valid())
+
     # def test_song_form_fields(self):              
     #     form=SongForm(data={
     #         'artist':'John',
