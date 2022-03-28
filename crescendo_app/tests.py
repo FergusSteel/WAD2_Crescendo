@@ -373,17 +373,17 @@ class Register(TestCase):
 class TestForms(TestCase):
     def test_form_exist(self):
         import crescendo_app.form
-        self.assertTrue('SongForm' in dir(crescendo_app.form))
-        self.assertTrue('PlaylistForm' in dir(crescendo_app.form))
-        self.assertTrue('EditUserProfile' in dir(crescendo_app.form))
-        self.assertTrue('CommentForm' in dir(crescendo_app.form))
-        self.assertTrue('PlaylistEditForm' in dir(crescendo_app.form))
+        self.assertTrue('SongForm' in dir(crescendo_app.form),'SongForm does not exist')
+        self.assertTrue('PlaylistForm' in dir(crescendo_app.form),'PlaylistForm does not exist')
+        self.assertTrue('EditUserProfile' in dir(crescendo_app.form),'EditUserProfile does not exist')
+        self.assertTrue('CommentForm' in dir(crescendo_app.form),'CommentForm does not exist')
+        self.assertTrue('PlaylistEditForm' in dir(crescendo_app.form),'PlaylistEditForm does not exist')
 
     def test_empty_forms(self):
-        self.assertEqual(len(PlaylistForm(data={}).errors),2)
-        self.assertEqual(len(SongForm(data={}).errors),3)
-        self.assertEqual(len(EditUserProfile(data={}).errors),0)
-        self.assertEqual(len(PlaylistEditForm(data={}).errors),3)
+        self.assertEqual(len(PlaylistForm(data={}).errors),2,'Empty form required values do not much with the required values given')
+        self.assertEqual(len(SongForm(data={}).errors),3,'Empty form required values do not much with the required values given')
+        self.assertEqual(len(EditUserProfile(data={}).errors),0,'Empty form required values do not much with the required values given')
+        self.assertEqual(len(PlaylistEditForm(data={}).errors),3,'Empty form required values do not much with the required values given')
     
 
     def test_playlist_form_fields(self):
@@ -392,7 +392,7 @@ class TestForms(TestCase):
             'likes':2,
             'description':'description test'
         })
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(),'Invalid form,check your field types and required fields')
 
     def test_edit_user_profile(self):
         user = User(username = "Another user")  
@@ -403,16 +403,16 @@ class TestForms(TestCase):
         form=EditUserProfile(data={
             'image':'image.png'
         })
-        self.assertTrue(form.is_valid())
+        self.assertTrue(form.is_valid(),'Invalid form,check your field types and required fields')
 
 
 
     
     def test_forms_type(self):
-        self.assertEqual(type(SongForm().__dict__['instance']), Song)
-        self.assertEqual(type(PlaylistForm().__dict__['instance']), Playlist)
-        self.assertEqual(type(EditUserProfile().__dict__['instance']), UserProfile)
-        self.assertEqual(type(PlaylistEditForm().__dict__['instance']), Playlist)
+        self.assertEqual(type(SongForm().__dict__['instance']), Song,'Check form is linked to the right model')
+        self.assertEqual(type(PlaylistForm().__dict__['instance']), Playlist,'Check form is linked to the right model')
+        self.assertEqual(type(EditUserProfile().__dict__['instance']), UserProfile,'Check form is linked to the right model')
+        self.assertEqual(type(PlaylistEditForm().__dict__['instance']), Playlist,'Check form is linked to the right model')
     
     def test_add_playlist_mapping(self):
         try:
@@ -429,14 +429,14 @@ class TestForms(TestCase):
     
     def test_add_song_template(self):
         response = self.client.get(reverse('crescendo:add_song'))
-        self.assertTemplateUsed(response, 'crescendo/add_song.html')
+        self.assertTemplateUsed(response, 'crescendo/add_song.html','Not matching template')
 
     def test_add_song_template(self):
         response = self.client.get(reverse('crescendo:add_playlist'))
-        self.assertTemplateUsed(response, 'crescendo/add_playlist.html')
+        self.assertTemplateUsed(response, 'crescendo/add_playlist.html','Not matching template')
     def test_add_song_template(self):
         response = self.client.get(reverse('crescendo:edit_profile'))
-        self.assertTemplateUsed(response, 'crescendo/edit_profile.html')
+        self.assertTemplateUsed(response, 'crescendo/edit_profile.html','Not matching template')
 
     def test_add_playlist_form_response(self):
         response = self.client.get(reverse('crescendo:add_playlist'))
@@ -444,7 +444,7 @@ class TestForms(TestCase):
         content = response.content.decode()
 
         self.assertTrue('form' in context)
-        self.assertTrue('<title>Add Playlist</title>' in content)
+        self.assertTrue('<title>Add Playlist</title>' in content,'form response does not match')
 
     def test_add_song_form_response(self):
         response = self.client.get(reverse('crescendo:add_song'))
@@ -452,7 +452,7 @@ class TestForms(TestCase):
         content = response.content.decode()
 
         self.assertTrue('form' in context)
-        self.assertTrue('<title>Add Song</title>' in content)
+        self.assertTrue('<title>Add Song</title>' in content,'form response does not match')
         
     def test_edit_playlist_form_response(self):
         response = self.client.get(reverse('crescendo:edit_profile'))
@@ -460,7 +460,8 @@ class TestForms(TestCase):
         content = response.content.decode()
 
         self.assertTrue('form' in context)
-        self.assertTrue('<title> Editing Profile -  </title>' in content)
+        self.assertTrue('<title> Editing Profile -  </title>' in content,'form response does not match')
+    
     
     # def test_playlist_edit_fields(self):
     #     form=PlaylistEditForm(data={
