@@ -1,91 +1,81 @@
  
 # IMPORTS  
-from doctest import TestResults
-from django.core.files import File
-from django.test import TestCase  
-from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
-from datetime import datetime 
-from crescendo_app.views import index 
-from django.urls import reverse, resolve
-from django.test import Client 
-from django.contrib import auth
-from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm, SongForm
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django import forms
 from django.forms import fields as django_fields
+from django.core.files import File
+from django.test import TestCase,Client 
+from django.urls import reverse, resolve 
+from django.contrib import auth
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+from datetime import datetime 
+from doctest import TestResults
+
+from crescendo_app.views import index 
+from crescendo_app.form import EditUserProfile, PlaylistForm, PlaylistEditForm, CommentForm, SongForm
+from crescendo_app.models import User,UserProfile , Playlist , Song , Genre, Comment 
+#Extra functions 
+def create_user_test(username="A Brand New Test User"):
+    user = User(username =username) 
+    user.save()
+    user_profile = UserProfile(user = user, numberOfProfileViews=-100)
+    user_profile.save() 
+    return user_profile
+
 # MODEL TESTS
- 
+
 class UserMethodTests(TestCase):  
+    
+    
 
     def test_ensure_profile_views_are_positive(self): 
-        user = User(username = "A Brand New Test User") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
-
+        user_profile= create_user_test()
         self.assertEqual((user_profile.numberOfProfileViews >= 0), True) 
          
     def test_ensure_comments_are_positive(self):  
-        user = User(username = "A Brand New Test User 2") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfComments=-100)
-        user_profile.save() 
+        user_profile= create_user_test()
 
         self.assertEqual((user_profile.numberOfComments >= 0), True) 
 
     def test_ensure_user_is_related_to_user_profile(self):  
-        user = User(username = "A Brand New Test User 3") 
-        user.save()
-        user_profile = UserProfile(user = user)
-        user_profile.save()  
-         
+        user_profile=create_user_test() 
+        user=user_profile.user
         self.assertEqual(user_profile.user , user) 
          
 class GenreMethodTests(TestCase): 
     def test_ensure_category_name_is_in_slug_form(self): 
         genre = Genre(name = "Electronic Dance Music") 
         genre.save() 
-         
         self.assertEquals(genre.nameAsSlug , "electronic-dance-music")
   
  
 class PlaylistMethodTests(TestCase):  
      
     def test_ensure_playlist_views_are_positive(self):  
-        user = User(username = "Another user") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+
+        user_profile=create_user_test() 
         playlist = Playlist(author = user_profile , name = "The best crescendo_app" , views = -100 )
         playlist.save() 
 
         self.assertTrue((playlist.views >= 0), True) 
          
     def test_ensure_playlist_comments_are_positive(self):  
-        user = User(username = "Yet another user") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save()  
+        
+        user_profile=create_user_test() 
         playlist = Playlist(author = user_profile,name  = "The second best crescendo_app I guess" , numberOfComments = -100)
         playlist.save() 
 
         self.assertTrue((playlist.numberOfComments >= 0), True)  
         
     def test_ensure_playlist_name_is_slugged(self):  
-        user = User(username = "User") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+        user_profile=create_user_test() 
         playlist = Playlist(author = user_profile , name = "The best crescendo_app" )
         playlist.save() 
 
         self.assertEquals(playlist.nameAsSlug , 'the-best-crescendo_app')
          
     def test_ensure_there_is_a_default_image_for_playlist(self):  
-        user = User(username = "Playlist Owner") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+        user_profile=create_user_test()
         playlist = Playlist(author = user_profile , name = "The best crescendo_app")
         playlist.save()  
          
@@ -94,10 +84,8 @@ class PlaylistMethodTests(TestCase):
 class SongMethodTests(TestCase):  
          
     def test_ensure_song_comments_are_positive(self):  
-        user = User(username = "Song owner") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+
+        user_profile=create_user_test("Song owner")
         song = Song(author = user_profile,name  = "The second best song I guess" , numberOfComments = -100) 
         song.save() 
 
@@ -105,72 +93,60 @@ class SongMethodTests(TestCase):
 
 
     def test_ensure_song_name_is_slugged(self):  
-        user = User(username = "Song owner 2") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+        user_profile=create_user_test("Song owner 2")
         playlist = Song(author = user_profile , name = "The best song" ) 
         playlist.save()  
 
         self.assertEquals(playlist.nameAsSlug , 'the-best-song')  
  
     def test_ensure_song_is_added_to_playlists(self): 
-        user = User(username = "Playlist Owner") 
-        user.save()    
-        userprofile = UserProfile(user = user) 
-        userprofile.save()
+        user_profile= create_user_test("Playlist Owner")
         names = ["Playlist 1" , "Playlist 2 " , "Playlist 3" , "Playlist 4"]  
         playlists = {}
+        
         for name in names: 
-            playlist = Playlist(author = userprofile , name = name)
+            playlist = Playlist(author = user_profile , name = name)
             playlist.save() 
             playlists[name] = playlist
 
-        song = Song(author = userprofile,name  = "The second best song I guess")   
+        song = Song(author = user_profile,name  = "The second best song I guess")   
         song.save() 
         song.playlist.add(*playlists.values())
         song.save()
 
         self.assertTrue(all([True if playlist.name in names else False for playlist in song.playlist.all()]))  
          
-          
+def create_comment(user,song,name="A new comment"):
+        comment = Comment() 
+        comment.text = "A new Commment" 
+        comment.author = user 
+        comment.content_object = song 
+        comment.save()
+        return comment   
 class CommentMethodTests(TestCase):  
      
     def test_ensure_comment_is_added(self): 
-        user = User(username = "A User") 
-        user.save()    
-        userprofile = UserProfile(user = user) 
-        userprofile.save()  
-        song = Song(author = userprofile,name  = "The next big song")   
+        user_profile=create_user_test("A User")
+        song = Song(author = user_profile,name  = "The next big song")   
         song.save()  
          
-        comment = Comment() 
-        comment.text = "A new Commment" 
-        comment.author = user 
-        comment.content_object = song 
-        comment.save() 
+        comment=create_comment(user_profile.user,song)
          
-        self.assertEquals(1, Comment.objects.filter(author = user).count()) 
+        self.assertEquals(1, Comment.objects.filter(author = user_profile.user).count()) 
          
           
     def test_ensure_correct_comment_time(self):  
-        user = User(username = "A User") 
-        user.save()    
-        userprofile = UserProfile(user = user) 
-        userprofile.save()  
-        song = Song(author = userprofile,name  = "The next big song")   
+        user_profile=create_user_test("A User")
+        song = Song(author = user_profile,name  = "The next big song")   
         song.save()  
          
-        comment = Comment() 
-        comment.text = "A new Commment" 
-        comment.author = user 
-        comment.content_object = song 
-        comment.save()   
+        comment=create_comment(user_profile.user,song) 
         today = datetime.today().strftime('%Y-%m-%d')
          
         self.assertEquals(str(today) , str(Comment.objects.get(id = comment.id).comment_time)[0:10])
          
          
+
 
 #View Tests 
  
@@ -181,10 +157,7 @@ class ViewMethodTests(TestCase):
         self.assertEquals(response.status_code, 200) 
          
     def test_index_page_has_playlist(self):   
-        user = User(username = "Another user") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save() 
+        user_profile=create_user_test("Another User") 
         playlist = Playlist(author = user_profile , name = "The best crescendo_app" , views = -100 )
         playlist.save() 
         
@@ -192,10 +165,7 @@ class ViewMethodTests(TestCase):
         self.assertTrue('The best crescendo_app' in response.content.decode()) 
           
     def test_index_page_has_song(self):  
-        user = User(username = "Another user") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save()  
+        user_profile=create_user_test("Another User")   
         song = Song(author = user_profile,name  = "The second best song I guess")   
         song.save()  
           
@@ -210,10 +180,7 @@ class SongPage(TestCase):
 
 
     def test_amount_of_songs_matches_amount_in_database(self):
-        user = User(username = "Another user") 
-        user.save()
-        user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-        user_profile.save()  
+        user_profile=create_user_test("Another User")  
         
 
         songs = ['Song1','Song2','Song3'] 
@@ -239,10 +206,7 @@ class PlaylistPage(TestCase):
             self.assertEquals(response.status_code, 200) 
         
         def test_amount_of_playlists_matches_amount_in_database(self):
-            user = User(username = "Another user") 
-            user.save()
-            user_profile = UserProfile(user = user, numberOfProfileViews=-100)
-            user_profile.save()  
+            user_profile=create_user_test("Another User")   
             
 
             playlists = ['Playlist1','Playlist2','Playlist3'] 
@@ -369,6 +333,22 @@ class Register(TestCase):
             self.assertFalse(True , "User has been creted with an invalid password - common word of hello") 
         except User.DoesNotExist:  
             self.assertTrue(True) 
+class Faq(TestCase):
+    def test_response(self):
+        response = self.client.get(reverse('crescendo:faq'))
+        content = response.content.decode()
+        
+        self.assertTrue('Crescendo - FAQ' in content)
+    def test_mapping(self):
+        try:
+            resolved_name = resolve('/crescendo/faq').view_name
+            
+        except:
+            resolved_name = ''
+        self.assertEqual(resolved_name, 'crescendo:faq','Correct mapping has not been returned from crescendo/faq')
+    def test_template(self):
+        response = self.client.get(reverse('crescendo:faq'))
+        self.assertTemplateUsed(response, 'crescendo/faq.html','Not matching template')
 
 class TestForms(TestCase):
     def test_form_exist(self):
@@ -462,7 +442,7 @@ class TestForms(TestCase):
         self.assertTrue('form' in context)
         self.assertTrue('<title> Editing Profile -  </title>' in content,'form response does not match')
     
-    
+
     # def test_playlist_edit_fields(self):
     #     form=PlaylistEditForm(data={
     #         'name':'new name',
