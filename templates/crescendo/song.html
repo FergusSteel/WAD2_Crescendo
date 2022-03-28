@@ -13,48 +13,54 @@
 
 {% block css %}
   <link rel="stylesheet" type="text/css" href="{% static '/styles/song.css' %}" />
-  <script src="{% static '/JS/player.js' %}"></script> 
+  <script src="{% static '/JS/player.js' %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
   <link rel="stylesheet" href="/static/bootstrap-3.4.1-dist/css/bootstrap.min.css">
 {% endblock %}
 
-    {% block body_block %}  
+    {% block body_block %}
        <div class = "container mb-5 mt-5">
-      {% if song %}  
-            
-            <div class = "row"> 
+      {% if song %}
+
+            <div class = "row">
                 <div class = "col-md player">
                     <h1>{{ song.name }} - {{ song.artist }}</h1>
                     <div class="songPlayer">
                         <img class = "image" src="{% static '/playicon.png' %}" id="topimage"  onclick="playAudio()">
                         <img class = "image" id="audioimage" src="{{ song.image.url }}" alt="{{ song.name }} album art."> <br>
-                            <audio id="audiofile" src="{{ song.actualSong.url }}"></audio> 
-                    </div> 
-                </div> 
+                            <audio id="audiofile" src="{{ song.actualSong.url }}"></audio>
+                    </div>
+                </div>
 
-                {% if user.is_authenticated %} 
+                {% if user.is_authenticated %}
                 <div class = "col-md text-center">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                           Add to Your Playlist
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          {% for playlist in playlists %} 
-                            <li><a class="dropdown-item" href="{% url 'crescendo:add_to_playlist' song.id playlist.id %}" >{{ playlist.name }}</a></li> 
+                          {% for playlist in playlists %}
+                            <li><a class="dropdown-item" href="{% url 'crescendo:add_to_playlist' song.id playlist.id %}" >{{ playlist.name }}</a></li>
                             {% endfor %}
                         </ul>
-                      </div>
-                </div> 
+                    </div>
+                    <br><br>
+                    <div class="edit_playlist">
+                        {% if user.get_username == song.author.user.get_username %}
+                          <button class="btn" type="button" onclick="dropSong('{{ song.id }}')" style="cursor:pointer; margin:10px">Delete Song.</button>
+                        {% endif %}
+                    </div>
+                </div>
                 {% endif %}
 
                 <div class="col-md text-center overflow-auto">
                     <h2>Lyrics</h2>
-                    <p> 
+                    <p>
                         {% if song.lyrics %}
-                            {{ song.lyrics }} 
-                        {% else %} 
-                            No lyrics currently available 
+                            {{ song.lyrics }}
+                        {% else %}
+                            No lyrics currently available
                         {% endif %}
                     </p>
                 </div>
@@ -73,19 +79,19 @@
               {% endif %}
           <div class = "row">
                <div class="comment-area">
-                    <h4 class="comment-area-title">Comment Here</h4> 
+                    <h4 class="comment-area-title">Comment Here</h4>
                </div>
                     {% if user.is_authenticated %}
-                        <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden"> 
-                            <div class = "row"> 
+                        <form id="comment_form" action="{% url 'crescendo:add_comment' %}" method="POST" style="overflow:hidden">
+                            <div class = "row">
                                 <label>{{ user.username }}, comment here!</label>
-                            </div> 
+                            </div>
                             <div class = "row">
                             <div id="reply_content_container" style="display:none">
                                 <p>Reply: </p>
                                 <div id="reply_content"></div>
-                            </div> 
-                            </div> 
+                            </div>
+                            </div>
                             <div class = "row">
                             {% csrf_token %}
                             {% get_comment_form song as comment_form %}
@@ -98,7 +104,7 @@
                             <input type="submit" value="Comment" class="btn pull-right wide">
                             </div>
                         </form>
-                        </div> 
+                        </div>
 
                     {% else %}
                       {% if not user.is_authenticated %}
@@ -160,5 +166,16 @@
         var likeUrl = "{% url 'crescendo:likes' %}";
     </script>
    <script src="{% static '/JS/comment_and_like.js' %}"></script>
+   <script src="{% static '/JS/comment.js' %}"></script>
+  <script type="text/javascript">
+    function dropSong(songID) {
+      if (confirm("Are you sure you want to remove this song?") == true) {
+        $.post("{% url 'crescendo:drop_song' %}", {csrfmiddlewaretoken : "{{ csrf_token }}", songID : songID});
+        window.location.reload();
+      } else {
+        console.log("Cancelled Delete.");
+    }
+    }
+  </script>
 
-{% endblock %}
+  {% endblock %}

@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.defaultfilters import slugify
 from django.contrib import auth
+from django.urls import reverse
 
 # Create your views here.
 from django.views import View
@@ -188,7 +189,9 @@ def edit_playlist(request, playlist_slug, playlist_id):
                 playlist.nameAsSlug = slugify(form.cleaned_data.get("name"))
                 playlist.description = form.cleaned_data.get("description")
                 playlist.save()
-                return redirect("index")
+
+                return render(request, 'crescendo/playlist.html', context={'playlist_slug': slugify(form.cleaned_data.get("name")), 'playlist_id' : playlist_id})
+
 
         try:
             songs = []
@@ -352,6 +355,21 @@ class delete_song(View):
 
         return render(request, 'crescendo/edit_playlist.html')
 
+class delete_playlist(View):
+    def post(self, request):
+        playlistID = request.POST['playlistID']
+
+        Playlist.objects.filter(id=playlistID).delete()
+
+        return render(request, 'crescendo/edit_playlist.html')
+
+class drop_song(View):
+    def post(self, request):
+        songID = request.POST['songID']
+
+        Song.objects.filter(id=songID).delete()
+
+        return render(request, 'crescendo/SongCatalogue.html')
 
 def edit_details(request, playlist_slug, playlist_id):
     form = PlaylistEditForm()
