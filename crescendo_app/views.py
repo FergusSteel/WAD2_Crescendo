@@ -167,7 +167,9 @@ def add_song(request):
             form.author = UserProfile.objects.get_or_create(user=request.user)
 
             SongF.author_id = request.user.id
+            print(form.cleaned_data.get('image'))
             SongF.save()
+            
             return redirect(f'/crescendo/userprofile/{request.user.id}')
         else:
             print("notValid")
